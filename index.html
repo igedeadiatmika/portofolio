@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width,initial-scale=1.0">
-  <title>Professional Portfolio</title>
+  <title>Tentang IGEDE</title>
   <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700&family=Roboto:wght@400;700&display=swap" rel="stylesheet">
   <style>
     :root {
@@ -22,7 +22,15 @@
       font-family: 'Roboto', Arial, sans-serif;
       min-height: 100vh;
       letter-spacing: 0.02em;
+    
+  justify-content: center;
+  align-items: flex-start;
+  padding-top: 50px;
+  overflow-x: hidden;
     }
+
+
+
     header {
       padding: 2rem 0 1rem 0;
       text-align: center;
@@ -188,14 +196,127 @@
       .projects-list { grid-template-columns: 1fr; }
       nav a { margin: 0 0.5rem; }
     }
+
+    
+
+  
+    .dj-wrapper {
+  position: relative;
+  left: 550px;
+  width: 200px;
+  height: 200px;
+  margin-top: 35px;
+  cursor: pointer;
+  transition: transform 0.4s ease;
+}
+
+.dj-photo {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 50%;
+  z-index: 2;
+  position: relative;
+  box-shadow: 0 0 20px #0ff;
+}
+
+.dj-border {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  z-index: 1;
+  background: transparent;
+  box-shadow: 0 0 20px #00f2ff, 0 0 40px #0ff;
+  animation: idlePulse 3s infinite ease-in-out;
+  transition: all 0.4s ease;
+}
+
+.dj-wrapper.active {
+  transform: scale(1.15);
+}
+
+.dj-wrapper.active .dj-border {
+  animation: fireSpin 1s linear infinite, burningColors 2s infinite alternate;
+  box-shadow: 0 0 40px #ff00cc, 0 0 80px #ff5500, 0 0 140px #ff2200;
+}
+
+.dj-particles {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.dj-wrapper.active .dj-particles::before {
+  content: '';
+  position: absolute;
+  width: 4px;
+  height: 4px;
+  background: radial-gradient(circle, #ff00ff, transparent);
+  border-radius: 50%;
+  animation: spark 0.6s ease-out forwards;
+  transform: translate(-50%, -50%);
+}
+/* Sparks */
+@keyframes idlePulse {
+  0%, 100% {
+    box-shadow: 0 0 20px #00f2ff, 0 0 40px #0ff;
+  }
+  50% {
+    box-shadow: 0 0 40px #00f2ff, 0 0 60px #0ff;
+  }
+}
+
+@keyframes fireSpin {
+  0% {
+    transform: rotate(0deg) scale(1.1);
+  }
+  100% {
+    transform: rotate(360deg) scale(1.1);
+  }
+}
+
+@keyframes burningColors {
+  0% {
+    box-shadow: 0 0 40px #ff00cc, 0 0 80px #ff3300;
+  }
+  50% {
+    box-shadow: 0 0 60px #ff5500, 0 0 120px #ff2200;
+  }
+  100% {
+    box-shadow: 0 0 40px #ff00cc, 0 0 80px #ff3300;
+  }
+}
+
+@keyframes spark {
+  0% {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+  }
+  100% {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(2);
+  }
+}
+
   </style>
 </head>
 <body>
+
+   <div class="dj-wrapper" onclick="toggleDJ(this)">
+  <img src="https://cdn.idntimes.com/content-images/post/20230515/1cd8757e763d0f74dbd86ff30a9a0b65.jpg" alt="Profil DJ" class="dj-photo">
+  <div class="dj-border"></div>
+  <div class="dj-particles"></div>
+</div>
   <header>
-    <div class="hero-title">John Doe</div>
-    <div class="hero-subtitle">Programmer • Developer • Professional Entrepreneur</div>
+    <div class="hero-title">I GEDE ADIATMIKA</div>
+    <div class="hero-subtitle">Programmer • Developer • Junior Entrepreneur • Junior analisist • Traveler</div>
     <div class="hero-desc">
-      Menciptakan solusi digital inovatif untuk bisnis dan teknologi. Berpengalaman dalam pengembangan perangkat lunak, membangun startup, dan mengelola bisnis modern.
+      Menciptakan solusi digital inovatif untuk bisnis dan teknologi. Berpengalaman dalam pengembangan perangkat lunak, membangun startup, dan mengelola bisnis umkm.
     </div>
     <nav>
       <a href="#about">About</a>
@@ -209,7 +330,7 @@
     <section id="about">
       <h2>About Me</h2>
       <div class="about-content">
-        Saya adalah seorang programmer, developer, dan pebisnis profesional dengan pengalaman lebih dari 8 tahun di industri teknologi. Passion saya adalah membangun produk digital yang berdampak, mengembangkan tim, dan membantu bisnis bertumbuh melalui inovasi teknologi.
+        Saya adalah seorang programmer, developer, dan pebisnis pemula dengan pengalaman lebih dari 2 tahun di pengembangan teknologi. Passion saya adalah membangun produk digital yang berdampak, mengembangkan tim, dan membantu bisnis bertumbuh melalui inovasi teknologi.
       </div>
     </section>
 
@@ -219,8 +340,10 @@
         <div class="skill">JavaScript</div>
         <div class="skill">TypeScript</div>
         <div class="skill">React.js</div>
-        <div class="skill">Node.js</div>
-        <div class="skill">Python</div>
+        <div class="skill">Inovation</div>
+        <div class="skill">Cooperation</div>
+        <div class="skill">Traveler</div>
+        <div class="skill">Mathematician</div>
         <div class="skill">Go</div>
         <div class="skill">SQL & NoSQL</div>
         <div class="skill">Cloud Computing</div>
@@ -228,6 +351,10 @@
         <div class="skill">Business Strategy</div>
         <div class="skill">Startup Management</div>
         <div class="skill">Agile Leadership</div>
+        <div class="skill">Art Lover</div>
+        <div class="skill">Gitarist</div>
+        <div class="skill">Author</div>
+        <div class="skill">Multi-Talented</div>
       </div>
     </section>
 
@@ -235,16 +362,16 @@
       <h2>Projects</h2>
       <div class="projects-list">
         <div class="project-card">
-          <div class="project-title">Futuristic SaaS Platform</div>
+          <div class="project-title">Startup of GEVSIDE ENVIEWMEN Platform</div>
           <div class="project-desc">
-            Platform SaaS modern untuk automasi bisnis, digunakan oleh lebih dari 100 perusahaan di Asia Tenggara.
+            platform GEVSIDE Enviewmen ini saya buat untuk mengembangkan teknologi yang dapat berdampak pada pelestarian alam
           </div>
           <a class="project-link" href="#" target="_blank">View Project</a>
         </div>
         <div class="project-card">
           <div class="project-title">AI-Powered Analytics</div>
           <div class="project-desc">
-            Sistem analitik berbasis AI untuk membantu bisnis mengambil keputusan berbasis data secara real-time.
+            saya pernah meneliti dan mengembangkan sistem analitik berbasis AI untuk membantu bisnis mengambil keputusan berbasis data secara real-time.
           </div>
           <a class="project-link" href="#" target="_blank">View Project</a>
         </div>
@@ -263,12 +390,41 @@
       <div class="contact-content">
         Tertarik untuk berkolaborasi atau berdiskusi? Hubungi saya melalui:
         <div class="contact-links">
-          <a class="contact-link" href="mailto:john.doe@email.com">Email</a>
-          <a class="contact-link" href="https://linkedin.com/in/johndoe" target="_blank">LinkedIn</a>
-          <a class="contact-link" href="https://github.com/johndoe" target="_blank">GitHub</a>
+          <a class="contact-link" href="https://www.instagram.com/igd_zjz?igsh=MTExdmVmcWhtMW1qdA==">Instagram</a>
+          <a class="contact-link" href="https://wa.me/6287728639990?text=Apakabar%20kak%20GEDE%20wkwkwk%20nama%20aku (    +    ).%20save%20yaaa%20kaa%20wkwkwk%20😁🙄😅💖" target="_blank">WhatsApp</a>
         </div>
       </div>
     </section>
   </main>
+  <script>
+  function toggleDJ(el) {
+    el.classList.toggle('active');
+
+    if (el.classList.contains('active')) {
+      generateParticles(el.querySelector('.dj-particles'));
+    }
+  }
+
+  function generateParticles(container) {
+    for (let i = 0; i < 12; i++) {
+      const p = document.createElement('div');
+      p.style.position = 'absolute';
+      p.style.width = '5px';
+      p.style.height = '5px';
+      p.style.borderRadius = '50%';
+      p.style.background = 'radial-gradient(circle, #ff00ff, transparent)';
+      const angle = Math.random() * 2 * Math.PI;
+      const radius = 70 + Math.random() * 40;
+      const x = Math.cos(angle) * radius;
+      const y = Math.sin(angle) * radius;
+      p.style.left = `calc(50% + ${x}px)`;
+      p.style.top = `calc(50% + ${y}px)`;
+      p.style.opacity = '1';
+      p.style.transition = 'opacity 0.6s ease-out';
+      container.appendChild(p);
+      setTimeout(() => p.remove(), 600);
+    }
+  }
+</script>
 </body>
 </html>
