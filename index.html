@@ -22,11 +22,6 @@
       font-family: 'Roboto', Arial, sans-serif;
       min-height: 100vh;
       letter-spacing: 0.02em;
-    
-  justify-content: center;
-  align-items: flex-start;
-  padding-top: 50px;
-  overflow-x: hidden;
     }
 
 
@@ -202,7 +197,7 @@
   
     .dj-wrapper {
   position: relative;
-  left: 550px;
+  margin: auto;
   width: 200px;
   height: 200px;
   margin-top: 35px;
@@ -303,16 +298,68 @@
   }
 }
 
+
+/* Timeline */
+ #timeline {
+    margin: 2rem 0 2rem 0.5rem;
+    border-left: 3px solid #ff0000;
+    padding-left: 2rem;
+    position: relative;
+}
+.timeline-item {
+    position: relative;
+    margin-bottom: 2rem;
+}
+.timeline-dot {
+    position: absolute;
+    left: -2.1rem;
+    top: 0.5rem;
+    width: 1.2rem;
+    height: 1.2rem;
+    background: linear-gradient(135deg, #a100ff, #ff005c, #00c3ff);
+    border-radius: 50%;
+    box-shadow: 0 0 12px #a100ff88;
+    border: 3px solid #fff;
+}
+.timeline-content {
+    margin-left: 0.5rem;
+    background: rgba(0,0,0,0.3);
+    border-radius: 10px;
+    padding: 1rem 1.5rem;
+    box-shadow: 0 0 10px #a100ff22;
+}
+.timeline-date {
+    color: #ff005c;
+    font-weight: bold;
+    font-size: 1rem;
+    margin-right: 1rem;
+}
+.timeline-title {
+    color: #0ff;
+    font-weight: bold;
+    font-size: 1.1rem;
+    margin-right: 1rem;
+}
+.timeline-desc {
+    display: block;
+    color: #fff;
+    margin-top: 0.3rem;
+    font-size: 1rem;
+}
+
   </style>
 </head>
 <body>
-
-   <div class="dj-wrapper" onclick="toggleDJ(this)">
-  <img src="https://cdn.idntimes.com/content-images/post/20230515/1cd8757e763d0f74dbd86ff30a9a0b65.jpg" alt="Profil DJ" class="dj-photo">
+<div class="dj-wrapper" onclick="toggleDJ(this)">
+  <img src="Igede.jpeg" alt="Profil DJ" class="dj-photo">
   <div class="dj-border"></div>
   <div class="dj-particles"></div>
 </div>
+
   <header>
+
+
+
     <div class="hero-title">I GEDE ADIATMIKA</div>
     <div class="hero-subtitle">Programmer • Developer • Junior Entrepreneur • Junior analisist • Traveler</div>
     <div class="hero-desc">
@@ -330,8 +377,34 @@
     <section id="about">
       <h2>About Me</h2>
       <div class="about-content">
-        Saya adalah seorang programmer, developer, dan pebisnis pemula dengan pengalaman lebih dari 2 tahun di pengembangan teknologi. Passion saya adalah membangun produk digital yang berdampak, mengembangkan tim, dan membantu bisnis bertumbuh melalui inovasi teknologi.
+        Saya adalah seorang programmer, developer, dan pebisnis pemula 
+        dengan pengalaman lebih dari 2 tahun di pengembangan teknologi. Passion saya adalah membangun produk digital yang berdampak, mengembangkan tim, dan membantu bisnis bertumbuh melalui inovasi teknologi.
       </div>
+
+
+ <div id="timeline">
+                <div class="timeline-item">
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-content">
+                        <span class="timeline-date">2024-11</span>
+                        <span class="timeline-title">Developer of Fasezo Studios</span>
+                        <span class="timeline-desc"> 
+                            <img src="fasezo-iconutama.png" alt="Fasezo" style="width:100px;height:100px;">
+                        </span>
+                    </div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-content">
+                        <span class="timeline-date">2025-06</span>
+                        <span class="timeline-title">Developer of GEVSIDE ENVIEWMEN Platform</span>
+                        <span class="timeline-desc">
+                            <img src="GEVSIDELOGO.jpeg" alt="GEVSIDE" style="width:100px;height:100px;">
+                        </span>
+                    </div>
+                </div>
+
+
     </section>
 
     <section id="skills">
@@ -366,21 +439,21 @@
           <div class="project-desc">
             platform GEVSIDE Enviewmen ini saya buat untuk mengembangkan teknologi yang dapat berdampak pada pelestarian alam
           </div>
-          <a class="project-link" href="#" target="_blank">View Project</a>
+          <a class="project-link" href="https://igedeadiatmika.github.io/GEVSIDE-ENVIEWMEN/" target="_blank">View Project</a>
         </div>
         <div class="project-card">
           <div class="project-title">AI-Powered Analytics</div>
           <div class="project-desc">
             saya pernah meneliti dan mengembangkan sistem analitik berbasis AI untuk membantu bisnis mengambil keputusan berbasis data secara real-time.
           </div>
-          <a class="project-link" href="#" target="_blank">View Project</a>
+          <a class="project-link" href="https://igedeadiatmika.github.io/GEVSIDE-ENVIEWMEN/" target="_blank">View Project</a>
         </div>
         <div class="project-card">
-          <div class="project-title">Startup Accelerator</div>
+          <div class="project-title">Startup And Developer of Fasezo Studios</div>
           <div class="project-desc">
-            Program akselerasi startup dengan mentoring, pendanaan, dan ekosistem kolaboratif.
+            Ini adalah project terbaru saya yang bertujuan sebagai fasilitas kepada introvert dalam menunjukan rasa mereka melalui sebuah karya seni dan rasa
           </div>
-          <a class="project-link" href="#" target="_blank">View Project</a>
+          <a class="project-link" href="" target="_blank">View Project</a>
         </div>
       </div>
     </section>
