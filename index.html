@@ -40,13 +40,24 @@
     }
     .hero-title {
       font-family: 'Orbitron', sans-serif;
-      font-size: clamp(0.8rem, 3vw, 2rem);
+       font-size: 3.5rem;
       white-space: nowrap;
       color: var(--primary);
       letter-spacing: 0.1em;
       margin-bottom: 0.5rem;
       text-shadow: 0 0 16px var(--primary);
     }
+
+@media (max-width: 768px) {
+  .hero-title {
+    font-size: 2rem;
+}
+
+@media (max-width: 480px) {
+  .hero-title {
+    font-size: 1.5rem;
+}
+    
     .hero-subtitle {
       font-size: 1.3rem;
       color: var(--accent);
