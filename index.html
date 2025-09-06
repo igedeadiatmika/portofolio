@@ -12,6 +12,7 @@
   <meta property="og:image:width" content="1200" />
   <meta property="og:image:height" content="630" />
   <link href="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Exo+2:wght@300;400;600&display=swap" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700&family=Roboto:wght@400;700&display=swap" rel="stylesheet">
   <style>
     :root {
@@ -21,6 +22,7 @@
       --accent: #ff00cc;
       --text: #e0e0e0;
       --shadow: 0 4px 32px 0 rgba(0,255,255,0.08);
+      --glass-bg: rgba(139, 92, 246, 0.1);
     }
     * { box-sizing: border-box; }
     body {
@@ -71,20 +73,53 @@
       font-size: 1.1rem;
       color: #b0b0b0;
     }
+
+    
     nav {
       margin: 1.5rem 0;
     }
-    nav a {
+    nav button {
       color: var(--primary);
       text-decoration: none;
       margin: 0 1.2rem;
       font-weight: 700;
       font-size: 1rem;
       transition: color 0.2s;
+      padding: 12px 24px;
+    background: var(--glass-bg);
+    border: 1px solid var(--glass-border);
+    border-radius: 25px;
+    font-family: 'Orbitron', monospace;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    backdrop-filter: blur(10px);
+    position: relative;
+    overflow: hidden;
     }
-    nav a:hover {
+
+    .button:before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+    transition: left 0.5s ease;
+}
+
+    .button:hover:before {
+    left: 100%;
+}
+    
+    nav button:hover {
       color: var(--accent);
+      background: var(--primary);
+    border-color: var(--primary);
+    box-shadow: 0 0 20px rgba(139, 92, 246, 0.5);
+    transform: translateY(-2px);
     }
+    
     section {
       max-width: 900px;
       margin: 2.5rem auto;
@@ -382,10 +417,10 @@
       menciptakan solusi digital inovatif untuk bisnis dan teknologi. Berpengalaman dalam pengembangan perangkat lunak, membangun startup, dan mengelola bisnis umkm.
     </div>
     <nav>
-      <a class=""rellax" data-rellax-speed="5"" href="#about">About</a>
-      <a class="rellax" data-rellax-speed="5" href="#skills">Skills</a>
-      <a class="rellax" data-rellax-speed="5" href="#projects">Projects</a>
-      <a class="rellax" data-rellax-speed="5" href="#contact">Contact</a>
+      <button class="tes" href="#about">About</a>
+      <button class="tes" href="#skills">Skills</a>
+      <button class="tes" href="#projects">Projects</a>
+      <button class="tes" href="#contact">Contact</a>
     </nav>
   </header>
 
@@ -523,6 +558,7 @@
 </script>  
 </body>
 </html>
+
 
 
 
