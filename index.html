@@ -39,7 +39,7 @@
       margin: 0;
       background: linear-gradient(135deg, #10131a 60%, #1a1f2b 100%);
       color: var(--text);
-      font-family: 'Roboto', Arial, sans-serif;
+      font-family: 'Roboto', Arial, sans-serif, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue';
       min-height: 100vh;
       letter-spacing: 0.02em;
     }
@@ -367,6 +367,100 @@
 }
 
 
+    /* Testimonials */
+        .testimonials-container {
+            position: relative;
+        }
+
+        .testimonial-wrapper {
+            overflow: hidden;
+            border-radius: 1rem;
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(4px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .testimonial-track {
+            display: flex;
+            transition: transform 0.5s ease-in-out;
+        }
+
+        .testimonial-slide {
+            width: 100%;
+            flex-shrink: 0;
+            padding: 3rem;
+        }
+
+        .quote-icon {
+            color: rgba(255, 255, 255, 0.2);
+            margin-bottom: 1.5rem;
+        }
+
+        .testimonial-text {
+            font-size: 1.25rem;
+            color: #e2e8f0;
+            line-height: 1.5;
+            margin-bottom: 2rem;
+            font-style: italic;
+        }
+
+        .testimonial-author {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .author-avatar {
+            width: 4rem;
+            height: 4rem;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .author-info .name {
+            font-weight: 600;
+            font-size: 1.125rem;
+        }
+
+        .author-info .role {
+            color: #94a3b8;
+        }
+
+        .rating {
+            display: flex;
+            gap: 0.25rem;
+            margin-top: 0.25rem;
+        }
+
+        .star {
+            color: #fbbf24;
+        }
+
+        .testimonial-dots {
+            display: flex;
+            justify-content: center;
+            gap: 0.5rem;
+            margin-top: 1.5rem;
+        }
+
+        .dot {
+            width: 0.5rem;
+            height: 0.5rem;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.3);
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+
+        .dot.active {
+            background: white;
+            width: 2rem;
+        }
+
+
+    
+
 /* Timeline */
  #timeline {
     margin: 2rem 0 2rem 0.5rem;
@@ -532,6 +626,27 @@
       </div>
     </section>
   </main>
+
+
+
+
+<section style="background: #0f172a; color: white;">
+        <div class="container" style="max-width: 80rem;">
+            <div class="section-header center">
+                <h2 style="color: white;">What People Say</h2>
+            </div>
+            <div class="testimonials-container">
+                <div class="testimonial-wrapper">
+                    <div id="testimonialTrack" class="testimonial-track"></div>
+                </div>
+                <div class="testimonial-dots" id="testimonialDots"></div>
+            </div>
+        </div>
+    </section>
+
+
+
+  
   <script>
 
 
@@ -559,7 +674,7 @@ window.addEventListener("scroll", () => {
     clearTimeout(scrollDownTimeout);
     scrollDownTimeout = setTimeout(() => {
       hideNav();
-    }, 2000); 
+    }, 200); 
   } else {
   
     showNav();
@@ -574,9 +689,6 @@ window.addEventListener("scroll", () => {
     hideNav();
   }, 10000); 
 });
-
-
-
 
 
     
@@ -608,6 +720,115 @@ window.addEventListener("scroll", () => {
       setTimeout(() => p.remove(), 600);
     }
   }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// Testimonials
+        const testimonials = [
+            {
+                name: 'Sarah Johnson',
+                role: 'CTO, TechCorp',
+                content: 'IGede delivered exceptional work on our platform. His technical expertise and problem-solving abilities are outstanding.',
+                rating: 5,
+                avatar: 'https://images.pexels.com/photos/774909/pexels-photo-774909.jpeg?auto=compress&cs=tinysrgb&w=150'
+            },
+            {
+                name: 'Michael Chen',
+                role: 'Founder, StartupXYZ',
+                content: 'Working with IGede was a game-changer for our project. He brings both technical skills and creative solutions to the table.',
+                rating: 5,
+                avatar: 'https://images.pexels.com/photos/1222271/pexels-photo-1222271.jpeg?auto=compress&cs=tinysrgb&w=150'
+            },
+            {
+                name: 'Emily Rodriguez',
+                role: 'Product Manager, InnovateLab',
+                content: 'IGede\'s attention to detail and commitment to excellence made our collaboration smooth and productive. Highly recommended!',
+                rating: 5,
+                avatar: 'https://images.pexels.com/photos/1239291/pexels-photo-1239291.jpeg?auto=compress&cs=tinysrgb&w=150'
+            },
+            {
+                name: 'David Kim',
+                role: 'CEO, Digital Solutions',
+                content: 'A true professional who consistently delivers high-quality code and innovative solutions. IGede exceeded our expectations.',
+                rating: 5,
+                avatar: 'https://images.pexels.com/photos/1516680/pexels-photo-1516680.jpeg?auto=compress&cs=tinysrgb&w=150'
+            },
+            {
+                name: 'Lisa Anderson',
+                role: 'Lead Designer, CreativeHub',
+                content: 'IGede brings designs to life with pixel-perfect implementation. His understanding of both design and development is impressive.',
+                rating: 5,
+                avatar: 'https://images.pexels.com/photos/1181686/pexels-photo-1181686.jpeg?auto=compress&cs=tinysrgb&w=150'
+            }
+        ];
+
+        let currentTestimonial = 0;
+        const testimonialTrack = document.getElementById('testimonialTrack');
+        const testimonialDots = document.getElementById('testimonialDots');
+
+        testimonials.forEach((test, index) => {
+            const slide = document.createElement('div');
+            slide.className = 'testimonial-slide';
+            slide.innerHTML = `
+                <div class="quote-icon">
+                    <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M3 21c3 0 7-1 7-8V5c0-1.25-.756-2.017-2-2H4c-1.25 0-2 .75-2 1.972V11c0 1.25.75 2 2 2 1 0 1 0 1 1v1c0 1-1 2-2 2s-1 .008-1 1.031V20c0 1 0 1 1 1z"></path>
+                        <path d="M15 21c3 0 7-1 7-8V5c0-1.25-.757-2.017-2-2h-4c-1.25 0-2 .75-2 1.972V11c0 1.25.75 2 2 2h.75c0 2.25.25 4-2.75 4v3c0 1 0 1 1 1z"></path>
+                    </svg>
+                </div>
+                <p class="testimonial-text">"${test.content}"</p>
+                <div class="testimonial-author">
+                    <img src="${test.avatar}" alt="${test.name}" class="author-avatar">
+                    <div class="author-info">
+                        <div class="name">${test.name}</div>
+                        <div class="role">${test.role}</div>
+                        <div class="rating">
+                            ${'★'.repeat(test.rating)}
+                        </div>
+                    </div>
+                </div>
+            `;
+            testimonialTrack.appendChild(slide);
+
+            const dot = document.createElement('div');
+            dot.className = 'dot' + (index === 0 ? ' active' : '');
+            dot.onclick = () => goToTestimonial(index);
+            testimonialDots.appendChild(dot);
+        });
+
+        function goToTestimonial(index) {
+            currentTestimonial = index;
+            testimonialTrack.style.transform = `translateX(-${index * 100}%)`;
+            document.querySelectorAll('.dot').forEach((dot, i) => {
+                dot.classList.toggle('active', i === index);
+            });
+        }
+
+        setInterval(() => {
+            currentTestimonial = (currentTestimonial + 1) % testimonials.length;
+            goToTestimonial(currentTestimonial);
+        }, 5000);
+
+
+
+
+    
 </script>
 
 <script src="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.js"></script>
@@ -620,6 +841,7 @@ window.addEventListener("scroll", () => {
 </script>  
 </body>
 </html>
+
 
 
 
