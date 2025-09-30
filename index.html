@@ -85,7 +85,6 @@
     }
 
 
-/* Navbar floating bawah */
 .bottom-nav {
   position: fixed;
   bottom: 1rem;
@@ -102,7 +101,7 @@
   transition: opacity 0.5s ease, transform 0.5s ease;
 }
 
-/* tombol link */
+
 .bottom-nav .tes {
   display: inline-flex;
   align-items: center;
@@ -123,15 +122,13 @@
   transform: translateY(-2px);
 }
 
-/* keadaan hidden */
+
 .bottom-nav.hidden {
   opacity: 0;
-  transform: translate(-50%, 100%); /* geser ke bawah */
+  transform: translate(-50%, 100%); 
   pointer-events: none;
 }
 
-    
-  
 
 
     
@@ -541,37 +538,41 @@
     let lastScrollTop = 0;
 let hideTimeout;
 
-// ambil navbar
+
 const nav = document.querySelector(".bottom-nav");
 
-// fungsi sembunyiin
+
 function hideNav() {
   nav.classList.add("hidden");
 }
-// fungsi munculin
+
 function showNav() {
   nav.classList.remove("hidden");
 }
 
-// deteksi scroll
+
 window.addEventListener("scroll", () => {
   let scrollTop = window.scrollY || document.documentElement.scrollTop;
 
-  // jika scroll ke bawah -> sembunyi
+
   if (scrollTop > lastScrollTop) {
-    hideNav();
+    clearTimeout(scrollDownTimeout);
+    scrollDownTimeout = setTimeout(() => {
+      hideNav();
+    }, 2000); 
   } else {
-    // scroll ke atas -> muncul
+  
     showNav();
   }
 
+
   lastScrollTop = scrollTop <= 0 ? 0 : scrollTop;
 
-  // reset timer sembunyi otomatis
+  
   clearTimeout(hideTimeout);
   hideTimeout = setTimeout(() => {
     hideNav();
-  }, 10000); // 10 detik diam
+  }, 10000); 
 });
 
 
@@ -619,6 +620,7 @@ window.addEventListener("scroll", () => {
 </script>  
 </body>
 </html>
+
 
 
 
