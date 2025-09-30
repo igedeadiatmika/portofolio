@@ -458,6 +458,156 @@
             width: 2rem;
         }
 
+/* Modal */
+        .modal-overlay {
+            position: fixed;
+            inset: 0;
+            z-index: 50;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 1rem;
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(4px);
+            animation: fadeIn 0.3s ease-out;
+        }
+
+        .modal-overlay.hidden {
+            display: none;
+        }
+
+        .modal {
+            background: white;
+            border-radius: 1rem;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+            max-width: 28rem;
+            width: 100%;
+            overflow: hidden;
+            animation: slideUp 0.4s ease-out;
+        }
+
+        .modal-header {
+            background: linear-gradient(to right, #1e293b, #0f172a);
+            padding: 1.5rem;
+            color: white;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .modal-header h3 {
+            font-size: 1.25rem;
+            font-weight: bold;
+        }
+
+        .modal-header button {
+            background: transparent;
+            border: none;
+            color: white;
+            cursor: pointer;
+            padding: 0.25rem;
+            border-radius: 0.5rem;
+            transition: background 0.3s;
+        }
+
+        .modal-header button:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .modal-content {
+            padding: 2rem;
+        }
+
+        .progress-bar {
+            height: 0.5rem;
+            background: #e2e8f0;
+            border-radius: 1rem;
+            overflow: hidden;
+            margin-bottom: 0.5rem;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: #1e293b;
+            transition: width 0.3s;
+        }
+
+        .modal-question {
+            font-size: 1.25rem;
+            color: #1e293b;
+            margin: 2rem 0;
+            text-align: center;
+            line-height: 1.5;
+        }
+
+        .modal-buttons {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .modal-buttons button {
+            flex: 1;
+            padding: 1rem;
+            border: none;
+            border-radius: 0.75rem;
+            font-weight: 600;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .btn-yes {
+            background: #10b981;
+            color: white;
+        }
+
+        .btn-yes:hover {
+            background: #059669;
+            transform: scale(1.05);
+        }
+
+        .btn-no {
+            background: #ef4444;
+            color: white;
+        }
+
+        .btn-no:hover {
+            background: #dc2626;
+            transform: scale(1.05);
+        }
+
+        .modal-complete {
+            padding: 3rem;
+            text-align: center;
+        }
+
+        .check-icon {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 5rem;
+            height: 5rem;
+            background: #10b981;
+            border-radius: 50%;
+            margin-bottom: 1.5rem;
+            animation: bounce 1s infinite;
+        }
+
+        .modal-complete h3 {
+            font-size: 1.875rem;
+            font-weight: bold;
+            color: #0f172a;
+            margin-bottom: 0.75rem;
+        }
+
+        .modal-complete p {
+            font-size: 1.125rem;
+            color: #475569;
+        }
+
+
+    
 
     
 
@@ -512,6 +662,30 @@
   </style>
 </head>
 <body>
+
+
+
+<div id="modal" class="modal-overlay">
+        <div class="modal">
+            <div class="modal-header">
+                <h3 id="modalTitle">Pertanyaan 1 dari 6</h3>
+                <button onclick="closeModal()">&times;</button>
+            </div>
+            <div id="modalBody" class="modal-content">
+                <div class="progress-bar">
+                    <div id="progressFill" class="progress-fill" style="width: 0%"></div>
+                </div>
+                <p id="modalQuestion" class="modal-question"></p>
+                <div class="modal-buttons">
+                    <button class="btn-yes" onclick="answerQuestion('yes')">Ya</button>
+                    <button class="btn-no" onclick="answerQuestion('no')">Tidak</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+  
 <div class="dj-wrapper" onclick="toggleDJ(this)">
   <img src="Igede.jpeg" alt="Profil" class="dj-photo">
   <div class="dj-border"></div>
@@ -827,6 +1001,77 @@ window.addEventListener("scroll", () => {
 
 
 
+    // Modal Logic
+        const questions = [
+            { question: 'Apakah kamu kenal IGede?', yesNext: 1, noNext: 2 },
+            { question: 'Apakah dia baik?', yesNext: 3, noNext: 4 },
+            { question: 'Wah, senang mendengarnya! Apakah IGede itu pekerja keras?', yesNext: 5, noNext: 6 },
+            { question: 'Apakah kamu tertarik dengan karya-karyanya?', yesNext: 7, noNext: 8 },
+            { question: 'Oh begitu... Apakah kamu ingin mengenal IGede lebih baik?', yesNext: 9, noNext: 10 },
+            { question: 'Menurutmu, apakah IGede memiliki skill yang mumpuni?', yesNext: 11, noNext: 12 },
+            { question: 'Hmm, mungkin ada yang bisa diperbaiki. Apakah kamu mau memberi saran?', yesNext: 11, noNext: 12 },
+            { question: 'Luar biasa! Apakah kamu tertarik untuk berkolaborasi?', yesNext: 11, noNext: 12 },
+            { question: 'Tidak masalah! Apakah kamu suka portfolio ini?', yesNext: 11, noNext: 12 },
+            { question: 'Bagus! Silakan jelajahi portfolio ini lebih lanjut. Setuju?', yesNext: 11, noNext: 12 },
+            { question: 'Terima kasih sudah meluangkan waktu. Semoga portfolio ini bermanfaat! Oke?', yesNext: 11, noNext: 12 },
+            { question: 'Terakhir, apakah kamu akan merekomendasikan IGede ke orang lain?', yesNext: null, noNext: null },
+            { question: 'Terima kasih atas kejujurannya! Semoga portfolio ini tetap menarik. Setuju?', yesNext: null, noNext: null }
+        ];
+
+        let currentQuestion = 0;
+        let answersCount = 0;
+
+        function updateModal() {
+            document.getElementById('modalTitle').textContent = `Pertanyaan ${answersCount + 1} dari 6`;
+            document.getElementById('modalQuestion').textContent = questions[currentQuestion].question;
+            document.getElementById('progressFill').style.width = `${(answersCount / 6) * 100}%`;
+        }
+
+        function answerQuestion(answer) {
+            const nextIndex = answer === 'yes' ? questions[currentQuestion].yesNext : questions[currentQuestion].noNext;
+            answersCount++;
+
+            if (nextIndex === null || answersCount >= 6) {
+                showComplete();
+            } else {
+                currentQuestion = nextIndex;
+                updateModal();
+            }
+        }
+
+        function showComplete() {
+            document.getElementById('modalBody').innerHTML = `
+                <div class="modal-complete">
+                    <div class="check-icon">
+                        <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3">
+                            <polyline points="20 6 9 17 4 12"></polyline>
+                        </svg>
+                    </div>
+                    <h3>Terima Kasih!</h3>
+                    <p>Selamat menjelajahi portfolio ini</p>
+                </div>
+            `;
+            setTimeout(() => {
+                closeModal();
+            }, 2500);
+        }
+
+        function closeModal() {
+            document.getElementById('modal').classList.add('hidden');
+        }
+
+        updateModal();
+
+        // Navbar scroll effect
+        window.addEventListener('scroll', () => {
+            const navbar = document.getElementById('navbar');
+            if (window.scrollY > 50) {
+                navbar.classList.add('scrolled');
+            } else {
+                navbar.classList.remove('scrolled');
+            }
+        });
+
 
     
 </script>
@@ -841,6 +1086,7 @@ window.addEventListener("scroll", () => {
 </script>  
 </body>
 </html>
+
 
 
 
