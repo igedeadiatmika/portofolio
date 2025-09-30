@@ -1012,60 +1012,62 @@ const questions = [
   { question: 'Terima kasih atas kejujurannya! Semoga IGede bisa tetap menarik. Setuju?', yesNext: null, noNext: null }
 ];
 
-let currentQuestion = 0;
-let answersCount = 0;
+let currentQuestion = 0;  
+let answersCount = 0;  
 
-function updateModal() {
-  document.getElementById('modalTitle').textContent = Pertanyaan ${answersCount + 1} dari 6;
-  document.getElementById('modalQuestion').textContent = questions[currentQuestion].question;
-  document.getElementById('progressFill').style.width = ${(answersCount / 6) * 100}%;
-}
+function updateModal() {  
+    document.getElementById('modalTitle').textContent = Pertanyaan ${answersCount + 1} dari 6;  
+    document.getElementById('modalQuestion').textContent = questions[currentQuestion].question;  
+    document.getElementById('progressFill').style.width = ${(answersCount / 6) * 100}%;  
+}  
 
-function answerQuestion(answer) {
-  const nextIndex = answer === 'yes' ? questions[currentQuestion].yesNext : questions[currentQuestion].noNext;
-  answersCount++;
+function answerQuestion(answer) {  
+    const nextIndex = answer === 'yes' ? questions[currentQuestion].yesNext : questions[currentQuestion].noNext;  
+    answersCount++;  
 
-  if (nextIndex === null || answersCount >= 6) {
-    showComplete();
-  } else {
-    currentQuestion = nextIndex;
-    updateModal();
-  }
-}
+    if (nextIndex === null || answersCount >= 6) {  
+        showComplete();  
+    } else {  
+        currentQuestion = nextIndex;  
+        updateModal();  
+    }  
+}  
 
-function showComplete() {
-  document.getElementById('modalBody').innerHTML = `
-    <div class="modal-complete">
-      <div class="check-icon">
-        <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3">
-          <polyline points="20 6 9 17 4 12"></polyline>
-        </svg>
-      </div>
-      <h3>Terima Kasih!</h3>
-      <p>Selamat menjelajahi portfolio ini</p>
-    </div>
-  `;
+function showComplete() {  
+    document.getElementById('modalBody').innerHTML = `  
+        <div class="modal-complete">  
+            <div class="check-icon">  
+                <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3">  
+                    <polyline points="20 6 9 17 4 12"></polyline>  
+                </svg>  
+            </div>  
+            <h3>Terima Kasih!</h3>  
+            <p>Selamat menjelajahi portfolio ini</p>  
+        </div>  
+    `;  
 
-  localStorage.setItem("quizShown", "true");
+    // simpan ke localStorage bahwa sudah selesai
+    localStorage.setItem("quizDone", "true");  
 
-  setTimeout(() => {
-    closeModal();
-  }, 2500);
-}
+    setTimeout(() => {  
+        closeModal();  
+    }, 2500);  
+}  
 
-function closeModal() {
-  document.getElementById('modal').classList.add('hidden');
-}
+function closeModal() {  
+    document.getElementById('modal').classList.add('hidden');  
+}  
 
-if (!localStorage.getItem("quizShown")) {
-  // kalau belum pernah → tampilkan modal
-  document.getElementById('modal').classList.remove('hidden');
-  updateModal();
-} else {
-  
-  closeModal();
-}
-
+// cek apakah user sudah pernah selesai quiz
+window.onload = function() {  
+    if (localStorage.getItem("quizDone") === "true") {  
+        // kalau sudah pernah → sembunyikan modal
+        document.getElementById('modal').classList.add('hidden');  
+    } else {  
+        // kalau belum → mulai quiz
+        updateModal();  
+    }  
+};
 
     
 </script>
@@ -1080,6 +1082,7 @@ if (!localStorage.getItem("quizShown")) {
 </script>  
 </body>
 </html>
+
 
 
 
