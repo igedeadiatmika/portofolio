@@ -81,7 +81,6 @@
     }
     nav button.tes {
       color: var(--primary);
-      text-decoration: none;
       margin: 0 1.2rem;
       font-weight: 700;
       font-size: 1rem;
@@ -90,13 +89,17 @@
     background: var(--glass-bg);
     border: 1px solid var(--glass-border);
     border-radius: 25px;
-    font-family: 'Orbitron', monospace;
     cursor: pointer;
     transition: all 0.3s ease;
     backdrop-filter: blur(10px);
     overflow: hidden;
     }
-
+.tes a {
+  text-decoration: none;
+  font-family: 'Orbitron', monospace;
+}
+  
+  
     .tes:before {
     content: '';
     position: absolute;
@@ -558,6 +561,7 @@
 </script>  
 </body>
 </html>
+
 
 
 
