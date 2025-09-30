@@ -23,8 +23,17 @@
       --accent: #ff00cc;
       --text: #e0e0e0;
       --shadow: 0 4px 32px 0 rgba(0,255,255,0.08);
-      --glass-bg: rgba(139, 92, 246, 0.1);
-    }
+      --glass-b: rgba(139, 92, 246, 0.1);
+ 
+  --primary: #e6e6e6;
+  --accent: #8b5cf6;
+  --glass-bg: rgba(255,255,255,0.03);
+  --glass-border: rgba(255,255,255,0.08);
+  --bah: #2b1b6f;
+}
+
+
+    
     * { box-sizing: border-box; }
     body {
       margin: 0;
@@ -75,53 +84,88 @@
       color: #b0b0b0;
     }
 
-    
-    nav {
-      margin: 1.5rem 0;
-    }
-    nav .tes {
-      color: var(--primary);
-      margin: 0 1.2rem;
-      font-weight: 700;
-      font-size: 1rem;
-      transition: color 0.2s;
-      padding: 12px 24px;
-    background: var(--glass-bg);
-    border: 1px solid var(--glass-border);
-    border-radius: 25px;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    backdrop-filter: blur(10px);
-    overflow: hidden;
-    }
-.tes a {
-  text-decoration: none;
-  font-family: 'Orbitron', monospace;
-}
-  
-  
-    .tes:before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: -100%;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
-    transition: left 0.5s ease;
+
+
+    nav.nav {
+  margin: 1.5rem 0;
+  display: flex;
+  flex-wrap: wrap;       
+  gap: 0.75rem;          
+  justify-content: center;
+  align-items: center;
+  padding: 0 1rem;
 }
 
-    .tes:hover:before {
-    left: 100%;
+
+.tes {
+  position: relative;          
+  display: inline-flex;         
+  align-items: center;
+  justify-content: center;
+  padding: clamp(8px, 1.8vw, 12px) clamp(12px, 2.6vw, 24px);
+  color: var(--primary);
+  font-weight: 700;
+  font-size: clamp(0.9rem, 1.2vw, 1rem);
+  font-family: 'Orbitron', monospace;
+  text-decoration: none;
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  border-radius: 25px;
+  cursor: pointer;
+  transition: transform .2s ease, background .2s ease, color .2s ease, box-shadow .2s ease, border-color .2s ease;
+  backdrop-filter: blur(10px);
+  overflow: hidden;            
 }
+
+
+.tes::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -120%;
+  width: 120%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.12), transparent);
+  transition: left .5s ease;
+  pointer-events: none;    
+}
+
+.tes:hover::before,
+.tes:focus::before {
+  left: 100%;
+}
+
+.tes:hover,
+.tes:focus {
+  color: var(--accent);
+  background: var(--bah);
+  border-color: var(--bah);
+  box-shadow: 0 0 20px rgba(139, 92, 246, 0.5);
+  transform: translateY(-2px);
+  outline: none;
+}
+
+/* keyboard accessibility */
+.tes:focus {
+  box-shadow: 0 0 0 4px rgba(139,92,246,0.12);
+}
+
+/* kecilkan padding & font di layar sangat kecil jika perlu */
+@media (max-width: 420px) {
+  .nav { gap: 0.5rem; }
+  .tes {
+    padding: clamp(6px, 2.5vw, 10px) clamp(10px, 4vw, 16px);
+    border-radius: 18px;
+    font-size: 0.95rem;
+  }
+}
+
+
+
+
     
-    .tes:hover {
-      color: var(--accent);
-      background: var(--bah);
-    border-color: var(--bah);
-    box-shadow: 0 0 20px rgba(139, 92, 246, 0.5);
-    transform: translateY(-2px);
-    }
+
+    
     
     section {
       max-width: 900px;
@@ -419,14 +463,11 @@
       Halo perkenalkan nama saya igede, saya memiliki ambisi
       menciptakan solusi digital inovatif untuk bisnis dan teknologi. Berpengalaman dalam pengembangan perangkat lunak, membangun startup, dan mengelola bisnis umkm.
     </div>
-    <nav>
+    <nav class="nav">
       <a href="#about" class="tes">About</a>
       <a href="#contact"class="tes">contact</a>
       <a href="#projects" class="tes">About</a>
       <a href="#skills" class="tes">skills</a>
-
-
-      
     </nav>
   </header>
 
@@ -564,6 +605,7 @@
 </script>  
 </body>
 </html>
+
 
 
 
