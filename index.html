@@ -85,82 +85,53 @@
     }
 
 
-
-    nav.nav {
-  margin: 1.5rem 0;
+/* Navbar floating bawah */
+.bottom-nav {
+  position: fixed;
+  bottom: 1rem;
+  left: 50%;
+  transform: translateX(-50%);
   display: flex;
-  flex-wrap: wrap;       
-  gap: 0.75rem;          
-  justify-content: center;
-  align-items: center;
-  padding: 0 1rem;
-}
-
-
-.tes {
-  position: relative;          
-  display: inline-flex;         
-  align-items: center;
-  justify-content: center;
-  padding: clamp(8px, 1.8vw, 12px) clamp(12px, 2.6vw, 24px);
-  color: var(--primary);
-  font-weight: 700;
-  font-size: clamp(0.9rem, 1.2vw, 1rem);
-  font-family: 'Orbitron', monospace;
-  text-decoration: none;
+  gap: 0.6rem;
+  padding: 0.6rem 1rem;
   background: var(--glass-bg);
   border: 1px solid var(--glass-border);
   border-radius: 25px;
-  cursor: pointer;
-  transition: transform .2s ease, background .2s ease, color .2s ease, box-shadow .2s ease, border-color .2s ease;
-  backdrop-filter: blur(10px);
-  overflow: hidden;            
+  backdrop-filter: blur(12px);
+  z-index: 999;
+  transition: opacity 0.5s ease, transform 0.5s ease;
 }
 
-
-.tes::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: -120%;
-  width: 120%;
-  height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.12), transparent);
-  transition: left .5s ease;
-  pointer-events: none;    
+/* tombol link */
+.bottom-nav .tes {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 8px 14px;
+  color: var(--primary);
+  font-family: 'Orbitron', monospace;
+  font-weight: 600;
+  font-size: 0.9rem;
+  text-decoration: none;
+  border-radius: 20px;
+  transition: background 0.3s, color 0.3s, transform 0.3s;
 }
 
-.tes:hover::before,
-.tes:focus::before {
-  left: 100%;
-}
-
-.tes:hover,
-.tes:focus {
-  color: var(--accent);
-  background: var(--bah);
-  border-color: var(--bah);
-  box-shadow: 0 0 20px rgba(139, 92, 246, 0.5);
+.bottom-nav .tes:hover {
+  background: var(--accent);
+  color: #fff;
   transform: translateY(-2px);
-  outline: none;
 }
 
-/* keyboard accessibility */
-.tes:focus {
-  box-shadow: 0 0 0 4px rgba(139,92,246,0.12);
+/* keadaan hidden */
+.bottom-nav.hidden {
+  opacity: 0;
+  transform: translate(-50%, 100%); /* geser ke bawah */
+  pointer-events: none;
 }
 
-/* kecilkan padding & font di layar sangat kecil jika perlu */
-@media (max-width: 420px) {
-  .nav { gap: 0.5rem; }
-  .tes {
-    padding: clamp(6px, 2.5vw, 10px) clamp(10px, 4vw, 16px);
-    border-radius: 18px;
-    font-size: 0.95rem;
-  }
-}
-
-
+    
+  
 
 
     
@@ -463,7 +434,7 @@
       Halo perkenalkan nama saya igede, saya memiliki ambisi
       menciptakan solusi digital inovatif untuk bisnis dan teknologi. Berpengalaman dalam pengembangan perangkat lunak, membangun startup, dan mengelola bisnis umkm.
     </div>
-    <nav class="nav">
+    <nav class="bottom-nav">
       <a href="#about" class="tes">About</a>
       <a href="#contact"class="tes">contact</a>
       <a href="#projects" class="tes">About</a>
@@ -565,6 +536,49 @@
     </section>
   </main>
   <script>
+
+
+    let lastScrollTop = 0;
+let hideTimeout;
+
+// ambil navbar
+const nav = document.querySelector(".bottom-nav");
+
+// fungsi sembunyiin
+function hideNav() {
+  nav.classList.add("hidden");
+}
+// fungsi munculin
+function showNav() {
+  nav.classList.remove("hidden");
+}
+
+// deteksi scroll
+window.addEventListener("scroll", () => {
+  let scrollTop = window.scrollY || document.documentElement.scrollTop;
+
+  // jika scroll ke bawah -> sembunyi
+  if (scrollTop > lastScrollTop) {
+    hideNav();
+  } else {
+    // scroll ke atas -> muncul
+    showNav();
+  }
+
+  lastScrollTop = scrollTop <= 0 ? 0 : scrollTop;
+
+  // reset timer sembunyi otomatis
+  clearTimeout(hideTimeout);
+  hideTimeout = setTimeout(() => {
+    hideNav();
+  }, 10000); // 10 detik diam
+});
+
+
+
+
+
+    
   function toggleDJ(el) {
     el.classList.toggle('active');
 
@@ -605,6 +619,7 @@
 </script>  
 </body>
 </html>
+
 
 
 
