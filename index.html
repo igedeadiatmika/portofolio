@@ -907,43 +907,38 @@ window.addEventListener("scroll", () => {
 
 
 
-
-
-
-
-
 // Testimonials
         const testimonials = [
             {
-                name: 'Sarah Johnson',
+                name: 'Darel',
                 role: 'CTO, TechCorp',
                 content: 'IGede delivered exceptional work on our platform. His technical expertise and problem-solving abilities are outstanding.',
                 rating: 5,
                 avatar: 'https://images.pexels.com/photos/774909/pexels-photo-774909.jpeg?auto=compress&cs=tinysrgb&w=150'
             },
             {
-                name: 'Michael Chen',
+                name: 'Steve',
                 role: 'Founder, StartupXYZ',
                 content: 'Working with IGede was a game-changer for our project. He brings both technical skills and creative solutions to the table.',
                 rating: 5,
                 avatar: 'https://images.pexels.com/photos/1222271/pexels-photo-1222271.jpeg?auto=compress&cs=tinysrgb&w=150'
             },
             {
-                name: 'Emily Rodriguez',
+                name: 'Agis',
                 role: 'Product Manager, InnovateLab',
                 content: 'IGede\'s attention to detail and commitment to excellence made our collaboration smooth and productive. Highly recommended!',
                 rating: 5,
                 avatar: 'https://images.pexels.com/photos/1239291/pexels-photo-1239291.jpeg?auto=compress&cs=tinysrgb&w=150'
             },
             {
-                name: 'David Kim',
+                name: 'Pak Arlen',
                 role: 'CEO, Digital Solutions',
                 content: 'A true professional who consistently delivers high-quality code and innovative solutions. IGede exceeded our expectations.',
                 rating: 5,
                 avatar: 'https://images.pexels.com/photos/1516680/pexels-photo-1516680.jpeg?auto=compress&cs=tinysrgb&w=150'
             },
             {
-                name: 'Lisa Anderson',
+                name: 'Pak Randy',
                 role: 'Lead Designer, CreativeHub',
                 content: 'IGede brings designs to life with pixel-perfect implementation. His understanding of both design and development is impressive.',
                 rating: 5,
@@ -1001,75 +996,75 @@ window.addEventListener("scroll", () => {
 
 
     // Modal Logic
-        const questions = [
-            { question: 'Apakah kamu kenal IGede?', yesNext: 1, noNext: 2 },
-            { question: 'Apakah dia baik?', yesNext: 3, noNext: 4 },
-            { question: 'Wah, senang mendengarnya! Apakah IGede itu pekerja keras?', yesNext: 5, noNext: 6 },
-            { question: 'Apakah kamu tertarik dengan karya-karyanya?', yesNext: 7, noNext: 8 },
-            { question: 'Oh begitu... Apakah kamu ingin mengenal IGede lebih baik?', yesNext: 9, noNext: 10 },
-            { question: 'Menurutmu, apakah IGede memiliki skill yang mumpuni?', yesNext: 11, noNext: 12 },
-            { question: 'Hmm, mungkin ada yang bisa diperbaiki. Apakah kamu mau memberi saran?', yesNext: 11, noNext: 12 },
-            { question: 'Luar biasa! Apakah kamu tertarik untuk berkolaborasi?', yesNext: 11, noNext: 12 },
-            { question: 'Tidak masalah! Apakah kamu suka portfolio ini?', yesNext: 11, noNext: 12 },
-            { question: 'Bagus! Silakan jelajahi portfolio ini lebih lanjut. Setuju?', yesNext: 11, noNext: 12 },
-            { question: 'Terima kasih sudah meluangkan waktu. Semoga portfolio ini bermanfaat! Oke?', yesNext: 11, noNext: 12 },
-            { question: 'Terakhir, apakah kamu akan merekomendasikan IGede ke orang lain?', yesNext: null, noNext: null },
-            { question: 'Terima kasih atas kejujurannya! Semoga portfolio ini tetap menarik. Setuju?', yesNext: null, noNext: null }
-        ];
+const questions = [
+  { question: 'Apakah kamu kenal IGede?', yesNext: 1, noNext: 2 },
+  { question: 'Apakah dia baik?', yesNext: 3, noNext: 4 },
+  { question: 'Wah, senang dengarnya! Apakah IGede itu ganteng?', yesNext: 5, noNext: 6 },
+  { question: 'Apakah kamu tertarik dengan karya-karyanya?', yesNext: 7, noNext: 8 },
+  { question: 'Oh begitu... Apakah kamu ingin mengenal IGede lebih baik?', yesNext: 9, noNext: 10 },
+  { question: 'Menurutmu, apakah IGede memiliki skill yang mumpuni?', yesNext: 11, noNext: 12 },
+  { question: 'Hmm, mungkin ada yang bisa diperbaiki. Apakah kamu mau memberi saran?', yesNext: 11, noNext: 12 },
+  { question: 'Luar biasa! Apakah kamu tertarik untuk berkolaborasi atau berteman dengan iGede?', yesNext: 11, noNext: 12 },
+  { question: 'Tidak masalah! Apakah kamu sudah follow instagramnya iGede?', yesNext: 11, noNext: 12 },
+  { question: 'Bagus! Silakan jelajahi portfolio ini lebih lanjut. Setuju?', yesNext: 11, noNext: 12 },
+  { question: 'Terima kasih sudah meluangkan waktu. Semoga ini bermanfaat! Oke?', yesNext: 11, noNext: 12 },
+  { question: 'Terakhir, apakah kamu akan menyukai IGede ?', yesNext: null, noNext: null },
+  { question: 'Terima kasih atas kejujurannya! Semoga IGede bisa tetap menarik. Setuju?', yesNext: null, noNext: null }
+];
 
-        let currentQuestion = 0;
-        let answersCount = 0;
+let currentQuestion = 0;
+let answersCount = 0;
 
-        function updateModal() {
-            document.getElementById('modalTitle').textContent = `Pertanyaan ${answersCount + 1} dari 6`;
-            document.getElementById('modalQuestion').textContent = questions[currentQuestion].question;
-            document.getElementById('progressFill').style.width = `${(answersCount / 6) * 100}%`;
-        }
+function updateModal() {
+  document.getElementById('modalTitle').textContent = Pertanyaan ${answersCount + 1} dari 6;
+  document.getElementById('modalQuestion').textContent = questions[currentQuestion].question;
+  document.getElementById('progressFill').style.width = ${(answersCount / 6) * 100}%;
+}
 
-        function answerQuestion(answer) {
-            const nextIndex = answer === 'yes' ? questions[currentQuestion].yesNext : questions[currentQuestion].noNext;
-            answersCount++;
+function answerQuestion(answer) {
+  const nextIndex = answer === 'yes' ? questions[currentQuestion].yesNext : questions[currentQuestion].noNext;
+  answersCount++;
 
-            if (nextIndex === null || answersCount >= 6) {
-                showComplete();
-            } else {
-                currentQuestion = nextIndex;
-                updateModal();
-            }
-        }
+  if (nextIndex === null || answersCount >= 6) {
+    showComplete();
+  } else {
+    currentQuestion = nextIndex;
+    updateModal();
+  }
+}
 
-        function showComplete() {
-            document.getElementById('modalBody').innerHTML = `
-                <div class="modal-complete">
-                    <div class="check-icon">
-                        <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3">
-                            <polyline points="20 6 9 17 4 12"></polyline>
-                        </svg>
-                    </div>
-                    <h3>Terima Kasih!</h3>
-                    <p>Selamat menjelajahi portfolio ini</p>
-                </div>
-            `;
-            setTimeout(() => {
-                closeModal();
-            }, 2500);
-        }
+function showComplete() {
+  document.getElementById('modalBody').innerHTML = `
+    <div class="modal-complete">
+      <div class="check-icon">
+        <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3">
+          <polyline points="20 6 9 17 4 12"></polyline>
+        </svg>
+      </div>
+      <h3>Terima Kasih!</h3>
+      <p>Selamat menjelajahi portfolio ini</p>
+    </div>
+  `;
 
-        function closeModal() {
-            document.getElementById('modal').classList.add('hidden');
-        }
+  localStorage.setItem("quizShown", "true");
 
-        updateModal();
+  setTimeout(() => {
+    closeModal();
+  }, 2500);
+}
 
-        // Navbar scroll effect
-        window.addEventListener('scroll', () => {
-            const navbar = document.getElementById('navbar');
-            if (window.scrollY > 50) {
-                navbar.classList.add('scrolled');
-            } else {
-                navbar.classList.remove('scrolled');
-            }
-        });
+function closeModal() {
+  document.getElementById('modal').classList.add('hidden');
+}
+
+if (!localStorage.getItem("quizShown")) {
+  // kalau belum pernah → tampilkan modal
+  document.getElementById('modal').classList.remove('hidden');
+  updateModal();
+} else {
+  
+  closeModal();
+}
 
 
     
@@ -1085,6 +1080,7 @@ window.addEventListener("scroll", () => {
 </script>  
 </body>
 </html>
+
 
 
 
