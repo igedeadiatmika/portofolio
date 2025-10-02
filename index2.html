@@ -1,141 +1,666 @@
+<!-- index.html -->
 <!DOCTYPE html>
 <html lang="id">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Kedai Fauget - Dark Mode</title>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>IGede — Portfolio App</title>
+  <!-- Tailwind CDN untuk cepat -->
   <script src="https://cdn.tailwindcss.com"></script>
   <style>
-    /* Glass effect */
-    .glass {
-      background: rgba(20, 20, 20, 0.6);
+    /* --- Basic theme tokens (we switch root classes in JS) --- */
+    :root {
+      --bg: #0b0b0c;
+      --card: rgba(255,255,255,0.04);
+      --text: #eaeaea;
+      --muted: #bfbfbf;
+      --accent: #ff5252;
+      --glass: rgba(255,255,255,0.06);
+    }
+    .theme-blue { --accent: #3b82f6; --glass: rgba(255,255,255,0.04); }
+    .theme-red  { --accent: #ef4444; --glass: rgba(255,255,255,0.06); }
+
+    body {
+      background: linear-gradient(180deg, #060606 0%, var(--bg) 100%);
+      color: var(--text);
+      -webkit-font-smoothing:antialiased;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+    }
+
+    /* Floating search bar */
+    .searchbar {
+      position: fixed;
+      top: 14px; left: 50%;
+      transform: translateX(-50%);
+      z-index: 60;
+      width: 92%;
+      max-width: 900px;
+      background: var(--glass);
+      backdrop-filter: blur(6px);
+      border-radius: 14px;
+      padding: 10px 12px;
+      box-shadow: 0 6px 20px rgba(0,0,0,0.6);
+      border: 1px solid rgba(255,255,255,0.03);
+    }
+    .searchbar input { background: transparent; border: none; outline: none; color: var(--text); width:100%; font-size: 14px; }
+
+    /* Bottom navbar (mobile) glass */
+    .bottom-nav {
+      position: fixed;
+      bottom: 14px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 94%;
+      max-width: 820px;
+      border-radius: 999px;
+      background: var(--glass);
       backdrop-filter: blur(10px);
+      padding: 8px 10px;
+      display: flex; justify-content: space-around; align-items: center;
+      z-index: 50;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.6);
+      transition: transform .35s ease, opacity .35s ease;
     }
-    /* Animasi muncul/hilang */
-    .navbar-hidden {
-      transform: translateY(100%);
-      transition: transform 0.4s ease-in-out;
+    .bottom-nav.hidden { transform: translateX(-50%) translateY(80%); opacity:0; pointer-events:none; }
+
+    /* Desktop: left navbar */
+    @media(min-width: 1024px){
+      .bottom-nav { position: static; transform: none; width: 220px; height: 100vh; border-radius: 0; flex-direction: column; padding-top: 36px; }
+      .app-grid { display: grid; grid-template-columns: 220px 1fr 300px; gap: 16px; height: 100vh; }
+      .searchbar { top: 20px; left: calc(220px + 50% - 110px); transform: translateX(-50%); }
+      .bottom-nav.mobile-only { display: none; }
     }
-    .navbar-show {
-      transform: translateY(0);
-      transition: transform 0.4s ease-in-out;
-    }
+
+    /* Content area */
+    .main-area { padding: 86px 18px 120px; } /* leave room for floating nav */
+    @media(min-width:1024px){ .main-area { padding: 36px; overflow:auto; height: calc(100vh - 48px); } }
+
+    /* Cards */
+    .card { background: var(--card); border-radius: 12px; padding: 12px; border: 1px solid rgba(255,255,255,0.03); }
+
+    /* Timeline lock */
+    .lock-btn { width: 84px; height: 84px; border-radius: 999px; display:flex; justify-content:center; align-items:center; font-size:28px; background: linear-gradient(135deg, rgba(255,255,255,0.03), rgba(255,255,255,0.01)); border:1px solid rgba(255,255,255,0.04); color: var(--accent); cursor:pointer; }
+
+    /* Spotify-like list */
+    .track-card { display:flex; gap:10px; align-items:center; padding:8px; border-radius:10px; transition: background .18s ease; }
+    .track-card:hover { background: rgba(255,255,255,0.02); }
+    .cover { width:64px; height:64px; border-radius:8px; object-fit:cover; }
+
+    /* Horizontal scroll helpers */
+    .hscroll { display:flex; gap:12px; overflow-x:auto; padding-bottom:6px; }
+    .hscroll::-webkit-scrollbar { height:8px; }
+    .hscroll::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.06); border-radius:999px; }
+
+    /* Gallery grid */
+    .gallery-grid { display:grid; grid-template-columns: repeat(2, 1fr); gap:8px; }
+    @media(min-width:1024px){ .gallery-grid { grid-template-columns: repeat(5, 1fr); } }
+
+    /* Modal */
+    .modal { position: fixed; inset:0; display:flex; align-items:center; justify-content:center; background: rgba(0,0,0,0.6); z-index:80; opacity:0; pointer-events:none; transition:opacity .2s ease; }
+    .modal.show { opacity:1; pointer-events:auto; }
+    .modal-box { width:90%; max-width:420px; background: #111; padding:18px; border-radius:12px; border:1px solid rgba(255,255,255,0.03); }
+
+    /* small helpers */
+    .muted { color:var(--muted); font-size:13px; }
+    .accent { color: var(--accent); }
+    .btn { background: linear-gradient(90deg, var(--accent), rgba(255,255,255,0.06)); padding:8px 12px; border-radius:10px; border:none; color:#fff; cursor:pointer; }
   </style>
 </head>
-<body class="bg-gray-900 text-gray-100">
+<body class="theme-blue"> <!-- default theme-blue; JS will toggle theme-blue / theme-red / (none -> dark) -->
 
-  <!-- Header -->
-  <header class="p-4 flex justify-between items-center bg-gray-800">
-    <h1 class="text-lg font-bold">Kedai Fauget</h1>
-    <input id="searchBar" type="text" placeholder="Cari menu..." class="px-3 py-1 rounded bg-gray-700 text-sm">
-  </header>
+<!-- ================= FLOATING SEARCHBAR ================= -->
+<div class="searchbar shadow-lg">
+  <input id="search" type="search" placeholder="Cari musik, foto, motivasi..." />
+</div>
 
-  <!-- Konten -->
-  <main id="content" class="p-4 space-y-6">
-    <!-- Default konten (Dasbor) -->
-    <section id="dasbor" class="content-section">
-      <h2 class="text-xl font-semibold mb-3">Menu</h2>
-      <div id="menuList" class="grid grid-cols-2 gap-4">
-        <div class="bg-gray-800 rounded-lg p-3">
-          <img src="https://source.unsplash.com/400x300/?soup" class="rounded-lg mb-2 h-24 w-full object-cover" alt="Rawon">
-          <h3>Rawon Malang</h3>
-          <p class="text-sm text-gray-400">Rp 23.000</p>
+<!-- ================= APP LAYOUT ================= -->
+<div class="app-container">
+  <div class="app-grid">
+
+    <!-- LEFT NAV (desktop) OR BOTTOM NAV (mobile) -->
+    <nav id="nav" class="bottom-nav mobile-only">
+      <button class="nav-btn" data-target="dasbor">🏷️<div class="text-xs muted">Dasbor</div></button>
+      <button class="nav-btn" data-target="beranda">🎧<div class="text-xs muted">Beranda</div></button>
+      <button class="nav-btn" data-target="profil">👤<div class="text-xs muted">Profil</div></button>
+      <button class="nav-btn" data-target="pengaturan">⚙️<div class="text-xs muted">Pengaturan</div></button>
+    </nav>
+
+    <!-- MAIN -->
+    <main class="main-area overflow-auto" id="main">
+      <!-- DASBOR -->
+      <section id="dasbor" class="section">
+        <h1 class="text-2xl font-semibold mb-2">Dasbor — Sistem IGede</h1>
+        <p class="muted mb-4">Pengenalan: minat, bakat, foto kenangan, dan "software berangkat waktu".</p>
+
+        <!-- timeline horizontal -->
+        <div class="card mb-4">
+          <div class="hscroll" id="timelineContainer">
+            <!-- timeline items will be injected -->
+          </div>
         </div>
-        <div class="bg-gray-800 rounded-lg p-3">
-          <img src="https://source.unsplash.com/400x300/?rice" class="rounded-lg mb-2 h-24 w-full object-cover" alt="Gudeg">
-          <h3>Nasi Gudeg</h3>
-          <p class="text-sm text-gray-400">Rp 16.000</p>
+
+        <!-- SOFTWARE BERANGKAT WAKTU + GEMBOK -->
+        <div class="card flex flex-col items-center text-center">
+          <div style="position:relative">
+            <div style="position:absolute; left:50%; transform:translateX(-50%); top:-46px;">
+              <button id="lockOpen" class="lock-btn" title="Klik untuk buka rahasia">🔐</button>
+            </div>
+            <div style="height:60px"></div>
+          </div>
+          <h3 class="mt-6">Software Berangkat Waktu</h3>
+          <p class="muted mb-2">Scroll ke bawah untuk melihat</p>
+          <div id="softwareList" class="hscroll mt-2"></div>
+
+          <!-- secret content (hidden until unlock) -->
+          <div id="secret" class="mt-4 hidden">
+            <div class="card">
+              <h4>Rahasia Terbuka</h4>
+              <p class="muted">Cerita & foto yang dilindungi.</p>
+              <div id="secretMedia" class="gallery-grid mt-2"></div>
+            </div>
+          </div>
         </div>
-        <div class="bg-gray-800 rounded-lg p-3">
-          <img src="https://source.unsplash.com/400x300/?tofu" class="rounded-lg mb-2 h-24 w-full object-cover" alt="Mendoan">
-          <h3>Tempe Mendoan</h3>
-          <p class="text-sm text-gray-400">Rp 5.000</p>
+      </section>
+
+      <!-- BERANDA -->
+      <section id="beranda" class="section hidden">
+        <div class="flex justify-between items-center mb-4">
+          <h1 class="text-2xl font-semibold">Beranda — Musik & Galeri</h1>
+          <div class="muted text-sm">Semua konten tersusun horizontal di mobile; 5 kolom di desktop</div>
         </div>
-        <div class="bg-gray-800 rounded-lg p-3">
-          <img src="https://source.unsplash.com/400x300/?chicken" class="rounded-lg mb-2 h-24 w-full object-cover" alt="Ayam Kalasan">
-          <h3>Ayam Kalasan</h3>
-          <p class="text-sm text-gray-400">Rp 27.000</p>
+
+        <!-- Music player area -->
+        <div class="card mb-4">
+          <div class="flex justify-between items-center mb-3">
+            <div>
+              <div class="muted">Now Playing</div>
+              <div id="nowTitle" class="text-lg font-medium">Tidak ada</div>
+              <div id="nowArtist" class="muted text-sm">—</div>
+            </div>
+            <div>
+              <audio id="audioPlayer" controls preload="none"></audio>
+            </div>
+          </div>
+
+          <div class="hscroll" id="tracksContainer">
+            <!-- tracks injected here -->
+          </div>
+        </div>
+
+        <!-- Gallery -->
+        <div class="card mb-4">
+          <div class="flex justify-between items-center mb-3">
+            <h3>Galeri Kenangan</h3>
+            <div class="muted text-sm">Upload foto/video & tampil kronologis</div>
+          </div>
+          <div id="gallery" class="gallery-grid"></div>
+
+          <!-- Upload controls -->
+          <div class="mt-3 flex gap-2">
+            <input id="fileInput" type="file" accept="image/,video/" />
+            <button class="btn" id="uploadBtn">Upload</button>
+          </div>
+        </div>
+
+        <!-- Motivation wall (Firestore) -->
+        <div class="card">
+          <div class="flex justify-between items-center mb-3">
+            <h3>Kata-Kata Motivasi</h3>
+            <div class="muted text-sm">Tambahkan motivasi — tersimpan di Firebase</div>
+          </div>
+
+          <div class="space-y-2 mb-3" id="motivationsList"></div>
+
+          <div class="flex gap-2">
+            <input id="motivationInput" class="w-full rounded px-3 py-2 bg-transparent border border-white/5" placeholder="Tulis motivasi..." />
+            <button id="addMotivationBtn" class="btn">Tambah</button>
+          </div>
+        </div>
+
+      </section>
+
+      <!-- PROFIL -->
+      <section id="profil" class="section hidden">
+        <h1 class="text-2xl font-semibold mb-2">Profil IGede</h1>
+        <div class="card">
+          <div class="flex gap-4 items-center">
+            <div style="width:82px;height:82px;border-radius:999px;overflow:hidden">
+              <img id="profilePic" src="https://source.unsplash.com/80x80/?person" alt="profile" style="width:100%;height:100%;object-fit:cover" />
+            </div>
+            <div>
+              <div class="text-lg font-medium">Ketut Susilo</div>
+              <div class="muted">Bali, Indonesia • Programmer • Musician</div>
+            </div>
+          </div>
+
+          <div class="mt-4 grid grid-cols-1 md:grid-cols-2 gap-3">
+            <div class="card">
+              <h4>Hobi & Minat</h4>
+              <p class="muted">Musik, coding, fotografi, UI/UX</p>
+            </div>
+            <div class="card">
+              <h4>Milestone</h4>
+              <ul class="muted">
+                <li>2022 — Pertama kali rilis musik</li>
+                <li>2023 — Aplikasi portfolio</li>
+                <li>2024 — Belajar backend & Firebase</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- PENGATURAN -->
+      <section id="pengaturan" class="section hidden">
+        <h1 class="text-2xl font-semibold mb-2">Pengaturan</h1>
+        <div class="card">
+          <h4>Theme</h4>
+          <div class="flex gap-2 mt-2">
+            <button class="btn" onclick="applyTheme('')">Dark</button>
+            <button class="btn" onclick="applyTheme('theme-blue')">Blue</button>
+            <button class="btn" onclick="applyTheme('theme-red')">Red</button>
+          </div>
+
+          <div class="mt-4">
+            <h4>Firebase</h4>
+            <div class="muted text-sm">Pastikan kamu sudah memasukkan config Firebase di file ini (lihat instruksi di bawah)</div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <!-- RIGHT PANEL (desktop only) -->
+    <aside class="hidden lg:block p-4">
+      <div class="card mb-3">
+        <h3>Pesanan Terkini (opsional)</h3>
+        <div class="muted">Konten samping — bisa dipakai untuk quick links / tracklist</div>
+      </div>
+      <div class="card">
+        <h4>Quick Controls</h4>
+        <div class="mt-2 flex flex-col gap-2">
+          <button class="btn" onclick="document.getElementById('audioPlayer').play()">Play</button>
+          <button class="btn" onclick="document.getElementById('audioPlayer').pause()">Pause</button>
         </div>
       </div>
-    </section>
+    </aside>
 
-    <!-- Beranda -->
-    <section id="beranda" class="content-section hidden">
-      <h2 class="text-xl font-semibold">Beranda</h2>
-      <p>Selamat datang di Kedai Fauget 🍴</p>
-    </section>
+  </div> <!-- end app-grid -->
+</div>
 
-    <!-- Profil -->
-    <section id="profil" class="content-section hidden">
-      <h2 class="text-xl font-semibold">Profil</h2>
-      <p>Nama: Ketut Susilo<br>Lokasi: Bali, Indonesia</p>
-    </section>
+<!-- ================= MODAL PASSWORD ================= -->
+<div id="modal" class="modal">
+  <div class="modal-box">
+    <h3 class="text-lg font-semibold mb-2">Masukkan Sandi</h3>
+    <input id="passwordField" class="w-full rounded px-3 py-2 bg-transparent border border-white/5" placeholder="••••••" type="password" />
+    <div class="flex justify-end gap-2 mt-3">
+      <button class="btn" id="modalOpenBtn">Buka</button>
+      <button class="btn" onclick="closeModal()" style="background:rgba(255,255,255,0.04)">Batal</button>
+    </div>
+  </div>
+</div>
 
-    <!-- Pengaturan -->
-    <section id="pengaturan" class="content-section hidden">
-      <h2 class="text-xl font-semibold">Pengaturan</h2>
-      <p>Mode: Dark Mode aktif 🌙</p>
-    </section>
-  </main>
+<!-- ================= SCRIPTS ================= -->
+<!-- Firebase (compat approach for easier copy/paste) -->
+<script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-firestore-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-storage-compat.js"></script>
+<script>
+/* ==========================
+  IMPORTANT:
+  1) PASTE YOUR FIREBASE CONFIG BELOW (replace the object)
+  2) Make sure Firestore & Storage are enabled in your Firebase console
+  3) Set Firestore rules appropriately during dev (allow only authenticated or limited writes)
+========================== */
+const firebaseConfig = {
+  // <-- PASTE YOUR FIREBASE CONFIG OBJECT HERE --
+  // apiKey: "YOUR_API_KEY",
+  // authDomain: "PROJECT.firebaseapp.com",
+  // projectId: "PROJECT",
+  // storageBucket: "PROJECT.appspot.com",
+  // messagingSenderId: "....",
+  // appId: "1:...:web:..."
+};
 
-  <!-- Navbar Floating Bottom -->
-  <nav id="bottomNav" class="fixed bottom-3 left-1/2 -translate-x-1/2 w-[90%] glass rounded-2xl p-2 flex justify-around items-center shadow-lg navbar-show">
-    <button onclick="showSection('dasbor')" class="flex flex-col items-center">
-      <span>📊</span><span class="text-xs">Dasbor</span>
-    </button>
-    <button onclick="showSection('beranda')" class="flex flex-col items-center">
-      <span>🏠</span><span class="text-xs">Beranda</span>
-    </button>
-    <button onclick="showSection('profil')" class="flex flex-col items-center">
-      <span>👤</span><span class="text-xs">Profil</span>
-    </button>
-    <button onclick="showSection('pengaturan')" class="flex flex-col items-center">
-      <span>⚙️</span><span class="text-xs">Pengaturan</span>
-    </button>
-  </nav>
+let fbApp, db, storage;
+if (firebaseConfig && firebaseConfig.apiKey) {
+  fbApp = firebase.initializeApp(firebaseConfig);
+  db = firebase.firestore();
+  storage = firebase.storage();
+} else {
+  console.warn("Firebase config belum diisi — fitur penyimpanan & motivasi tidak aktif.");
+}
 
-  <script>
-    // Ganti section
-    function showSection(id) {
-      document.querySelectorAll('.content-section').forEach(sec => sec.classList.add('hidden'));
-      document.getElementById(id).classList.remove('hidden');
+/* ==========================
+   Helper: SHA-256 hash (hex) for password check
+   We precompute hash('igede11') and compare hashes.
+   Hash of "igede11" (sha256 hex): 1f19359495c890499ec42dbc73923b936c2759254404ed3789a437a963ea6817
+========================== */
+const SECRET_HASH = '1f19359495c890499ec42dbc73923b936c2759254404ed3789a437a963ea6817';
+
+async function sha256hex(message) {
+  const enc = new TextEncoder();
+  const data = enc.encode(message);
+  const hashBuffer = await crypto.subtle.digest('SHA-256', data);
+  const hashArray = Array.from(new Uint8Array(hashBuffer));
+  return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+}
+
+/* ==========================
+   App logic: navigation, navbar hide/show, search, theme
+========================== */
+
+const sections = document.querySelectorAll('.section');
+const nav = document.getElementById('nav');
+const navBtns = document.querySelectorAll('.nav-btn');
+const main = document.getElementById('main');
+const searchInput = document.getElementById('search');
+
+function showSection(id) {
+  sections.forEach(s => s.classList.add('hidden'));
+  document.getElementById(id).classList.remove('hidden');
+  // scroll top for better UX
+  main.scrollTop = 0;
+}
+navBtns.forEach(b => b.addEventListener('click', () => showSection(b.dataset.target)));
+
+// default show
+showSection('dasbor');
+
+// Navbar hide / show on scroll + idle timeout
+let lastScroll = 0;
+let idleTimer = null;
+const bottomNav = document.getElementById('nav');
+window.addEventListener('scroll', () => {
+  clearTimeout(idleTimer);
+  const curr = window.scrollY;
+  if (curr > lastScroll) {
+    bottomNav.classList.add('hidden');
+  } else {
+    bottomNav.classList.remove('hidden');
+  }
+  lastScroll = curr <= 0 ? 0 : curr;
+  idleTimer = setTimeout(() => bottomNav.classList.add('hidden'), 10000);
+});
+
+// mobile touch: when user taps, show nav
+document.addEventListener('touchstart', () => bottomNav.classList.remove('hidden'));
+
+// floating search filter behavior (search across tracks, gallery captions, motivations)
+searchInput.addEventListener('input', () => {
+  const q = searchInput.value.trim().toLowerCase();
+  // filter tracks
+  document.querySelectorAll('.track-card').forEach(card => {
+    const text = card.dataset.search || "";
+    card.style.display = text.includes(q) ? '' : 'none';
+  });
+  // filter gallery by caption
+  document.querySelectorAll('.gallery-item').forEach(it => {
+    const text = it.dataset.caption || "";
+    it.style.display = text.includes(q) ? '' : 'none';
+  });
+  // filter motivations
+  document.querySelectorAll('.mot-item').forEach(it => {
+    const text = it.dataset.text || "";
+    it.style.display = text.includes(q) ? '' : 'none';
+  });
+});
+
+/* ==========================
+   Dasbor: populate timeline & software list
+========================== */
+const timelineData = [
+  { title: 'Minat & Bakat', desc: 'Musik, coding, desain' },
+  { title: 'Kata Motivasi', desc: 'Belajar tiap hari' },
+  { title: 'Foto Kenangan', desc: 'Perjalanan & konser' },
+  { title: 'Software', desc: 'Project timeline' },
+];
+
+const softwareData = [
+  { year: '2019', title: 'Project A', desc:'Website sederhana' },
+  { year: '2020', title: 'Project B', desc:'Mobile app' },
+  { year: '2022', title: 'Audio Release', desc:'Single pertama' },
+  { year: '2024', title: 'Portfolio', desc:'IGede portfolio' },
+];
+
+function renderTimeline() {
+  const container = document.getElementById('timelineContainer');
+  container.innerHTML = '';
+  timelineData.forEach(it => {
+    const el = document.createElement('div');
+    el.className = 'card';
+    el.innerHTML = <strong>${it.title}</strong><div class="muted text-sm mt-1">${it.desc}</div>;
+    container.appendChild(el);
+  });
+}
+function renderSoftware() {
+  const c = document.getElementById('softwareList');
+  c.innerHTML = '';
+  softwareData.forEach(s => {
+    const el = document.createElement('div');
+    el.className = 'card';
+    el.style.minWidth = '180px';
+    el.innerHTML = <div class="text-sm muted">${s.year}</div><div class="font-medium">${s.title}</div><div class="muted text-sm">${s.desc}</div>;
+    c.appendChild(el);
+  });
+}
+renderTimeline();
+renderSoftware();
+
+/* ==========================
+   Lock modal
+========================== */
+const modal = document.getElementById('modal');
+const lockOpen = document.getElementById('lockOpen');
+const modalOpenBtn = document.getElementById('modalOpenBtn');
+const passwordField = document.getElementById('passwordField');
+const secretBox = document.getElementById('secret');
+
+lockOpen.addEventListener('click', () => modal.classList.add('show'));
+function closeModal(){ modal.classList.remove('show'); passwordField.value=''; }
+modalOpenBtn.addEventListener('click', async () => {
+  const pw = passwordField.value || '';
+  const h = await sha256hex(pw);
+  if (h === SECRET_HASH) {
+    modal.classList.remove('show');
+    secretBox.classList.remove('hidden');
+    loadSecretMedia(); // populate secret images from Firestore (if available)
+  } else {
+    alert('Sandi salah!');
+  }
+});
+
+/* ==========================
+   Firebase-driven features:
+   - Tracks (collection: 'tracks') fields: { title, artist, coverUrl, audioUrl }
+   - Gallery (collection: 'gallery') fields: { url, caption, timestamp }
+   - Motivations (collection: 'motivations') fields: { text, ts }
+========================== */
+
+async function loadTracks() {
+  const container = document.getElementById('tracksContainer');
+  container.innerHTML = '';
+  if (!db) {
+    // demo local tracks
+    const demo = [
+      { title:'Track One', artist:'IGede', cover:'https://source.unsplash.com/200x200/?music,cover', audio: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3' },
+      { title:'Track Two', artist:'IGede', cover:'https://source.unsplash.com/200x200/?guitar', audio: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3' },
+    ];
+    demo.forEach(t => renderTrackCard(t));
+    return;
+  }
+  const snapshot = await db.collection('tracks').orderBy('title').get();
+  snapshot.forEach(doc => {
+    const data = doc.data();
+    renderTrackCard({ title: data.title, artist: data.artist, cover: data.coverUrl, audio: data.audioUrl });
+  });
+}
+
+function renderTrackCard(t) {
+  const container = document.getElementById('tracksContainer');
+  const el = document.createElement('div');
+  el.className = 'track-card card';
+  el.dataset.search = ${t.title} ${t.artist}.toLowerCase();
+  el.innerHTML = `
+    <img src="${t.cover}" class="cover" />
+    <div style="flex:1">
+      <div class="font-medium">${t.title}</div>
+      <div class="muted text-sm">${t.artist}</div>
+    </div>
+    <div>
+      <button class="btn play-btn">Play</button>
+    </div>
+  `;
+  el.querySelector('.play-btn').addEventListener('click', () => {
+    const player = document.getElementById('audioPlayer');
+    player.src = t.audio;
+    player.play();
+    document.getElementById('nowTitle').textContent = t.title;
+    document.getElementById('nowArtist').textContent = t.artist;
+  });
+  container.appendChild(el);
+}
+
+/* Gallery load + upload */
+async function loadGallery() {
+  const gallery = document.getElementById('gallery');
+  gallery.innerHTML = '';
+  if (!db) {
+    // demo
+    for (let i=0;i<6;i++) {
+      const img = document.createElement('img');
+      img.src = https://source.unsplash.com/400x400/?memories,${i};
+      img.className = 'w-full h-40 object-cover rounded gallery-item';
+      gallery.appendChild(img);
     }
+    return;
+  }
+  const snapshot = await db.collection('gallery').orderBy('timestamp','desc').get();
+  snapshot.forEach(doc => {
+    const data = doc.data();
+    const wrapper = document.createElement('div');
+    wrapper.className = 'gallery-item card';
+    wrapper.dataset.caption = (data.caption||'').toLowerCase();
+    wrapper.innerHTML = `
+      ${data.url.match(/\.(mp4|webm|ogg)$/) ? <video src="${data.url}" controls class="w-full h-40 object-cover rounded"></video> : <img src="${data.url}" class="w-full h-40 object-cover rounded" />}
+      <div class="muted text-sm mt-1">${data.caption || ''}</div>
+    `;
+    gallery.appendChild(wrapper);
+  });
+}
 
-    // Navbar hide/show saat scroll
-    let lastScrollTop = 0;
-    let hideTimeout;
-    const navbar = document.getElementById("bottomNav");
+document.getElementById('uploadBtn').addEventListener('click', async () => {
+  const fileInput = document.getElementById('fileInput');
+  const file = fileInput.files[0];
+  if (!file) return alert('Pilih file dulu');
+  if (!storage || !db) return alert('Firebase belum disiapkan');
+  const path = gallery/${Date.now()}_${file.name};
+  const ref = storage.ref(path);
+  const task = ref.put(file);
+  task.on('state_changed', null, err => alert(err.message), async () => {
+    const url = await ref.getDownloadURL();
+    await db.collection('gallery').add({ url, caption: file.name, timestamp: firebase.firestore.FieldValue.serverTimestamp() });
+    fileInput.value = '';
+    await loadGallery();
+  });
+});
 
-    window.addEventListener("scroll", () => {
-      clearTimeout(hideTimeout);
-      let st = window.pageYOffset || document.documentElement.scrollTop;
-      if (st > lastScrollTop) {
-        // scroll ke bawah → hilang
-        navbar.classList.remove("navbar-show");
-        navbar.classList.add("navbar-hidden");
-      } else {
-        // scroll ke atas → muncul
-        navbar.classList.remove("navbar-hidden");
-        navbar.classList.add("navbar-show");
-      }
-      lastScrollTop = st <= 0 ? 0 : st;
-
-      // auto hide setelah 10 detik diam
-      hideTimeout = setTimeout(() => {
-        navbar.classList.remove("navbar-show");
-        navbar.classList.add("navbar-hidden");
-      }, 10000);
+/* Motivations */
+async function loadMotivations() {
+  const list = document.getElementById('motivationsList');
+  list.innerHTML = '';
+  if (!db) {
+    // demo static
+    ['Tetap konsisten','Belajar tiap hari'].forEach(t => {
+      const el = document.createElement('div'); el.className='card mot-item'; el.dataset.text=t.toLowerCase(); el.innerHTML=<div>${t}</div>;
+      list.appendChild(el);
     });
+    return;
+  }
+  const snapshot = await db.collection('motivations').orderBy('ts','desc').get();
+  snapshot.forEach(doc => {
+    const d = doc.data();
+    const el = document.createElement('div');
+    el.className = 'card mot-item';
+    el.dataset.text = (d.text||'').toLowerCase();
+    el.innerHTML = <div>${d.text}</div><div class="muted text-sm">${d.ts ? new Date(d.ts.seconds*1000).toLocaleString() : ''}</div>;
+    list.appendChild(el);
+  });
+}
+document.getElementById('addMotivationBtn').addEventListener('click', async () => {
+  const text = document.getElementById('motivationInput').value.trim();
+  if (!text) return alert('Tulis dulu motivasi');
+  if (!db) return alert('Firebase belum diisi');
+  await db.collection('motivations').add({ text, ts: firebase.firestore.FieldValue.serverTimestamp() });
+  document.getElementById('motivationInput').value = '';
+  loadMotivations();
+});
 
-    // Search filter
-    const searchBar = document.getElementById("searchBar");
-    searchBar.addEventListener("input", function () {
-      const value = this.value.toLowerCase();
-      document.querySelectorAll("#menuList div").forEach(item => {
-        const text = item.innerText.toLowerCase();
-        item.style.display = text.includes(value) ? "" : "none";
-      });
-    });
-  </script>
+/* secret media (activated when lock opened): load gallery items flagged secret=true */
+async function loadSecretMedia() {
+  const container = document.getElementById('secretMedia');
+  container.innerHTML = '';
+  if (!db) {
+    // demo secrets
+    for (let i=0;i<3;i++){
+      const img = document.createElement('img');
+      img.src = https://source.unsplash.com/400x400/?secret,${i};
+      img.className = 'w-full h-32 object-cover rounded';
+      container.appendChild(img);
+    }
+    return;
+  }
+  const snapshot = await db.collection('gallery').where('secret','==',true).orderBy('timestamp','desc').get();
+  snapshot.forEach(doc => {
+    const d = doc.data();
+    const el = document.createElement('div');
+    el.innerHTML = ${d.url.match(/\.(mp4|webm|ogg)$/) ? `<video src="${d.url}" controls class="w-full h-32 object-cover rounded"></video> : <img src="${d.url}" class="w-full h-32 object-cover rounded" />}`;
+    container.appendChild(el);
+  });
+}
+
+/* load all firebase-driven content if configured */
+async function bootstrapData() {
+  await loadTracks();
+  await loadGallery();
+  await loadMotivations();
+}
+bootstrapData();
+
+/* ==========================
+   UTIL: theme apply
+========================== */
+function applyTheme(cname) {
+  document.body.classList.remove('theme-blue','theme-red');
+  if (cname) document.body.classList.add(cname);
+}
+
+/* ==========================
+   Initial: render demo content where firebase not provided
+========================== */
+if (!db) {
+  // Render demo track cards and gallery in client side (already handled in loaders)
+}
+
+/* ==========================
+   Instructions for you (what to change)
+=========================
+1) Paste your Firebase config object into firebaseConfig above.
+   - You can find it in Firebase Console -> Project Settings -> SDK setup.
+2) In Firebase Console:
+   - Enable Firestore (create database in production or test mode).
+   - Enable Storage.
+   - (Optional) Enable Authentication if you want secure per-user data.
+3) Firestore collections used:
+   - 'tracks' documents: { title, artist, coverUrl, audioUrl }
+   - 'gallery' documents: { url, caption, timestamp: serverTimestamp(), secret: boolean(optional) }
+   - 'motivations' documents: { text, ts: serverTimestamp() }
+4) Security & rules:
+   - For development you can use permissive rules, but before publishing set rules to restrict writes (auth-based).
+   - Example (simple): allow read: if true; allow write: if request.auth != null
+5) To mark secret gallery items (only viewable after entering password):
+   - When uploading via admin console or your backend, set field secret=true for that doc.
+6) Customize UI text, images, and static arrays (timelineData, softwareData).
+========================== */
+</script>
 </body>
 </html>
