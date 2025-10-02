@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Kedai Fauget - Portfolio</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <script src="https://unpkg.com/feather-icons"></script>
+</head>
+<body class="bg-gray-100 font-sans">
+
+  <!-- Container utama -->
+  <div class="flex h-screen">
+
+    <!-- Sidebar -->
+    <aside class="w-64 bg-gray-900 text-white flex flex-col p-4">
+      <h1 class="text-2xl font-bold mb-8 flex items-center">
+        <i data-feather="coffee" class="mr-2"></i> Kedai Fauget
+      </h1>
+      <nav class="flex flex-col space-y-4">
+        <a href="#" class="flex items-center p-2 rounded hover:bg-gray-700">
+          <i data-feather="home" class="mr-2"></i> Dasbor
+        </a>
+        <a href="#" class="flex items-center p-2 rounded hover:bg-gray-700">
+          <i data-feather="grid" class="mr-2"></i> Beranda
+        </a>
+        <a href="#" class="flex items-center p-2 rounded hover:bg-gray-700">
+          <i data-feather="user" class="mr-2"></i> Profil
+        </a>
+        <a href="#" class="flex items-center p-2 rounded hover:bg-gray-700">
+          <i data-feather="settings" class="mr-2"></i> Pengaturan
+        </a>
+        <a href="#" class="flex items-center p-2 rounded hover:bg-gray-700">
+          <i data-feather="shopping-cart" class="mr-2"></i> Pesanan
+        </a>
+      </nav>
+      <div class="mt-auto">
+        <a href="#" class="flex items-center p-2 rounded hover:bg-red-700 bg-red-600">
+          <i data-feather="log-out" class="mr-2"></i> Logout
+        </a>
+      </div>
+    </aside>
+
+    <!-- Konten Utama -->
+    <main class="flex-1 flex flex-col">
+      <!-- Header -->
+      <header class="p-4 bg-white shadow flex justify-between items-center">
+        <input type="text" placeholder="Cari..." class="border rounded px-4 py-2 w-1/3">
+        <div class="flex items-center space-x-4">
+          <img src="https://via.placeholder.com/40" alt="User" class="rounded-full w-10 h-10">
+          <span>Ketut Susilo</span>
+        </div>
+      </header>
+
+      <!-- Grid Menu -->
+      <div class="p-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 overflow-y-auto">
+        <!-- Card Menu -->
+        <div class="bg-white shadow rounded-xl overflow-hidden hover:shadow-xl transition">
+          <img src="https://source.unsplash.com/400x300/?food" alt="Rawon" class="w-full h-40 object-cover">
+          <div class="p-4">
+            <h2 class="font-semibold">Rawon Malang</h2>
+            <p class="text-gray-500">Rp 23.000</p>
+            <button class="mt-2 px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700">+</button>
+          </div>
+        </div>
+
+        <div class="bg-white shadow rounded-xl overflow-hidden hover:shadow-xl transition">
+          <img src="https://source.unsplash.com/400x300/?rice" alt="Nasi Gudeg" class="w-full h-40 object-cover">
+          <div class="p-4">
+            <h2 class="font-semibold">Nasi Gudeg</h2>
+            <p class="text-gray-500">Rp 16.000</p>
+            <button class="mt-2 px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700">+</button>
+          </div>
+        </div>
+
+        <div class="bg-white shadow rounded-xl overflow-hidden hover:shadow-xl transition">
+          <img src="https://source.unsplash.com/400x300/?tofu" alt="Tempe Mendoan" class="w-full h-40 object-cover">
+          <div class="p-4">
+            <h2 class="font-semibold">Tempe Mendoan</h2>
+            <p class="text-gray-500">Rp 5.000</p>
+            <button class="mt-2 px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700">+</button>
+          </div>
+        </div>
+
+        <div class="bg-white shadow rounded-xl overflow-hidden hover:shadow-xl transition">
+          <img src="https://source.unsplash.com/400x300/?chicken" alt="Ayam Kalasan" class="w-full h-40 object-cover">
+          <div class="p-4">
+            <h2 class="font-semibold">Ayam Kalasan</h2>
+            <p class="text-gray-500">Rp 27.000</p>
+            <button class="mt-2 px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700">+</button>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <!-- Panel Kanan -->
+    <aside class="w-72 bg-gray-50 p-4 border-l hidden xl:block">
+      <h2 class="font-bold mb-4">Pesanan Terkini</h2>
+      <ul class="space-y-2">
+        <li class="flex justify-between border-b pb-2">
+          <span>Ayam Kalasan</span> <span>1 Porsi</span>
+        </li>
+        <li class="flex justify-between border-b pb-2">
+          <span>Klepon Hijau</span> <span>1 Porsi</span>
+        </li>
+        <li class="flex justify-between border-b pb-2">
+          <span>Siomay Bandung</span> <span>1 Porsi</span>
+        </li>
+        <li class="flex justify-between border-b pb-2">
+          <span>Nasi Gudeg</span> <span>1 Porsi</span>
+        </li>
+      </ul>
+    </aside>
+
+  </div>
+
+  <script>
+    feather.replace()
+  </script>
+</body>
+</html>
