@@ -3,119 +3,139 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Kedai Fauget - Portfolio</title>
-  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
-  <script src="https://unpkg.com/feather-icons"></script>
+  <title>Kedai Fauget - Dark Mode</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    /* Glass effect */
+    .glass {
+      background: rgba(20, 20, 20, 0.6);
+      backdrop-filter: blur(10px);
+    }
+    /* Animasi muncul/hilang */
+    .navbar-hidden {
+      transform: translateY(100%);
+      transition: transform 0.4s ease-in-out;
+    }
+    .navbar-show {
+      transform: translateY(0);
+      transition: transform 0.4s ease-in-out;
+    }
+  </style>
 </head>
-<body class="bg-gray-100 font-sans">
+<body class="bg-gray-900 text-gray-100">
 
-  <!-- Container utama -->
-  <div class="flex h-screen">
+  <!-- Header -->
+  <header class="p-4 flex justify-between items-center bg-gray-800">
+    <h1 class="text-lg font-bold">Kedai Fauget</h1>
+    <input id="searchBar" type="text" placeholder="Cari menu..." class="px-3 py-1 rounded bg-gray-700 text-sm">
+  </header>
 
-    <!-- Sidebar -->
-    <aside class="w-64 bg-gray-900 text-white flex flex-col p-4">
-      <h1 class="text-2xl font-bold mb-8 flex items-center">
-        <i data-feather="coffee" class="mr-2"></i> Kedai Fauget
-      </h1>
-      <nav class="flex flex-col space-y-4">
-        <a href="#" class="flex items-center p-2 rounded hover:bg-gray-700">
-          <i data-feather="home" class="mr-2"></i> Dasbor
-        </a>
-        <a href="#" class="flex items-center p-2 rounded hover:bg-gray-700">
-          <i data-feather="grid" class="mr-2"></i> Beranda
-        </a>
-        <a href="#" class="flex items-center p-2 rounded hover:bg-gray-700">
-          <i data-feather="user" class="mr-2"></i> Profil
-        </a>
-        <a href="#" class="flex items-center p-2 rounded hover:bg-gray-700">
-          <i data-feather="settings" class="mr-2"></i> Pengaturan
-        </a>
-        <a href="#" class="flex items-center p-2 rounded hover:bg-gray-700">
-          <i data-feather="shopping-cart" class="mr-2"></i> Pesanan
-        </a>
-      </nav>
-      <div class="mt-auto">
-        <a href="#" class="flex items-center p-2 rounded hover:bg-red-700 bg-red-600">
-          <i data-feather="log-out" class="mr-2"></i> Logout
-        </a>
-      </div>
-    </aside>
-
-    <!-- Konten Utama -->
-    <main class="flex-1 flex flex-col">
-      <!-- Header -->
-      <header class="p-4 bg-white shadow flex justify-between items-center">
-        <input type="text" placeholder="Cari..." class="border rounded px-4 py-2 w-1/3">
-        <div class="flex items-center space-x-4">
-          <img src="https://via.placeholder.com/40" alt="User" class="rounded-full w-10 h-10">
-          <span>Ketut Susilo</span>
+  <!-- Konten -->
+  <main id="content" class="p-4 space-y-6">
+    <!-- Default konten (Dasbor) -->
+    <section id="dasbor" class="content-section">
+      <h2 class="text-xl font-semibold mb-3">Menu</h2>
+      <div id="menuList" class="grid grid-cols-2 gap-4">
+        <div class="bg-gray-800 rounded-lg p-3">
+          <img src="https://source.unsplash.com/400x300/?soup" class="rounded-lg mb-2 h-24 w-full object-cover" alt="Rawon">
+          <h3>Rawon Malang</h3>
+          <p class="text-sm text-gray-400">Rp 23.000</p>
         </div>
-      </header>
-
-      <!-- Grid Menu -->
-      <div class="p-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 overflow-y-auto">
-        <!-- Card Menu -->
-        <div class="bg-white shadow rounded-xl overflow-hidden hover:shadow-xl transition">
-          <img src="https://source.unsplash.com/400x300/?food" alt="Rawon" class="w-full h-40 object-cover">
-          <div class="p-4">
-            <h2 class="font-semibold">Rawon Malang</h2>
-            <p class="text-gray-500">Rp 23.000</p>
-            <button class="mt-2 px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700">+</button>
-          </div>
+        <div class="bg-gray-800 rounded-lg p-3">
+          <img src="https://source.unsplash.com/400x300/?rice" class="rounded-lg mb-2 h-24 w-full object-cover" alt="Gudeg">
+          <h3>Nasi Gudeg</h3>
+          <p class="text-sm text-gray-400">Rp 16.000</p>
         </div>
-
-        <div class="bg-white shadow rounded-xl overflow-hidden hover:shadow-xl transition">
-          <img src="https://source.unsplash.com/400x300/?rice" alt="Nasi Gudeg" class="w-full h-40 object-cover">
-          <div class="p-4">
-            <h2 class="font-semibold">Nasi Gudeg</h2>
-            <p class="text-gray-500">Rp 16.000</p>
-            <button class="mt-2 px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700">+</button>
-          </div>
+        <div class="bg-gray-800 rounded-lg p-3">
+          <img src="https://source.unsplash.com/400x300/?tofu" class="rounded-lg mb-2 h-24 w-full object-cover" alt="Mendoan">
+          <h3>Tempe Mendoan</h3>
+          <p class="text-sm text-gray-400">Rp 5.000</p>
         </div>
-
-        <div class="bg-white shadow rounded-xl overflow-hidden hover:shadow-xl transition">
-          <img src="https://source.unsplash.com/400x300/?tofu" alt="Tempe Mendoan" class="w-full h-40 object-cover">
-          <div class="p-4">
-            <h2 class="font-semibold">Tempe Mendoan</h2>
-            <p class="text-gray-500">Rp 5.000</p>
-            <button class="mt-2 px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700">+</button>
-          </div>
-        </div>
-
-        <div class="bg-white shadow rounded-xl overflow-hidden hover:shadow-xl transition">
-          <img src="https://source.unsplash.com/400x300/?chicken" alt="Ayam Kalasan" class="w-full h-40 object-cover">
-          <div class="p-4">
-            <h2 class="font-semibold">Ayam Kalasan</h2>
-            <p class="text-gray-500">Rp 27.000</p>
-            <button class="mt-2 px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700">+</button>
-          </div>
+        <div class="bg-gray-800 rounded-lg p-3">
+          <img src="https://source.unsplash.com/400x300/?chicken" class="rounded-lg mb-2 h-24 w-full object-cover" alt="Ayam Kalasan">
+          <h3>Ayam Kalasan</h3>
+          <p class="text-sm text-gray-400">Rp 27.000</p>
         </div>
       </div>
-    </main>
+    </section>
 
-    <!-- Panel Kanan -->
-    <aside class="w-72 bg-gray-50 p-4 border-l hidden xl:block">
-      <h2 class="font-bold mb-4">Pesanan Terkini</h2>
-      <ul class="space-y-2">
-        <li class="flex justify-between border-b pb-2">
-          <span>Ayam Kalasan</span> <span>1 Porsi</span>
-        </li>
-        <li class="flex justify-between border-b pb-2">
-          <span>Klepon Hijau</span> <span>1 Porsi</span>
-        </li>
-        <li class="flex justify-between border-b pb-2">
-          <span>Siomay Bandung</span> <span>1 Porsi</span>
-        </li>
-        <li class="flex justify-between border-b pb-2">
-          <span>Nasi Gudeg</span> <span>1 Porsi</span>
-        </li>
-      </ul>
-    </aside>
+    <!-- Beranda -->
+    <section id="beranda" class="content-section hidden">
+      <h2 class="text-xl font-semibold">Beranda</h2>
+      <p>Selamat datang di Kedai Fauget 🍴</p>
+    </section>
 
-  </div>
+    <!-- Profil -->
+    <section id="profil" class="content-section hidden">
+      <h2 class="text-xl font-semibold">Profil</h2>
+      <p>Nama: Ketut Susilo<br>Lokasi: Bali, Indonesia</p>
+    </section>
+
+    <!-- Pengaturan -->
+    <section id="pengaturan" class="content-section hidden">
+      <h2 class="text-xl font-semibold">Pengaturan</h2>
+      <p>Mode: Dark Mode aktif 🌙</p>
+    </section>
+  </main>
+
+  <!-- Navbar Floating Bottom -->
+  <nav id="bottomNav" class="fixed bottom-3 left-1/2 -translate-x-1/2 w-[90%] glass rounded-2xl p-2 flex justify-around items-center shadow-lg navbar-show">
+    <button onclick="showSection('dasbor')" class="flex flex-col items-center">
+      <span>📊</span><span class="text-xs">Dasbor</span>
+    </button>
+    <button onclick="showSection('beranda')" class="flex flex-col items-center">
+      <span>🏠</span><span class="text-xs">Beranda</span>
+    </button>
+    <button onclick="showSection('profil')" class="flex flex-col items-center">
+      <span>👤</span><span class="text-xs">Profil</span>
+    </button>
+    <button onclick="showSection('pengaturan')" class="flex flex-col items-center">
+      <span>⚙️</span><span class="text-xs">Pengaturan</span>
+    </button>
+  </nav>
 
   <script>
-    feather.replace()
+    // Ganti section
+    function showSection(id) {
+      document.querySelectorAll('.content-section').forEach(sec => sec.classList.add('hidden'));
+      document.getElementById(id).classList.remove('hidden');
+    }
+
+    // Navbar hide/show saat scroll
+    let lastScrollTop = 0;
+    let hideTimeout;
+    const navbar = document.getElementById("bottomNav");
+
+    window.addEventListener("scroll", () => {
+      clearTimeout(hideTimeout);
+      let st = window.pageYOffset || document.documentElement.scrollTop;
+      if (st > lastScrollTop) {
+        // scroll ke bawah → hilang
+        navbar.classList.remove("navbar-show");
+        navbar.classList.add("navbar-hidden");
+      } else {
+        // scroll ke atas → muncul
+        navbar.classList.remove("navbar-hidden");
+        navbar.classList.add("navbar-show");
+      }
+      lastScrollTop = st <= 0 ? 0 : st;
+
+      // auto hide setelah 10 detik diam
+      hideTimeout = setTimeout(() => {
+        navbar.classList.remove("navbar-show");
+        navbar.classList.add("navbar-hidden");
+      }, 10000);
+    });
+
+    // Search filter
+    const searchBar = document.getElementById("searchBar");
+    searchBar.addEventListener("input", function () {
+      const value = this.value.toLowerCase();
+      document.querySelectorAll("#menuList div").forEach(item => {
+        const text = item.innerText.toLowerCase();
+        item.style.display = text.includes(value) ? "" : "none";
+      });
+    });
   </script>
 </body>
 </html>
