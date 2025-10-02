@@ -5,28 +5,34 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Portofolio IGede</title>
   <style>
-    /* RESET */
     * {margin:0; padding:0; box-sizing:border-box; font-family: Arial, sans-serif;}
     body {background:#121212; color:#fff; overflow-x:hidden;}
+    h2 {margin-bottom:15px;}
+    p {margin-bottom:10px; line-height:1.5;}
 
     /* Searchbar */
     .searchbar {
       position: fixed; top: 10px; left: 50%; transform: translateX(-50%);
       width: 80%; max-width: 500px; padding: 8px 12px;
       background: rgba(255,255,255,0.1); border-radius: 20px;
-      backdrop-filter: blur(10px);
-      z-index: 100;
+      backdrop-filter: blur(10px); z-index: 100;
     }
     .searchbar input {
       width: 100%; background: transparent; border: none; color: #fff; outline:none;
     }
 
-    /* Sections */
     section {padding: 80px 20px; display: none;}
     section.active {display:block;}
 
     /* Dashboard */
-    #dashboard h2 {margin-bottom: 20px;}
+    .stats {display:flex; gap:15px; flex-wrap:wrap; margin:20px 0;}
+    .stat-box {
+      flex:1; min-width:120px; background:#181818; padding:15px; border-radius:10px;
+      text-align:center;
+    }
+    .timeline {margin-top:20px;}
+    .timeline-item {margin:10px 0; padding:10px; border-left:3px solid #1db954;}
+
     .lock {
       font-size: 50px; cursor:pointer; background:#1db954; color:#fff;
       border-radius: 50%; width:80px; height:80px; display:flex;
@@ -34,40 +40,28 @@
     }
 
     /* Brankas */
-    .secret {
-      display:none; margin-top: 20px; padding:20px;
+    .secret {display:none; margin-top: 20px; padding:20px;
       background: linear-gradient(135deg,#000,#0f0,#fff);
-      border-radius: 12px; color: #fff;
-    }
+      border-radius: 12px; color: #fff;}
     .secret .grid {
       display:grid; grid-template-columns: repeat(auto-fit,minmax(120px,1fr));
       gap:12px; margin-top:20px;
     }
-    .secret .card {
-      background: rgba(255,255,255,0.1); padding:10px; border-radius:10px;
-      cursor:pointer; transition: transform .2s;
-    }
+    .secret .card {background: rgba(255,255,255,0.1); padding:10px; border-radius:10px; cursor:pointer; transition:.2s;}
     .secret .card:hover {transform:scale(1.05);}
     .secret img,.secret video {width:100%; border-radius:8px;}
     .secret .info {text-align:center; margin-top:5px; color:#1db954; font-weight:bold;}
 
     /* Beranda ala Spotify */
-    .gallery {
-      display:grid; grid-template-columns: repeat(2,1fr);
-      gap:16px;
-    }
-    @media(min-width:768px){
-      .gallery {grid-template-columns: repeat(5,1fr);}
-    }
-    .card {
-      background: #181818; border-radius:12px; padding:10px;
-      cursor:pointer; transition:.2s;
-    }
+    .playlist {margin:20px 0;}
+    .gallery {display:grid; grid-template-columns: repeat(2,1fr); gap:16px;}
+    @media(min-width:768px){.gallery {grid-template-columns: repeat(5,1fr);}}
+    .card {background: #181818; border-radius:12px; padding:10px; cursor:pointer; transition:.2s;}
     .card:hover {background:#282828;}
     .card img,.card video {width:100%; border-radius:8px;}
     .card .info {margin-top:8px; font-size:14px;}
 
-    /* Navbar mobile */
+    /* Navbar */
     .navbar {
       position: fixed; bottom: 10px; left:50%; transform: translateX(-50%);
       background: rgba(0,0,0,0.6); backdrop-filter: blur(10px);
@@ -76,37 +70,26 @@
       transition: transform 0.3s ease, opacity 0.3s ease;
     }
     .navbar.hidden {transform: translate(-50%,100%); opacity:0;}
-    .navbar button {
-      background: none; border:none; color:#fff; font-size:16px; cursor:pointer;
-    }
-
-    /* Navbar PC (samping kiri) */
+    .navbar button {background: none; border:none; color:#fff; font-size:16px; cursor:pointer;}
     @media(min-width:768px){
-      .navbar {
-        flex-direction: column; left:10px; top:50%; bottom:auto;
-        transform: translateY(-50%); width:80px; height:auto;
-      }
+      .navbar {flex-direction: column; left:10px; top:50%; bottom:auto; transform: translateY(-50%); width:80px; height:auto;}
     }
 
     /* Modal */
-    .modal {
-      display:none; position:fixed; top:0;left:0;width:100%;height:100%;
-      background:rgba(0,0,0,0.8); justify-content:center;align-items:center;
-      z-index:200;
-    }
+    .modal {display:none; position:fixed; top:0;left:0;width:100%;height:100%;
+      background:rgba(0,0,0,0.8); justify-content:center;align-items:center; z-index:200;}
     .modal.active {display:flex;}
-    .modal-content {
-      width:90%; max-width:600px; background:#111; color:#fff;
-      padding:20px; border-radius:12px; text-align:center; position:relative;
-    }
-    .modal-content img,.modal-content video,.modal-content audio {
-      max-width:100%; border-radius:12px;
-    }
+    .modal-content {width:90%; max-width:600px; background:#111; color:#fff; padding:20px; border-radius:12px; text-align:center; position:relative;}
+    .modal-content img,.modal-content video,.modal-content audio {max-width:100%; border-radius:12px;}
     .modal-content p {margin-top:20px;}
-    .modal-content button {
-      position:absolute; top:10px; right:10px; background:#1db954;
-      color:#fff; border:none; padding:8px 12px; border-radius:8px; cursor:pointer;
-    }
+    .modal-content button {position:absolute; top:10px; right:10px; background:#1db954; color:#fff; border:none; padding:8px 12px; border-radius:8px; cursor:pointer;}
+
+    /* Profil */
+    .skills {display:flex; flex-wrap:wrap; gap:10px; margin-top:20px;}
+    .skill {background:#181818; padding:8px 12px; border-radius:8px;}
+
+    /* Pengaturan */
+    .settings-btn {margin:10px 5px; padding:8px 12px; border:none; border-radius:6px; cursor:pointer;}
   </style>
 </head>
 <body>
@@ -115,74 +98,96 @@
     <input type="text" placeholder="Cari...">
   </div>
 
-  <!-- Sections -->
+  <!-- Dashboard -->
   <section id="dashboard" class="active">
     <h2>📊 Dashboard IGede</h2>
-    <p>Sistem buatan IGede menampilkan minat, bakat, motivasi, dan kenangan secara kronologis.</p>
+    <p>Selamat datang di sistem portofolio IGede. Temukan minat, bakat, motivasi, dan kenangan yang tersusun rapi.</p>
+
+    <!-- Statistik -->
+    <div class="stats">
+      <div class="stat-box"><h3>🎵 12</h3><p>Karya Musik</p></div>
+      <div class="stat-box"><h3>📷 30</h3><p>Kenangan</p></div>
+      <div class="stat-box"><h3>💡 15</h3><p>Kata Motivasi</p></div>
+    </div>
+
+    <!-- Timeline -->
+    <div class="timeline">
+      <h3>Perjalanan IGede</h3>
+      <div class="timeline-item"><strong>2020:</strong> Mulai belajar coding.</div>
+      <div class="timeline-item"><strong>2022:</strong> Menciptakan musik pertama.</div>
+      <div class="timeline-item"><strong>2024:</strong> Bergabung dengan Universitas Indonesia.</div>
+      <div class="timeline-item"><strong>2025:</strong> Meluncurkan portofolio interaktif.</div>
+    </div>
+
     <div class="lock" onclick="openLock()">🔒</div>
 
-    <!-- Brankas -->
+    <!-- Brankas Rahasia -->
     <div class="secret" id="secretContent">
       <h2>🔐 Brankas Media Rahasia IGede</h2>
       <p>Klik salah satu media untuk melihat lebih jelas.</p>
       <div class="grid" id="secretGrid">
         <div class="card" onclick="openMedia('foto-rahasia1.jpg','image')">
-          <img src="foto-rahasia1.jpg">
-          <div class="info">Foto Rahasia 1</div>
+          <img src="foto-rahasia1.jpg"><div class="info">Foto Rahasia 1</div>
         </div>
         <div class="card" onclick="openMedia('vid-rahasia1.mp4','video')">
-          <video src="vid-rahasia1.mp4" muted></video>
-          <div class="info">Video Rahasia</div>
+          <video src="vid-rahasia1.mp4" muted></video><div class="info">Video Rahasia</div>
         </div>
         <div class="card" onclick="openMedia('lagu-rahasia.mp3','audio')">
-          <img src="cover-rahasia.jpg">
-          <div class="info">Audio Rahasia</div>
+          <img src="cover-rahasia.jpg"><div class="info">Audio Rahasia</div>
         </div>
         <div class="card" onclick="openMedia('Cerita motivasi rahasia IGede','text')">
-          <img src="cover-text.jpg">
-          <div class="info">Cerita Rahasia</div>
+          <img src="cover-text.jpg"><div class="info">Cerita Rahasia</div>
         </div>
       </div>
     </div>
   </section>
 
+  <!-- Beranda -->
   <section id="home">
     <h2>🎵 Beranda Musik & Galeri</h2>
+    <div class="playlist"><h3>Album & Playlist</h3></div>
     <div class="gallery">
-      <div class="card">
-        <img src="cover1.jpg">
-        <div class="info">Lagu IGede #1</div>
-      </div>
-      <div class="card">
-        <img src="cover2.jpg">
-        <div class="info">Lagu IGede #2</div>
-      </div>
-      <div class="card">
-        <video src="vid1.mp4" muted></video>
-        <div class="info">Video Kenangan</div>
-      </div>
-      <div class="card">
-        <img src="foto1.jpg">
-        <div class="info">Foto Kenangan</div>
-      </div>
-      <div class="card">
-        <img src="foto2.jpg">
-        <div class="info">Motivasi: "Terus Maju!"</div>
-      </div>
+      <div class="card"><img src="cover1.jpg"><div class="info">Lagu IGede #1</div></div>
+      <div class="card"><img src="cover2.jpg"><div class="info">Lagu IGede #2</div></div>
+      <div class="card"><video src="vid1.mp4" muted></video><div class="info">Video Kenangan 2023</div></div>
+      <div class="card"><img src="foto1.jpg"><div class="info">Foto Liburan Bali 2024</div></div>
+      <div class="card"><img src="foto2.jpg"><div class="info">Motivasi: "Terus Maju!"</div></div>
+    </div>
+    <div style="margin-top:20px;">
+      <h3>💡 Motivasi Hari Ini</h3>
+      <p id="dailyQuote"></p>
     </div>
   </section>
 
+  <!-- Profil -->
   <section id="profile">
     <h2>👤 Profil IGede</h2>
-    <p>Halo, saya IGede. Seorang calon engineer & programmer, dengan passion di musik, kenangan, dan karya kreatif.</p>
+    <p>Halo, saya <strong>IGede</strong>. Calon engineer & programmer yang mencintai dunia teknologi, musik, dan seni visual. Portofolio ini adalah jendela untuk mengenal karya dan perjalanan saya.</p>
+    <h3>Keahlian</h3>
+    <div class="skills">
+      <div class="skill">HTML</div>
+      <div class="skill">CSS</div>
+      <div class="skill">JavaScript</div>
+      <div class="skill">Python</div>
+      <div class="skill">UI/UX</div>
+      <div class="skill">Music Production</div>
+    </div>
+    <h3>Cita-Cita</h3>
+    <p>Menjadi programmer handal dan membangun sistem yang bermanfaat, sambil menyalurkan kreativitas lewat musik dan seni.</p>
+    <h3>Fun Fact</h3>
+    <p>Saya suka mencampur coding dengan musik—karena keduanya sama-sama tentang ritme dan harmoni 🎶💻</p>
   </section>
 
+  <!-- Pengaturan -->
   <section id="settings">
     <h2>⚙️ Pengaturan</h2>
-    <p>Pilih mode tampilan:</p>
-    <button onclick="setTheme('dark')">Dark</button>
-    <button onclick="setTheme('blue')">Blue</button>
-    <button onclick="setTheme('red')">Red</button>
+    <p>Mode Tampilan:</p>
+    <button class="settings-btn" onclick="setTheme('dark')">Dark</button>
+    <button class="settings-btn" onclick="setTheme('blue')">Blue</button>
+    <button class="settings-btn" onclick="setTheme('red')">Red</button>
+    <p>Ukuran Font:</p>
+    <button class="settings-btn" onclick="document.body.style.fontSize='16px'">Normal</button>
+    <button class="settings-btn" onclick="document.body.style.fontSize='20px'">Besar</button>
   </section>
 
   <!-- Navbar -->
@@ -213,7 +218,6 @@
   </div>
 
   <script>
-    // Navigasi antar section
     function showSection(id){
       document.querySelectorAll("section").forEach(s=>s.classList.remove("active"));
       document.getElementById(id).classList.add("active");
@@ -269,6 +273,15 @@
     function closeMedia(){
       document.getElementById("mediaModal").classList.remove("active");
     }
+
+    // Quotes motivasi
+    const quotes=[
+      "Jangan takut gagal, karena kegagalan adalah guru terbaik.",
+      "Langkah kecil hari ini lebih baik daripada mimpi besar tanpa aksi.",
+      "Keberanian bukan tanpa rasa takut, tapi tetap maju meski takut.",
+      "Konsistensi lebih penting daripada motivasi sesaat."
+    ];
+    document.getElementById("dailyQuote").textContent=quotes[Math.floor(Math.random()*quotes.length)];
   </script>
 </body>
 </html>
