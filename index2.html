@@ -257,7 +257,7 @@
     let file=document.getElementById("cvFile").files[0];
     if(file){
       let url=URL.createObjectURL(file);
-      document.getElementById("mediaContainer").innerHTML=<iframe src="${url}"></iframe>;
+      document.getElementById("mediaContainer").innerHTML=`<iframe src="${url}"></iframe>`;
       document.getElementById("mediaModal").classList.add("active");
     } else { alert("Upload CV terlebih dahulu!"); }
   }
