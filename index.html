@@ -1194,7 +1194,7 @@ const chatMessages = [
   "🎶 Panjang umur, sehat selalu 🎶","Happy birthday broo 🥳","Wishing you joy and fun 🎉",
   "🎂🎉 Semoga mimpi2mu tercapai","Semoga semua cita2mu tercapai 💫"
 ];
-const profilePics = Array.from({length:15},(_,i)=>https://i.pravatar.cc/30?img=${i+1});
+const profilePics = Array.from({length:15},(_,i)=>`https://i.pravatar.cc/30?img=${i+1}`);
 
 function updateCountdown(){
   const now=new Date(); const diff=targetDate-now;
@@ -1315,6 +1315,7 @@ updateCountdown();
 </script>  
 </body>
 </html>
+
 
 
 
