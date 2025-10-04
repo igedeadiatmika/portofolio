@@ -366,7 +366,6 @@
 }
 
 
-    /* Testimonials */
         .testimonials-container {
             position: relative;
         }
@@ -457,7 +456,7 @@
             width: 2rem;
         }
 
-/* Modal */
+
         .modal-overlay {
             position: fixed;
             inset: 0;
@@ -608,9 +607,6 @@
 
     
 
-    
-
-/* Timeline */
  #timeline {
     margin: 2rem 0 2rem 0.5rem;
     border-left: 3px solid #ff0000;
@@ -658,6 +654,70 @@
     font-size: 1rem;
 }
 
+
+
+
+.countdown-box {
+      position: fixed;
+      top: 20px;
+      left: 20px;
+      width: 270px;
+      padding: 15px;
+      border-radius: 15px;
+      background: white;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+      border: 2px solid #eee;
+      z-index: 1000;
+      text-align: center;
+      animation: float 3s ease-in-out infinite;
+    }
+    @keyframes float {
+      0%,100% { transform: translateY(0); }
+      50% { transform: translateY(-5px); }
+    }
+    .countdown-box h3 {
+      margin: 0;
+      font-size: 16px;
+      color: #333;
+    }
+    .countdown-box .count {
+      margin-top: 10px;
+      padding: 8px;
+      background: #ff7eb9;
+      border-radius: 8px;
+      font-size: 14px;
+      font-weight: bold;
+      color: white;
+      display: inline-block;
+    }
+
+    /* Chat Bubble */
+    .chat {
+      position: fixed;
+      bottom: -100px;
+      padding: 10px 15px;
+      border-radius: 20px;
+      background: rgba(255,255,255,0.8);
+      box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+      font-size: 14px;
+      max-width: 220px;
+      z-index: 900;
+      animation: floatUp 8s linear forwards;
+    }
+    .chat.left {
+      left: 20px;
+    }
+    .chat.right {
+      right: 20px;
+    }
+    @keyframes floatUp {
+      0% { bottom: -100px; opacity: 0; }
+      20% { opacity: 1; }
+      100% { bottom: 100vh; opacity: 0; }
+    }
+
+    
+
   </style>
 </head>
 <body>
@@ -684,6 +744,16 @@
     </div>
 
 
+  
+<div class="countdown-box" id="box">
+    <h3>🎉 IGede akan ulang tahun sebentar lagi 🎂</h3>
+    <div class="count" id="countdown">Loading...</div>
+  </div>
+
+  <!-- Musik ulang tahun -->
+  <audio id="birthdaySong" src="https://www2.cs.uic.edu/~i101/SoundFiles/HappyBirthday.mid"></audio>
+
+  
   
 <div class="dj-wrapper" onclick="toggleDJ(this)">
   <img src="https://res.cloudinary.com/dv6dx2xkk/image/upload/v1759247831/WhatsApp_Image_2025-09-30_at_22.56.41_lby0d3.jpg" alt="Profil" class="dj-photo">
@@ -1053,8 +1123,80 @@ const questions = [
         function closeModal() {
             document.getElementById('modal').classList.add('hidden');
         }
-
         updateModal();
+
+
+
+
+const box = document.getElementById("box");
+    const countdownEl = document.getElementById("countdown");
+    const song = document.getElementById("birthdaySong");
+
+    const targetDate = new Date("October 14, 2025 00:00:00").getTime();
+    const endDate = new Date("October 19, 2025 00:00:00").getTime();
+
+    function updateCountdown() {
+      const now = new Date().getTime();
+      
+      // Jika masih sebelum ulang tahun
+      if (now < targetDate) {
+        const distance = targetDate - now;
+        const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+        const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+        const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+        countdownEl.innerHTML = `${days}h ${hours}j ${minutes}m ${seconds}d`;
+      }
+      // Saat ulang tahun (14-18 Okt 2025)
+      else if (now >= targetDate && now < endDate) {
+        box.innerHTML = `
+          <h3>👑 Mahkota mu king</h3>
+          <p>Selamat ulang tahun yang ke <b>15</b><br>Sukses selalu 🎂</p>
+        `;
+        playSongOnce();
+        spawnChats();
+      } 
+      
+      else {
+        box.style.display = "none";
+      }
+    }
+
+    
+    let songPlayed = false;
+    function playSongOnce() {
+      if (!songPlayed) {
+        song.play();
+        songPlayed = true;
+      }
+    }
+
+    
+    function spawnChats() {
+      setInterval(() => {
+        const chat = document.createElement("div");
+        chat.className = "chat " + (Math.random() > 0.5 ? "left" : "right");
+
+        const messages = [
+          "🎉 HBD Masbroo!!",
+          "Selamat yaa... Semoga makin hebat 😊🎂",
+          "GELooo.. 😂",
+          "Wih udah 15 th! 🔥",
+          "Happy bday king 👑"
+        ];
+        chat.innerText = messages[Math.floor(Math.random()*messages.length)];
+
+        document.body.appendChild(chat);
+
+        
+        setTimeout(() => chat.remove(), 8000);
+      }, 2000);
+    }
+
+    setInterval(updateCountdown, 1000);
+    updateCountdown();
+
+    
     
 </script>
 
@@ -1068,6 +1210,7 @@ const questions = [
 </script>  
 </body>
 </html>
+
 
 
 
