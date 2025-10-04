@@ -1284,7 +1284,7 @@ class Explosion{
       p.alpha-=0.02;
       ctx.beginPath();
       ctx.arc(p.x,p.y,2,0,Math.PI*2);
-      ctx.fillStyle=`hsla(${Math.random()*360},100%,60%,${p.alpha}`);
+      ctx.fillStyle=`hsla(${Math.random()*360},100%,60%,${p.alpha})`;
       ctx.fill();
     });
     this.particles=this.particles.filter(p=>p.alpha>0);
@@ -1331,6 +1331,7 @@ updateCountdown();
 </script>  
 </body>
 </html>
+
 
 
 
