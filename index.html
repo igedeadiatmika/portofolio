@@ -659,92 +659,103 @@
 
 
 
-     html,body{height:100%;margin:0;background:var(--bg);font-family:Inter,ui-sans-serif,system-ui,Segoe UI,Roboto,"Helvetica Neue",Arial;}
-  /* ===========================
-     Countdown Box (kiri atas)
-     =========================== */
-  .countdown-box {
-    position: fixed;
-    top: 20px;
-    left: 20px;
-    width: 300px;
-    padding: 14px;
-    border-radius: 14px;
-    background: var(--card);
-    box-shadow: 0 8px 24px rgba(15,23,42,0.08);
-    border: 1px solid rgba(0,0,0,0.05);
-    z-index: 1200;
-    text-align:center;
-    transform-origin:center;
-    animation: float 3s ease-in-out infinite;
-  }
-  @keyframes float {0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
-  .countdown-box h3{margin:0;font-size:15px;color:#1f2937}
-  .count{display:inline-block;margin-top:10px;padding:6px 10px;background:var(--accent);color:white;border-radius:8px;font-weight:600}
-  /* ===========================
-     Chat bubble (style)
-     =========================== */
-  .chat {
-    position: fixed;
-    bottom: -140px;
-    display:flex;
-    gap:8px;
-    align-items:flex-start;
-    padding:10px 12px;
-    border-radius:18px;
-    box-shadow:0 6px 18px rgba(2,6,23,0.12);
-    font-size:14px;
-    max-width:240px;
-    z-index:1100;
-    opacity:1;
-    pointer-events:none;
-    transform:translateY(0);
-    animation: rise 12s linear forwards;
-  }
-  .chat.left{background:var(--chat-left); left:20px;}
-  .chat.right{background:var(--chat-right); right:20px;}
-  .chat .avatar{width:30px;height:30px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;color:#fff;flex-shrink:0}
-  .chat .text{line-height:1.2}
-  @keyframes rise {
-    0%{transform:translateY(0);opacity:0}
-    8%{opacity:1}
-    100%{transform:translateY(-120vh);opacity:0}
-  }
-  /* fade-out class for graceful hiding */
-  .fade-out { transition:opacity 1s ease, transform 1s ease; opacity:0 !important; transform:translateY(0.5rem) scale(0.98) !important; }
+     /* === Form Countdown === */
+    #birthdayCountdownBox {
+      position: fixed;
+      top: 15px;
+      left: 15px;
+      background: rgba(255, 255, 255, 0.9);
+      padding: 12px 18px;
+      border-radius: 15px;
+      font-family: Arial, sans-serif;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+      z-index: 9999;
+      width: 250px;
+      font-size: 14px;
+      text-align: center;
+      animation: float 3s ease-in-out infinite;
+    }
+    @keyframes float {
+      0% { transform: translateY(0px); }
+      50% { transform: translateY(-6px); }
+      100% { transform: translateY(0px); }
+    }
+    #birthdayCountdownBox h3 { margin: 0; font-size: 16px; }
+    #birthdayCountdownBox p { margin: 5px 0; }
 
-  /* ===========================
-     Close button (x) bottom center
-     =========================== */
-  #close-btn {
-    position: fixed;
-    left: 50%;
-    transform: translateX(-50%);
-    bottom: 18px;
-    width:36px;height:36px;border-radius:50%;
-    display:flex;align-items:center;justify-content:center;
-    background:rgba(0,0,0,0.6);color:white;font-weight:700;
-    z-index:1300;cursor:pointer;box-shadow:0 6px 18px rgba(2,6,23,0.12);
-    transition:transform .18s ease;
-  }
-  #close-btn:active{transform:translateX(-50%) scale(.95);}
-  #close-btn.hidden{display:none}
+    /* === Bubble Chat === */
+    .birthdayChatBubble {
+      position: fixed;
+      bottom: -100px;
+      max-width: 220px;
+      background: rgba(255, 255, 255, 0.9);
+      border-radius: 15px;
+      padding: 10px;
+      font-size: 14px;
+      display: flex;
+      align-items: flex-start;
+      gap: 8px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+      animation: flyUp 15s linear infinite;
+      opacity: 1;
+      transition: opacity 1s ease;
+      z-index: 9998;
+    }
+    .birthdayChatBubble img {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+    }
+    @keyframes flyUp {
+      0% { transform: translateY(0); opacity: 1; }
+      90% { opacity: 1; }
+      100% { transform: translateY(-120vh); opacity: 0; }
+    }
 
-  /* ===========================
-     Canvas layers for effects
-     =========================== */
-  canvas.layer {
-    position: fixed; top:0; left:0; width:100vw; height:100vh;
-    pointer-events:none; z-index:600;
-  }
-  canvas#balloons { z-index:650; }
-  canvas#fireworks { z-index:640; }
+    /* === Tombol Close === */
+    #birthdayCloseBtn {
+      position: fixed;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: rgba(0,0,0,0.6);
+      color: white;
+      font-size: 12px;
+      border-radius: 50%;
+      width: 28px;
+      height: 28px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      z-index: 10000;
+    }
 
-  /* small responsive tweak */
-  @media (max-width:420px){
-    .countdown-box{width:85%}
-    .chat{max-width:70%}
-  }
+    /* === Balon === */
+    .birthdayBalloon {
+      position: fixed;
+      bottom: -100px;
+      width: 30px;
+      height: 40px;
+      border-radius: 50%;
+      background-color: red;
+      opacity: 0.8;
+      animation: balloonFly 12s linear infinite;
+      z-index: 1;
+    }
+    @keyframes balloonFly {
+      0% { transform: translateY(0) translateX(0); opacity: 1; }
+      100% { transform: translateY(-120vh) translateX(calc(-50px + 100px * random())); opacity: 0; }
+    }
+
+    /* === Fireworks === */
+    canvas#birthdayFireworks {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      pointer-events: none;
+      z-index: 5000;
+    }
 
 
   </style>
@@ -752,22 +763,25 @@
 <body>
 
 
-<!-- COUNTDOWN BOX (kiri atas) -->
-  <div class="countdown-box" id="countBox">
-    <h3 id="titleLine">🎉 IGede akan ulang tahun sebentar lagi 🎂</h3>
-    <div id="countdown" class="count">Loading...</div>
+
+
+  <!-- Box Countdown -->
+  <div id="birthdayCountdownBox">
+    <h3 id="birthdayTitle">🎉 Hitung Mundur Ulang Tahun 🎉</h3>
+    <p id="birthdayCountdown"></p>
   </div>
 
-  <!-- canvases for balloons & fireworks -->
-  <canvas id="balloons" class="layer"></canvas>
-  <canvas id="fireworks" class="layer"></canvas>
+  <!-- Tombol Close -->
+  <div id="birthdayCloseBtn" style="display:none;">✖</div>
 
-  <!-- tombol silang kecil -->
-  <div id="close-btn" title="Tutup semua dekorasi">✕</div>
+  <!-- Fireworks -->
+  <canvas id="birthdayFireworks"></canvas>
 
-  <!-- audio (ganti src ke file mp3 'selamat ulang tahun' kalau sudah ada) -->
-  <audio id="hbdSong" src="https://cdn.pixabay.com/download/audio/2022/02/16/audio_86b1a3fcf3.mp3?filename=happy-birthday-7190.mp3"></audio>
-
+  <!-- Musik -->
+  <audio id="birthdaySong" preload="auto">
+    <source src="https://www2.cs.uic.edu/~i101/SoundFiles/HappyBirthday.mid" type="audio/midi">
+    Browser kamu tidak mendukung audio.
+  </audio>
 
   
 
@@ -1171,435 +1185,155 @@ const questions = [
     
 
 
+const countdownBox = document.getElementById("birthdayCountdownBox");
+    const countdownText = document.getElementById("birthdayCountdown");
+    const birthdayTitle = document.getElementById("birthdayTitle");
+    const closeBtn = document.getElementById("birthdayCloseBtn");
+    const birthdaySong = document.getElementById("birthdaySong");
 
+    const targetDate = new Date("2025-10-04T15:00:00+07:00"); // 4 Okt 2025, 15:00 WIB
+    const fiveDays = 5 * 24 * 60 * 60 * 1000;
 
-    /* ===========================
-   Konfigurasi tanggal & periode
-   =========================== */
-// Target tanggal: 14 Oktober 2025, mulai jam 00:00 lokal
-const BDAY = new Date("2025-10-04T14:50:00");
-// Periode aktif: 5 hari (0 .. +5days)
-const MS_PER_DAY = 24*60*60*1000;
-const PERIOD_END = new Date(BDAY.getTime() + 5 * MS_PER_DAY).getTime();
+    const chatMessages = [
+      "🎂 HBD Masbroo!! 🎉",
+      "Selamat yaa... Semoga makin hebat 😁🎂",
+      "GELoo... 😂",
+      "Wish you all the best! 🎊",
+      "Selamat ulang tahun, panjang umur 🎂🎶",
+      "Enjoy your special day! 🎉",
+      "🎂 Happy 15th! 🎈",
+      "Semoga sehat selalu ya 🙏",
+      "Best wishes for you 🎁",
+      "HBD 🎂, sukses terus!",
+      "Keep shining 🌟",
+      "🎶 Panjang umur, sehat selalu 🎶",
+      "Happy birthday broo 🥳",
+      "Wishing you joy and fun 🎉",
+      "🎂🎉 Semoga mimpi2mu tercapai"
+    ];
 
-/* ===========================
-   Elemen DOM penting
-   =========================== */
-const countEl = document.getElementById('countdown');
-const titleEl = document.getElementById('titleLine');
-const boxEl = document.getElementById('countBox');
-const closeBtn = document.getElementById('close-btn');
-const audioEl = document.getElementById('hbdSong');
+    const profilePics = [
+      "https://i.pravatar.cc/30?img=1","https://i.pravatar.cc/30?img=2","https://i.pravatar.cc/30?img=3",
+      "https://i.pravatar.cc/30?img=4","https://i.pravatar.cc/30?img=5","https://i.pravatar.cc/30?img=6",
+      "https://i.pravatar.cc/30?img=7","https://i.pravatar.cc/30?img=8","https://i.pravatar.cc/30?img=9",
+      "https://i.pravatar.cc/30?img=10","https://i.pravatar.cc/30?img=11","https://i.pravatar.cc/30?img=12",
+      "https://i.pravatar.cc/30?img=13","https://i.pravatar.cc/30?img=14","https://i.pravatar.cc/30?img=15"
+    ];
 
-const balloonsCanvas = document.getElementById('balloons');
-const fireworksCanvas = document.getElementById('fireworks');
+    function updateCountdown() {
+      const now = new Date();
+      const diff = targetDate - now;
 
-/* ===========================
-   Chat messages (15 pesan)
-   =========================== */
-const messages = [
-  {avatar:'S',text:'HBD Masbroo!! 🎉'},
-  {avatar:'N',text:'Selamat yaa... Semoga makin hebat 😊🎂'},
-  {avatar:'F',text:'Geloo... 15 tahun aja 😆'},
-  {avatar:'A',text:'Wish you all the best bro 🙌'},
-  {avatar:'B',text:'Semoga sehat selalu 🍀'},
-  {avatar:'C',text:'Mantap jiwa 🔥'},
-  {avatar:'D',text:'Happy sweet 15 🎂🥳'},
-  {avatar:'E',text:'Wkwk tambah tua aja 😆'},
-  {avatar:'G',text:'Sukses sekolahnya 📚✨'},
-  {avatar:'H',text:'Semoga rejeki lancar 💰'},
-  {avatar:'I',text:'Selamat ulang tahun bro 💪'},
-  {avatar:'J',text:'Bahagia selalu ❤️'},
-  {avatar:'K',text:'Semoga cita-citamu tercapai 🚀'},
-  {avatar:'L',text:'Stay cool bro 😎'},
-  {avatar:'M',text:'Semoga panjang umur dan sukses 👑'}
-];
-let messageIndex = 0;
-
-/* ===========================
-   State / timers
-   =========================== */
-let chatInterval = null;
-let spawnLoop = null;
-let fireworksInterval = null;
-let balloonInterval = null;
-let specialActive = false;
-let manualDismiss = false; // true when user clicks close
-
-/* ===========================
-   Countdown update
-   =========================== */
-function updateCountdownUI(){
-  const now = Date.now();
-
-  if (now >= BDAY.getTime() && now <= PERIOD_END){
-    // special active
-    if (!specialActive) startSpecialEffects();
-    titleEl.textContent = "👑 Mahkota mu King, Selamat ulang tahun yang ke 15, sukses selalu 🎉";
-    countEl.style.display = "none";
-  } else if (now > PERIOD_END){
-    // hide everything after period
-    stopSpecialEffects(true);
-    // hide countdown box as requested
-    boxEl.style.display = 'none';
-  } else {
-    // days left to BDAY
-    stopSpecialEffects(false); // keep countdown visible
-    boxEl.style.display = 'block';
-    const dist = BDAY.getTime() - now;
-    const days = Math.floor(dist / MS_PER_DAY);
-    const hours = Math.floor((dist % MS_PER_DAY) / (1000*60*60));
-    const minutes = Math.floor((dist % (1000*60*60)) / (1000*60));
-    const seconds = Math.floor((dist % (1000*60)) / 1000);
-    countEl.textContent = `${days}h ${hours}j ${minutes}m ${seconds}d`;
-    countEl.style.display = 'inline-block';
-    titleEl.textContent = "🎉 IGede akan ulang tahun sebentar lagi 🎂";
-  }
-}
-updateCountdownUI();
-setInterval(updateCountdownUI, 1000);
-
-/* ===========================
-   Start / stop special effects
-   =========================== */
-function startSpecialEffects(){
-  if (specialActive) return;
-  specialActive = true;
-  manualDismiss = false;
-  // audio: try to play once on load
-  try { audioEl.currentTime = 0; audioEl.play().catch(()=>{}); } catch(e){}
-  // spawn chat loop
-  if (!chatInterval){
-    chatInterval = setInterval(()=> {
-      spawnChatBubble();
-    }, 1500); // every 1.5s a bubble
-  }
-  // fireworks & balloons start
-  startFireworks();
-  startBalloons();
-  // show close button
-  closeBtn.classList.remove('hidden');
-}
-
-/* stopSpecialEffects(forceHide)
-   if forceHide true -> permanently hide (used after period ends)
-*/
-function stopSpecialEffects(forceHide=false){
-  if (!specialActive && !forceHide) return;
-  specialActive = false;
-
-  // clear chat spawning
-  if (chatInterval){ clearInterval(chatInterval); chatInterval = null; }
-  // fade out existing chat bubbles gracefully
-  document.querySelectorAll('.chat').forEach(node=>{
-    node.classList.add('fade-out');
-    setTimeout(()=> node.remove(), 1100);
-  });
-
-  // stop fireworks & balloons
-  stopFireworks();
-  stopBalloons();
-
-  // hide close button
-  closeBtn.classList.add('hidden');
-
-  if (forceHide){
-    // remove canvases & pause audio
-    audioEl.pause();
-    // remove any leftover elements
-    document.querySelectorAll('.chat').forEach(n=>n.remove());
-    // hide canvases visually
-    fireworksCanvas.style.display = 'none';
-    balloonsCanvas.style.display = 'none';
-    // and hide countdown box too (requirements)
-    boxEl.style.display = 'none';
-  }
-}
-
-/* ===========================
-   Chat bubble spawn
-   =========================== */
-function spawnChatBubble(){
-  if (!specialActive) return;
-  // create chat element
-  const msg = messages[messageIndex];
-  messageIndex = (messageIndex + 1) % messages.length;
-
-  const chat = document.createElement('div');
-  chat.className = 'chat ' + (Math.random() > 0.5 ? 'left' : 'right');
-
-  // avatar circle with color
-  const av = document.createElement('div');
-  av.className = 'avatar';
-  av.textContent = msg.avatar;
-  // random pleasant color by avatar letter
-  av.style.background = avatarColor(msg.avatar);
-
-  const txt = document.createElement('div');
-  txt.className = 'text';
-  txt.textContent = msg.text;
-
-  chat.appendChild(av);
-  chat.appendChild(txt);
-  document.body.appendChild(chat);
-
-  // random horizontal offset to avoid stacking
-  if (chat.classList.contains('left')){
-    chat.style.left = `${20 + Math.random()*140}px`;
-  } else {
-    chat.style.right = `${20 + Math.random()*140}px`;
-  }
-
-  // enter animation slight stagger: override duration via animation-delay
-  const delay = Math.random()*0.6;
-  chat.style.animationDelay = ${delay}s;
-
-  // auto-remove after the rise animation time (12s + delay)
-  setTimeout(()=> {
-    if (chat && chat.parentElement) chat.remove();
-  }, 12500 + delay*1000);
-}
-
-/* small deterministic avatar color generator */
-function avatarColor(letter){
-  const code = letter.charCodeAt(0);
-  const hue = (code * 37) % 360;
-  return `hsl(${hue} 70% 45%)`;
-}
-
-/* ===========================
-   Close button - dismiss all decorations
-   =========================== */
-closeBtn.addEventListener('click', ()=>{
-  // fade out current content
-  manualDismiss = true;
-  // fade out chat bubbles & canvases & close button
-  document.querySelectorAll('.chat').forEach(n => {
-    n.classList.add('fade-out');
-    setTimeout(()=>n.remove(), 900);
-  });
-  // fade canvases by setting opacity
-  fireworksCanvas.style.transition = 'opacity 1s ease'; fireworksCanvas.style.opacity = '0';
-  balloonsCanvas.style.transition = 'opacity 1s ease'; balloonsCanvas.style.opacity = '0';
-  closeBtn.style.transition = 'opacity 0.6s ease, transform .3s ease';
-  closeBtn.style.opacity = '0';
-  setTimeout(()=> closeBtn.classList.add('hidden'), 900);
-
-  // stop spawn timers
-  if (chatInterval){ clearInterval(chatInterval); chatInterval = null; }
-  // stop other effects
-  stopFireworks();
-  stopBalloons();
-  // pause audio
-  try{ audioEl.pause(); audioEl.currentTime = 0; }catch(e){}
-});
-
-/* ===========================
-   FIREWORKS implementation
-   - simple particles & rockets
-   =========================== */
-const fctx = fireworksCanvas.getContext('2d');
-let fwWidth = fireworksCanvas.width = innerWidth;
-let fwHeight = fireworksCanvas.height = innerHeight;
-window.addEventListener('resize', ()=> {
-  fwWidth = fireworksCanvas.width = innerWidth;
-  fwHeight = fireworksCanvas.height = innerHeight;
-  bctx && (bctx.canvas.width = innerWidth);
-});
-
-let rockets = [], particles = [], fwAnimId = null;
-
-function startFireworks(){
-  fireworksCanvas.style.display = 'block';
-  fireworksCanvas.style.opacity = '1';
-  if (fireworksInterval) return;
-  fireworksInterval = setInterval(()=> spawnRocket(), 900);
-  animateFireworks();
-}
-function stopFireworks(){
-  if (fireworksInterval){ clearInterval(fireworksInterval); fireworksInterval = null; }
-  cancelAnimationFrame(fwAnimId);
-  rockets = [];
-  particles = [];
-  // clear canvas
-  fctx.clearRect(0,0,fwWidth,fwHeight);
-  fireworksCanvas.style.opacity = '0';
-}
-
-function spawnRocket(){
-  if (!specialActive) return;
-  const x = Math.random() * fwWidth;
-  const peak = fwHeight * (0.15 + Math.random()*0.45);
-  rockets.push({x:x,y:fwHeight+10,vy: -6 - Math.random()*3, peak: peak, color: `hsl(${Math.random()*360} 100% 50%)})`;
-}
-
-function animateFireworks(){
-  fctx.fillStyle = 'rgba(6,10,18,0.15)';
-  fctx.fillRect(0,0,fwWidth,fwHeight);
-
-  // rockets
-  for (let i = rockets.length-1; i>=0; i--){
-    const r = rockets[i];
-    r.y += r.vy;
-    r.vy += 0.08; // gravity upward decrease (a bit)
-    // draw rocket
-    fctx.beginPath();
-    fctx.arc(r.x, r.y, 3, 0, Math.PI*2);
-    fctx.fillStyle = r.color;
-    fctx.fill();
-
-    if (r.y <= r.peak){
-      // explode
-      explodeAt(r.x, r.y, r.color);
-      rockets.splice(i,1);
+      if (diff > 0) {
+        const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+        const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
+        const minutes = Math.floor((diff / (1000 * 60)) % 60);
+        const seconds = Math.floor((diff / 1000) % 60);
+        countdownText.innerHTML = `${days}h ${hours}j ${minutes}m ${seconds}d`;
+      } else if (now - targetDate < fiveDays) {
+        startCelebration();
+      } else {
+        countdownBox.style.display = "none";
+      }
     }
-  }
 
-  // particles
-  for (let i = particles.length-1; i>=0; i--){
-    const p = particles[i];
-    p.vx *= 0.99;
-    p.vy += 0.04;
-    p.x += p.vx;
-    p.y += p.vy;
-    p.life -= 1;
-    // draw
-    fctx.beginPath();
-    fctx.arc(p.x, p.y, p.size, 0, Math.PI*2);
-    fctx.fillStyle = `rgba(${p.r},${p.g},${p.b},${Math.max(p.life/60,0)})`;
-    fctx.fill();
-    if (p.life <= 0) particles.splice(i,1);
-  }
+    function startCelebration() {
+      countdownText.innerHTML = "👑 Selamat ulang tahun yang ke-15! Sukses selalu 🎉";
+      birthdayTitle.innerHTML = "Mahkota mu King 👑";
+      playSong();
+      spawnChats();
+      spawnBalloons();
+      startFireworks();
+      closeBtn.style.display = "flex";
 
-  fwAnimId = requestAnimationFrame(animateFireworks);
-}
+      closeBtn.onclick = () => {
+        document.querySelectorAll(".birthdayChatBubble").forEach(b => b.style.opacity = 0);
+        closeBtn.style.opacity = 0;
+        setTimeout(() => {
+          document.querySelectorAll(".birthdayChatBubble").forEach(b => b.remove());
+          closeBtn.style.display = "none";
+        }, 1500);
+      };
+    }
 
-function explodeAt(x,y,colorHsl){
-  const h = Math.floor(Math.random()*360);
-  const count = 40 + Math.floor(Math.random()*30);
-  for (let i=0;i<count;i++){
-    const angle = Math.random()*Math.PI*2;
-    const speed = 1.5 + Math.random()*3.0;
-    const vx = Math.cos(angle)*speed;
-    const vy = Math.sin(angle)*speed;
-    const size = 1 + Math.random()*2;
-    // random color convert hsl to rgb quick-ish:
-    const c = h + (Math.random()*40-20);
-    const rgb = hslToRgb((c%360+360)%360/360, 0.7, 0.5);
-    particles.push({x:x,y:y,vx: vx, vy: vy, life: 40 + Math.random()*40, size: size, r:rgb[0], g:rgb[1], b:rgb[2]});
-  }
-}
+    function playSong() {
+      birthdaySong.currentTime = 0;
+      birthdaySong.play();
+    }
 
-/* tiny HSL->RGB helper (0..1 inputs)
-   returns array [r,g,b] (0..255)
-*/
-function hslToRgb(h, s, l){
-  let r,g,b;
-  if(s==0){ r=g=b=l; }
-  else {
-    const hue2rgb = (p,q,t)=> {
-      if(t<0)t+=1; if(t>1)t-=1;
-      if(t<1/6) return p+(q-p)*6*t;
-      if(t<1/2) return q;
-      if(t<2/3) return p+(q-p)*(2/3-t)*6;
-      return p;
-    };
-    const q = l<0.5 ? l*(1+s) : l+s-l*s;
-    const p = 2*l-q;
-    r = hue2rgb(p,q,h+1/3);
-    g = hue2rgb(p,q,h);
-    b = hue2rgb(p,q,h-1/3);
-  }
-  return [Math.round(r*255),Math.round(g*255),Math.round(b*255)];
-}
+    function spawnChats() {
+      chatMessages.forEach((msg, i) => {
+        setTimeout(() => {
+          const bubble = document.createElement("div");
+          bubble.className = "birthdayChatBubble";
+          bubble.style.left = i % 2 === 0 ? "5%" : "75%";
+          bubble.innerHTML = `<img src="${profilePics[i]}" alt="pfp"><span>${msg}</span>`;
+          document.body.appendChild(bubble);
+          setTimeout(() => bubble.remove(), 16000);
+        }, i * 1500);
+      });
+      setInterval(spawnChats, 30000);
+    }
 
-/* ===========================
-   BALLOONS implementation
-   =========================== */
-const bctx = balloonsCanvas.getContext('2d');
-let bWidth = balloonsCanvas.width = innerWidth;
-let bHeight = balloonsCanvas.height = innerHeight;
-let balloons = [], bAnimId = null;
+    function spawnBalloons() {
+      setInterval(() => {
+        const balloon = document.createElement("div");
+        balloon.className = "birthdayBalloon";
+        balloon.style.left = Math.random() * 90 + "vw";
+        balloon.style.backgroundColor = `hsl(${Math.random()*360},70%,60%)`;
+        document.body.appendChild(balloon);
+        setTimeout(() => balloon.remove(), 12000);
+      }, 800);
+    }
 
-function startBalloons(){
-  balloonsCanvas.style.display = 'block';
-  balloonsCanvas.style.opacity = '1';
-  if (balloonInterval) return;
-  balloonInterval = setInterval(()=> {
-    // spawn a few small balloons randomly
-    if (Math.random() < 0.7) balloons.push(newBalloon());
-  }, 600);
-  animateBalloons();
-}
-function stopBalloons(){
-  if (balloonInterval){ clearInterval(balloonInterval); balloonInterval = null; }
-  cancelAnimationFrame(bAnimId);
-  balloons = [];
-  bctx.clearRect(0,0,bWidth,bHeight);
-  balloonsCanvas.style.opacity = '0';
-}
-function newBalloon(){
-  const size = 8 + Math.random()*14;
-  return {
-    x: Math.random()*bWidth,
-    y: bHeight + Math.random()*60,
-    size: size,
-    speed: 0.5 + Math.random()*1.2,
-    sway: Math.random()*0.7 + 0.2,
-    drift: (Math.random()*2-1)*0.3,
-    color: `hsl(${Math.random()*360} 70% 60%)`
-  };
-}
-function animateBalloons(){
-  bctx.clearRect(0,0,bWidth,bHeight);
-  for (let i=balloons.length-1;i>=0;i--){
-    const p = balloons[i];
-    p.y -= p.speed;
-    p.x += Math.sin(p.y/30)*p.sway + p.drift;
-    // draw string
-    bctx.beginPath();
-    bctx.moveTo(p.x, p.y + p.size);
-    bctx.lineTo(p.x, p.y + p.size + 8);
-    bctx.strokeStyle = 'rgba(0,0,0,0.06)';
-    bctx.lineWidth = 1;
-    bctx.stroke();
-    // draw balloon
-    bctx.beginPath();
-    bctx.ellipse(p.x, p.y, p.size*0.8, p.size, 0, 0, Math.PI*2);
-    bctx.fillStyle = p.color;
-    bctx.fill();
-    if (p.y < -50) balloons.splice(i,1);
-  }
-  bAnimId = requestAnimationFrame(animateBalloons);
-}
+    // === Fireworks ===
+    const canvas = document.getElementById("birthdayFireworks");
+    const ctx = canvas.getContext("2d");
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
 
-/* ===========================
-   Initialize visibility (hide until needed)
-   =========================== */
-fireworksCanvas.style.opacity = '0';
-balloonsCanvas.style.opacity = '0';
-closeBtn.classList.add('hidden');
+    function startFireworks() {
+      function random(min, max) { return Math.random() * (max - min) + min; }
+      let particles = [];
 
-/* ===========================
-   When page loads during special period, ensure effects start and audio play
-   =========================== */
-window.addEventListener('load', ()=>{
-  const now = Date.now();
-  if (now >= BDAY.getTime() && now <= PERIOD_END){
-    startSpecialEffects();
-    // ensure audio attempts to play on each load as requested
-    try{ audioEl.currentTime = 0; audioEl.play().catch(()=>{}); }catch(e){}
-  }
-});
+      function createFirework() {
+        const x = random(100, canvas.width - 100);
+        const y = random(50, canvas.height / 2);
+        const count = 60;
+        for (let i = 0; i < count; i++) {
+          particles.push({
+            x, y,
+            angle: (Math.PI * 2 * i) / count,
+            speed: random(2, 6),
+            radius: 2,
+            alpha: 1
+          });
+        }
+      }
 
-/* ===========================
-   Utility: auto-hide everything after period passed (checked every minute)
-   =========================== */
-setInterval(()=>{
-  if (Date.now() > PERIOD_END){
-    stopSpecialEffects(true);
-  }
-}, 60*1000);
+      function animate() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        particles.forEach((p, i) => {
+          const dx = Math.cos(p.angle) * p.speed;
+          const dy = Math.sin(p.angle) * p.speed;
+          p.x += dx; p.y += dy;
+          p.alpha -= 0.01;
+          ctx.beginPath();
+          ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
+          ctx.fillStyle = `hsla(${random(0,360)},100%,60%,${p.alpha})`;
+          ctx.fill();
+        });
+        particles = particles.filter(p => p.alpha > 0);
+        requestAnimationFrame(animate);
+      }
+      setInterval(createFirework, 1500);
+      animate();
+    }
+
+    setInterval(updateCountdown, 1000);
+    updateCountdown();
+
+   
     
 </script>
 
@@ -1613,6 +1347,7 @@ setInterval(()=>{
 </script>  
 </body>
 </html>
+
 
 
 
