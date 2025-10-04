@@ -659,7 +659,7 @@
 
 
 
-    /* === COUNTDOWN FORM === */
+   
     #birthdayCountdown {
       position: fixed; top:10px; left:10px;
       background: rgba(0,0,0,0.6); color:#fff;
@@ -670,7 +670,7 @@
       #birthdayCountdown { font-size:10px; padding:6px 10px; }
     }
 
-    /* === CHAT BUBBLE === */
+   
     .chatBubble {
       position: fixed;
       bottom:-100px;
@@ -696,7 +696,6 @@
       100% { transform: translateY(-100vh) translateX(0); opacity:0; }
     }
 
-    /* === CLOSE BUTTON === */
     #closeBtn {
       position: fixed; bottom:15px; left:50%; transform:translateX(-50%);
       background: rgba(255,255,255,0.5);
@@ -706,7 +705,6 @@
       z-index:9999;
     }
 
-    /* === BALLOON === */
     .balloon {
       position: fixed; bottom:-150px;
       width:30px; height:40px;
@@ -723,7 +721,6 @@
       100% { transform:translateX(0) translateY(-100vh); opacity:0; }
     }
 
-    /* === HEART TAP === */
     .heart {
       position:absolute; font-size:20px; color:#ff4d6d;
       animation: floatHeart 2s ease-out forwards;
@@ -734,7 +731,6 @@
       100% { transform:translateY(-120px) scale(1.8); opacity:0; }
     }
 
-    /* CANVAS FIREWORKS */
     canvas { position:fixed; top:0; left:0; width:100%; height:100%; pointer-events:none; }
   </style>
 </head>
@@ -764,7 +760,7 @@
 <div id="birthdayCountdown">Loading...</div>
   <div id="closeBtn">✖</div>
   <canvas id="fireworks"></canvas>
-  <audio id="birthdaySong" src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3"></audio>
+  <audio id="birthdaySong" src="https://open.spotify.com/track/6VgyRGeR4cw6yNGazjGFhu?si=KLjIEvxnR2aEwwk6_5g3mQ"></audio>
 
   
 <div class="dj-wrapper" onclick="toggleDJ(this)">
@@ -1196,7 +1192,6 @@ const questions = [
     }
     setInterval(spawnBubble,3000);
 
-    // === BALLOON ===
     function spawnBalloonFunc(){
       let now=new Date().getTime();
       if(now<birthday||now>endShow) return;
@@ -1210,7 +1205,7 @@ const questions = [
     }
     setInterval(spawnBalloonFunc,2500);
 
-    // === HEART TAP ===
+   
     document.addEventListener("click",e=>{
       let now=new Date().getTime();
       if(now<birthday||now>endShow) return;
@@ -1223,13 +1218,11 @@ const questions = [
       setTimeout(()=>heart.remove(),2000);
     });
 
-    // === CLOSE BUTTON ===
     document.getElementById("closeBtn").onclick=()=>{
       spawnChat=false; spawnBalloon=false; fireworkInterval=5000;
       document.querySelectorAll(".chatBubble").forEach(el=>el.remove());
     };
 
-    // === FIREWORKS CANVAS ===
     const canvas=document.getElementById("fireworks");
     const ctx=canvas.getContext("2d");
     canvas.width=innerWidth; canvas.height=innerHeight;
@@ -1271,6 +1264,8 @@ const questions = [
     }
     setInterval(launchFirework, fireworkInterval);
     window.onresize=()=>{canvas.width=innerWidth; canvas.height=innerHeight;};
+
+    
 </script>
 
 <script src="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.js"></script>
@@ -1283,6 +1278,7 @@ const questions = [
 </script>  
 </body>
 </html>
+
 
 
 
