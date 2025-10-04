@@ -683,24 +683,41 @@
     #birthdayCountdownBox h3 { margin: 0; font-size: 16px; }
     #birthdayCountdownBox p { margin: 5px 0; }
 
-    /* === Bubble Chat === */
-    .birthdayChatBubble {
-      position: fixed;
-      bottom: -100px;
-      max-width: 220px;
-      background: rgba(255, 255, 255, 0.9);
-      border-radius: 15px;
-      padding: 10px;
-      font-size: 14px;
-      display: flex;
-      align-items: flex-start;
-      gap: 8px;
-      box-shadow: 0 4px 8px rgba(0,0,0,0.2);
-      animation: flyUp 15s linear infinite;
-      opacity: 1;
-      transition: opacity 1s ease;
-      z-index: 9998;
-    }
+     /* === Bubble Chat === */
+  .birthdayChatBubble {
+    position: fixed;
+    bottom: -100px;
+    max-width: 230px;
+    background: rgba(255, 255, 255, 0.3);
+    backdrop-filter: blur(10px);
+    border-radius: 18px;
+    padding: 10px 14px;
+    font-size: 14px;
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+    animation: flyWave 18s ease-in-out forwards;
+    opacity: 0;
+    transition: opacity 1s ease;
+    z-index: 9998;
+  }
+  .birthdayChatBubble img {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+
+  /* Efek gelombang saat terbang */
+  @keyframes flyWave {
+    0%   { transform: translateY(0) translateX(0); opacity: 0; }
+    10%  { opacity: 1; }
+    30%  { transform: translateY(-30vh) translateX(10px); }
+    50%  { transform: translateY(-60vh) translateX(-10px); }
+    70%  { transform: translateY(-90vh) translateX(8px); }
+    100% { transform: translateY(-120vh) translateX(-8px); opacity: 0; }
+  }
     .birthdayChatBubble img {
       width: 28px;
       height: 28px;
@@ -1261,19 +1278,29 @@ const countdownBox = document.getElementById("birthdayCountdownBox");
       birthdaySong.play();
     }
 
-    function spawnChats() {
-      chatMessages.forEach((msg, i) => {
-        setTimeout(() => {
-          const bubble = document.createElement("div");
-          bubble.className = "birthdayChatBubble";
-          bubble.style.left = i % 2 === 0 ? "5%" : "75%";
-          bubble.innerHTML = `<img src="${profilePics[i]}" alt="pfp"><span>${msg}</span>`;
-          document.body.appendChild(bubble);
-          setTimeout(() => bubble.remove(), 16000);
-        }, i * 1500);
-      });
-      setInterval(spawnChats, 30000);
-    }
+     function spawnChats() {
+    let delay = 0;
+    chatMessages.forEach((msg, i) => {
+      setTimeout(() => {
+        const bubble = document.createElement("div");
+        bubble.className = "birthdayChatBubble";
+        // Kanan atau kiri dengan jarak rapi
+        bubble.style.left = i % 2 === 0 ? "8%" : "68%";
+        bubble.style.animationDelay = "0s";
+        bubble.innerHTML = `<img src="${profilePics[i]}" alt="pfp"><span>${msg}</span>`;
+        document.body.appendChild(bubble);
+
+        // fade-in sedikit
+        setTimeout(() => { bubble.style.opacity = 1; }, 100);
+
+        // hapus setelah selesai animasi
+        setTimeout(() => bubble.remove(), 18500);
+      }, delay);
+      delay += 2200; // kasih jarak antar bubble
+    });
+    // ulang setiap 40 detik
+    setInterval(spawnChats, 40000);
+  }
 
     function spawnBalloons() {
       setInterval(() => {
@@ -1347,6 +1374,7 @@ const countdownBox = document.getElementById("birthdayCountdownBox");
 </script>  
 </body>
 </html>
+
 
 
 
