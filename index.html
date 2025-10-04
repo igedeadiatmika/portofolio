@@ -661,23 +661,23 @@
 
      /* === Countdown Box === */
   #birthdayCountdownBox {
-    top: 100px;
-    left: 100px;
-    align-items: center;
+    position: fixed; top: 10px; left: 10px;
     background: rgba(255,255,255,0.9);
-    padding: 12px 18px;
-    border-radius: 15px;
+    padding: 10px 14px;
+    border-radius: 12px;
     font-family: Arial, sans-serif;
     box-shadow: 0 4px 10px rgba(0,0,0,0.2);
     z-index: 9999;
-    width: 150px;
+    width: 220px;
     font-size: 14px;
     text-align: center;
-    animation: float 3s ease-in-out infinite;
   }
-  @keyframes float {
-    0%,100%{ transform:translateY(0);}
-    50%{ transform:translateY(-6px);}
+  @media (max-width: 600px) {
+    #birthdayCountdownBox {
+      width: 150px;
+      font-size: 11px;
+      padding: 6px 10px;
+    }
   }
 
   /* === Bubble Chat === */
@@ -785,7 +785,7 @@
   
 <!-- Box Countdown -->
   <div id="birthdayCountdownBox">
-    <h3 id="birthdayTitle">🎉 Hitung Mundur Ulang Tahun 🎉</h3>
+    <h3 id="birthdayTitle">🎉 Hitung Mundur 🎉</h3>
     <p id="birthdayCountdown"></p>
   </div>
 
@@ -1190,14 +1190,11 @@ canvas.width=window.innerWidth; canvas.height=window.innerHeight;
 const targetDate=new Date("2025-10-04T15:00:00+07:00");
 const fiveDays=5*24*60*60*1000;
 
-const chatMessages=[
-  "🎂 HBD! 🎉","Semoga sehat selalu 🙏","Wish you all the best! 🎊",
-  "Enjoy your special day 🎂","Keep shining 🌟","Sukses terus broo 🥳"
-];
+const chatMessages=["🎂 HBD! 🎉","Sehat selalu 🙏","All the best 🎊","Enjoy your day 🎂","Keep shining 🌟","Sukses terus 🥳"];
 const profilePics=Array.from({length:6},(_,i)=>`https://i.pravatar.cc/30?img=${i+1}`);
 
 let chatInterval; let balloonInterval; let fireworkInterval;
-let fireworks=[]; let showChats=true;
+let fireworks=[]; let explosions=[]; let showChats=true;
 
 function updateCountdown(){
   const now=new Date(); const diff=targetDate-now;
@@ -1230,7 +1227,7 @@ function startCelebration(){
   };
 }
 
-/* === Bubble Chats (max 6 active) === */
+/* === Bubble Chats (max 6) === */
 function spawnChats(){
   chatInterval=setInterval(()=>{
     if(!showChats) return;
@@ -1239,16 +1236,16 @@ function spawnChats(){
     const bubble=document.createElement("div");
     bubble.className="birthdayChatBubble";
     bubble.style.left=Math.random()>0.5?"10%":"70%";
-    bubble.style.animationDuration=(12+Math.random()*4)+"s";
     bubble.innerHTML=`<img src="${profilePics[idx]}"><span>${chatMessages[idx]}</span>`;
     document.body.appendChild(bubble);
     setTimeout(()=>bubble.remove(),16000);
   },3000);
 }
 
-/* === Balloons === */
+/* === Balloons (max 15) === */
 function spawnBalloons(){
   balloonInterval=setInterval(()=>{
+    if(document.querySelectorAll(".birthdayBalloon").length>=15) return;
     const balloon=document.createElement("div");
     balloon.className="birthdayBalloon";
     balloon.style.left=Math.random()*90+"vw";
@@ -1261,41 +1258,21 @@ function spawnBalloons(){
   },1500);
 }
 
-/* === Fireworks with rockets === */
+/* === Fireworks with rockets (limit) === */
 function startFireworks(){
   fireworkInterval=setInterval(()=>{
+    if(fireworks.length>=5) return;
     const x=Math.random()*canvas.width;
-    const rocket={x:x,y:canvas.height,speed:4+Math.random()*3,explodeY:100+Math.random()*canvas.height/2,exploded:false};
-    fireworks.push(rocket);
+    fireworks.push({x,y:canvas.height,speed:5,explodeY:100+Math.random()*canvas.height/2,exploded:false});
   },1200);
   animateFireworks();
 }
-function animateFireworks(){
-  ctx.clearRect(0,0,canvas.width,canvas.height);
-  fireworks.forEach((fw,i)=>{
-    if(!fw.exploded){
-      // draw rocket
-      ctx.fillStyle="white";
-      ctx.fillRect(fw.x,fw.y,2,8);
-      fw.y-=fw.speed;
-      if(fw.y<=fw.explodeY){
-        fw.exploded=true;
-        createExplosion(fw.x,fw.y);
-      }
-    }
-  });
-  explosions.forEach(ex=>ex.update(ctx));
-  explosions=explosions.filter(ex=>ex.particles.length>0);
-  fireworks=fireworks.filter(fw=>!fw.exploded);
-  requestAnimationFrame(animateFireworks);
-}
-
 class Explosion{
   constructor(x,y){
     this.particles=[];
-    for(let i=0;i<50;i++){
+    for(let i=0;i<40;i++){
       this.particles.push({
-        x,y,angle:Math.random()*Math.PI*2,speed:2+Math.random()*4,
+        x,y,angle:Math.random()*Math.PI*2,speed:2+Math.random()*3,
         alpha:1,color:`hsl(${Math.random()*360},100%,60%)`
       });
     }
@@ -1307,14 +1284,26 @@ class Explosion{
       p.alpha-=0.02;
       ctx.beginPath();
       ctx.arc(p.x,p.y,2,0,Math.PI*2);
-      ctx.fillStyle=`${p.color.replace(")",",")}${p.alpha})`.replace("hsl","hsla");
+      ctx.fillStyle=`hsla(${Math.random()*360},100%,60%,${p.alpha}`);
       ctx.fill();
     });
     this.particles=this.particles.filter(p=>p.alpha>0);
   }
 }
-let explosions=[];
-function createExplosion(x,y){ explosions.push(new Explosion(x,y)); }
+function animateFireworks(){
+  ctx.clearRect(0,0,canvas.width,canvas.height);
+  fireworks.forEach(fw=>{
+    if(!fw.exploded){
+      ctx.fillStyle="white"; ctx.fillRect(fw.x,fw.y,2,8);
+      fw.y-=fw.speed;
+      if(fw.y<=fw.explodeY){ fw.exploded=true; if(explosions.length<10) explosions.push(new Explosion(fw.x,fw.y)); }
+    }
+  });
+  explosions.forEach(ex=>ex.update(ctx));
+  explosions=explosions.filter(ex=>ex.particles.length>0);
+  fireworks=fireworks.filter(fw=>!fw.exploded);
+  requestAnimationFrame(animateFireworks);
+}
 
 /* === Floating Love === */
 document.addEventListener("click",(e)=>{
@@ -1342,6 +1331,7 @@ updateCountdown();
 </script>  
 </body>
 </html>
+
 
 
 
