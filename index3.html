@@ -59,11 +59,11 @@
   <main class="stage">
     <section class="parallax-wrap" id="parallax">
       <div class="layer" data-role="sky" data-depth="0.06" style="background-image:linear-gradient(180deg,#6fb6d6 0%, rgba(107,164,191,0.06) 40%);"></div>
-      <div class="layer" data-role="distant" data-depth="0.12" style="background-image: url('images/forest-distant.png');"></div>
-      <div class="layer" data-role="mid" data-depth="0.26" style="background-image: url('images/forest-mid.png');"></div>
-      <div class="layer" data-role="near" data-depth="0.45" style="background-image: url('images/forest-near.png');"></div>
-      <div class="layer" data-role="fg" data-depth="0.7" style="background-image: url('images/forest-fg.png');"></div>
-      <div class="layer" data-role="front" data-depth="0.92" style="background-image: url('images/forest-front.png');"></div>
+      <div class="layer" data-role="distant" data-depth="0.12" style="background-image: url('https://i.pinimg.com/736x/e4/d3/eb/e4d3eba89592bb9e508dfa5ad520c1db.jpg');"></div>
+      <div class="layer" data-role="mid" data-depth="0.26" style="background-image: url('https://img.freepik.com/psd-premium/ilustrasi-singa-cat-air-png-transparan_303714-6507.jpg');"></div>
+      <div class="layer" data-role="near" data-depth="0.45" style="background-image: url('https://png.pngtree.com/png-clipart/20220628/ourmid/pngtree-flock-of-birds-silhouettes-flying-birds-clipart-png-image_5371927.png');"></div>
+      <div class="layer" data-role="fg" data-depth="0.7" style="background-image: url('https://png.pngtree.com/png-clipart/20201208/original/pngtree-plane-tree-1-real-png-png-image_5600644.jpg);"></div>
+      <div class="layer" data-role="front" data-depth="0.92" style="background-image: url('https://i.pinimg.com/474x/43/d7/74/43d7740103a4aa68ea2464a0a1295819.jpg');"></div>
       <div class="overlay"></div>
       <div class="content">
         <h1>Hutan Paralaks dengan Makhluk Hidup</h1>
@@ -91,7 +91,7 @@
         layers.forEach(layer => {
           const depth = parseFloat(layer.dataset.depth) || 0.3;
           const ty = -window.scrollY * depth * 0.12;
-          layer.style.transform = translate3d(0, ${ty}px, 0);
+          layer.style.transform = `translate3d(0, ${ty}px, 0)`;
         });
       }
 
@@ -103,12 +103,12 @@
           let offset = (scroll/viewportH);
           if(offset < 1){
             // stage 1: gather to center
-            c.el.style.transform = translate(-50%, ${-offset*50}px);
+            c.el.style.transform = `translate(-50%, ${-offset*50}px)`;
           } else {
             // stage 2: move away differently
             let dirX = (i%2===0? 1:-1) * offset * 100 * c.speed;
             let dirY = -offset*80*c.speed;
-            c.el.style.transform = translate(${dirX}px, ${dirY}px);
+            c.el.style.transform = `translate(${dirX}px, ${dirY}px)`;
           }
         });
       }
