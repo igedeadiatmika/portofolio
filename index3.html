@@ -1,152 +1,128 @@
-<!doctype html>
-
-<html lang="id">
+<!DOCTYPE html><html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Parallax Forest — 3D Scroll Effect + Creatures</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Parallax Forest Advanced</title>
   <style>
-    *{box-sizing:border-box;margin:0;padding:0}
-    html,body{height:100%;background:#071019;color:#fff;font-family:Inter,Segoe UI,system-ui,-apple-system,"Helvetica Neue",Arial}.stage{
-  position:relative;min-height:200vh;perspective:1200px;overflow-x:hidden;
-  display:flex;align-items:center;justify-content:center;padding:6rem 1rem;
-}
-.parallax-wrap{
-  --width:1000px;
-  width:min(var(--width),95vw);height:600px;
-  position:relative;transform-style:preserve-3d;
-  border-radius:18px;overflow:hidden;
-  box-shadow:0 20px 60px rgba(2,6,12,.6), inset 0 2px 12px rgba(255,255,255,.03);
-  background:linear-gradient(180deg,#041120 0%, #0b1d22 60%);
-}
-.layer{position:absolute;inset:0;pointer-events:none;
-  background-repeat:no-repeat;background-position:center bottom;background-size:cover;
-  transform-origin:center center;will-change:transform,opacity;
-}
-.layer[data-role="sky"]{z-index:1;}
-.layer[data-role="distant"]{z-index:2;}
-.layer[data-role="mid"]{z-index:3;}
-.layer[data-role="near"]{z-index:4;}
-.layer[data-role="fg"]{z-index:5;}
-.layer[data-role="front"]{z-index:6;}
-
-.overlay{position:absolute;inset:0;z-index:50;pointer-events:none;
-  background:linear-gradient(180deg, rgba(7,12,16,0.05) 0%, rgba(2,6,8,0.6) 100%);
-}
-.content{position:absolute;left:2.5rem;top:2.5rem;z-index:60;color:#dff6f0;
-  text-shadow:0 6px 30px rgba(0,0,0,.7);max-width:44ch;pointer-events:auto;
-}
-.content h1{font-size:clamp(1.4rem,3vw,2rem);margin-bottom:.4rem}
-.hint{position:absolute;right:1rem;bottom:1rem;z-index:61;font-size:.8rem;opacity:.7}
-
-/* Creatures - responsive scaling */
-.creature{
-  position:absolute;bottom:0;left:50%;
-  background-size:contain;background-repeat:no-repeat;background-position:center;
-  transform:translateX(-50%) translateY(0);
-  transition:transform 1.2s ease-out;
-  z-index:70;pointer-events:none;
+    body, html {
+      margin: 0;
+      padding: 0;
+      overflow-x: hidden;
+      height: 200vh; /* membuat scroll panjang */
+      background: #1a1a1a;
+    }.parallax-container {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
 }
 
-/* Default sizes (desktop) */
-.creature[data-type="bird"]{background-image:url('images/bird.png');width:60px;height:60px;}
-.creature[data-type="deer"]{background-image:url('images/deer.png');width:120px;height:100px;}
-.creature[data-type="rabbit"]{background-image:url('images/rabbit.png');width:50px;height:50px;}
-
-/* Medium screens */
-@media (max-width:1024px){
-  .creature[data-type="bird"]{width:50px;height:50px;}
-  .creature[data-type="deer"]{width:100px;height:85px;}
-  .creature[data-type="rabbit"]{width:40px;height:40px;}
+.layer {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  pointer-events: none;
 }
 
-/* Small screens / mobile */
-@media (max-width:720px){
-  .parallax-wrap{height:520px}
-  .creature[data-type="bird"]{width:40px;height:40px;}
-  .creature[data-type="deer"]{width:80px;height:65px;}
-  .creature[data-type="rabbit"]{width:30px;height:30px;}
+.layer img.bg {
+  width: 100%;
+  height: auto;
+  object-fit: cover;
+}
+
+.element {
+  position: absolute;
+  max-width: 80px;
+  max-height: 80px;
+  opacity: 0;
+  transform: translateY(100px);
+  transition: transform 1s ease, opacity 1s ease;
+}
+
+.element.show {
+  opacity: 1;
+}
+
+/* Responsif */
+@media (max-width: 768px) {
+  .element {
+    max-width: 50px;
+    max-height: 50px;
+  }
 }
 
   </style>
 </head>
 <body>
-  <main class="stage">
-    <section class="parallax-wrap" id="parallax">
-      <div class="layer" data-role="sky" data-depth="0.06" data-direction="vertical" data-speed="0.5" style="background-image:linear-gradient(180deg,#6fb6d6 0%, rgba(107,164,191,0.06) 40%);"></div>
-      <div class="layer" data-role="distant" data-depth="0.12" data-direction="horizontal" data-speed="0.8" style="background-image: url('images/forest-distant.png');"></div>
-      <div class="layer" data-role="mid" data-depth="0.26" data-direction="vertical" data-speed="1.0" style="background-image: url('images/forest-mid.png');"></div>
-      <div class="layer" data-role="near" data-depth="0.45" data-direction="both" data-speed="1.2" style="background-image: url('images/forest-near.png');"></div>
-      <div class="layer" data-role="fg" data-depth="0.7" data-direction="horizontal" data-speed="1.4" style="background-image: url('de.jpeg');"></div>
-      <div class="layer" data-role="front" data-depth="0.92" data-direction="vertical" data-speed="1.6" style="background-image: url('zuck.jpeg');"></div>
-      <div class="overlay"></div>
-      <div class="content">
-        <h1>Hutan Paralaks dengan Makhluk Hidup</h1>
-        <p>Scroll untuk melihat lapisan bergerak ke atas, samping, atau keduanya dengan kecepatan berbeda, serta makhluk hutan berkumpul lalu menyebar.</p>
-      </div>
-      <div class="hint">Scroll untuk interaksi makhluk</div><!-- Creatures -->
-  <div class="creature" data-type="bird" id="bird"></div>
-  <div class="creature" data-type="deer" id="deer"></div>
-  <div class="creature" data-type="rabbit" id="rabbit"></div>
+  <div class="parallax-container">
+    <!-- Background layers -->
+    <div class="layer" data-depth="0.1" data-speed="0.3">
+      <img class="bg" src="images/forest-distant.png" alt="forest distant">
+    </div>
+    <div class="layer" data-depth="0.3" data-speed="0.5">
+      <img class="bg" src="images/forest-mid.png" alt="forest mid">
+    </div>
+    <div class="layer" data-depth="0.6" data-speed="0.7">
+      <img class="bg" src="images/forest-near.png" alt="forest near">
+    </div><!-- Forest foreground -->
+<div class="layer" data-depth="0.9" data-speed="1">
+  <img class="bg" src="images/forest-front.png" alt="forest front">
+</div>
 
-</section>
+<!-- Small forest elements -->
+<img src="images/bird.png" class="element bird" style="top:20%; left:-100px;">
+<img src="images/deer.png" class="element deer" style="bottom:-100px; left:40%;">
+<img src="images/rabbit.png" class="element rabbit" style="bottom:-120px; right:30%;">
+<img src="de.jpeg" class="element butterfly" style="top:-80px; right:20%;">
+<img src="zuck.jpeg" class="element mushroom" style="bottom:-100px; left:10%;">
 
-  </main>  <script>
-    (function(){
-      const wrap = document.getElementById('parallax');
-      const layers = Array.from(wrap.querySelectorAll('.layer'));
-      const creatures = [
-        {el: document.getElementById('bird'), speed: 1.5},
-        {el: document.getElementById('deer'), speed: 1.0},
-        {el: document.getElementById('rabbit'), speed: 2.0}
-      ];
+  </div>  <script>
+    const layers = document.querySelectorAll('.layer');
+    const elements = document.querySelectorAll('.element');
 
-      function updateLayers(){
-        layers.forEach(layer => {
-          const depth = parseFloat(layer.dataset.depth) || 0.3;
-          const direction = layer.dataset.direction || 'vertical';
-          const speed = parseFloat(layer.dataset.speed) || 1.0;
-          const offset = window.scrollY * depth * 0.12 * speed;
+    window.addEventListener('scroll', () => {
+      let scrollY = window.scrollY;
+      let windowH = window.innerHeight;
 
-          let tx = 0, ty = 0;
-          if(direction === 'vertical'){
-            ty = -offset;
-          } else if(direction === 'horizontal'){
-            tx = offset;
-          } else if(direction === 'both'){
-            tx = offset * 0.5;
-            ty = -offset;
-          }
-
-          layer.style.transform = `translate3d(${tx}px, ${ty}px, 0)`;
-        });
-      }
-
-      function updateCreatures(){
-        const scroll = window.scrollY;
-        const viewportH = window.innerHeight;
-
-        creatures.forEach((c,i)=>{
-          let offset = (scroll/viewportH);
-          if(offset < 1){
-            c.el.style.transform = `translate(-50%, ${-offset*50}px)`;
-          } else {
-            let dirX = (i%2===0? 1:-1) * offset * 100 * c.speed;
-            let dirY = -offset*80*c.speed;
-            c.el.style.transform = `translate(${dirX}px, ${dirY}px)`;
-          }
-        });
-      }
-
-      function onScroll(){
-        updateLayers();
-        updateCreatures();
-      }
-      window.addEventListener('scroll', onScroll);
-      document.addEventListener('DOMContentLoaded', ()=>{
-        updateLayers();
-        updateCreatures();
+      // Parallax untuk background
+      layers.forEach(layer => {
+        const depth = layer.dataset.depth;
+        const speed = layer.dataset.speed || 1;
+        let y = -(scrollY * depth * speed * 0.5);
+        layer.style.transform = `translateY(${y}px)`;
       });
-    })();
+
+      // Animasi untuk elemen kecil
+      elements.forEach((el, index) => {
+        if(scrollY > windowH * 0.1) {
+          el.classList.add('show');
+
+          // Masuk ke tengah
+          let centerX = (window.innerWidth / 2) - (el.offsetWidth / 2);
+          let centerY = (window.innerHeight / 2) - (el.offsetHeight / 2);
+          let offset = (index + 1) * 50;
+
+          if(scrollY < windowH * 0.5) {
+            // bergerak ke tengah
+            el.style.transform = `translate(${centerX - el.offsetLeft}px, ${centerY - el.offsetTop}px)`;
+          } else {
+            // Setelah di tengah, naik atau ke samping
+            let dir = index % 3;
+            if(dir === 0) {
+              el.style.transform = `translate(${centerX - el.offsetLeft}px, ${-scrollY * 0.3}px)`;
+            } else if(dir === 1) {
+              el.style.transform = `translate(${scrollY * 0.3}px, ${centerY - el.offsetTop}px)`;
+            } else {
+              el.style.transform = `translate(${-scrollY * 0.3}px, ${centerY - el.offsetTop}px)`;
+            }
+          }
+        }
+      });
+    });
   </script></body>
 </html>
