@@ -1,128 +1,113 @@
-<!DOCTYPE html><html lang="en">
+<!DOCTYPE html>
+<html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Parallax Forest Advanced</title>
+  <title>Cinematic Parallax Story</title>
   <style>
     body, html {
       margin: 0;
       padding: 0;
+      height: 800vh; /* panjang untuk banyak scene */
+      background: #000;
       overflow-x: hidden;
-      height: 200vh; /* membuat scroll panjang */
-      background: #1a1a1a;
-    }.parallax-container {
-  position: relative;
-  width: 100%;
-  height: 100%;
-  overflow: hidden;
-}
+    }
 
-.layer {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  pointer-events: none;
-}
+    .parallax-container {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      overflow: hidden;
+    }
 
-.layer img.bg {
-  width: 100%;
-  height: auto;
-  object-fit: cover;
-}
+    .layer img, .element {
+      position: absolute;
+      will-change: transform, opacity;
+      transition: transform 1s ease, opacity 1s ease;
+    }
 
-.element {
-  position: absolute;
-  max-width: 80px;
-  max-height: 80px;
-  opacity: 0;
-  transform: translateY(100px);
-  transition: transform 1s ease, opacity 1s ease;
-}
+    .layer img.bg {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
 
-.element.show {
-  opacity: 1;
-}
+    .element {
+      max-width: 120px;
+      filter: drop-shadow(0 5px 10px rgba(0,0,0,0.6));
+    }
 
-/* Responsif */
-@media (max-width: 768px) {
-  .element {
-    max-width: 50px;
-    max-height: 50px;
-  }
-}
-
+    .stars {
+      position: absolute;
+      width: 100%; height: 100%;
+      background: transparent url("images/stars.png") repeat;
+      opacity: 0;
+      transition: opacity 2s ease;
+    }
   </style>
 </head>
 <body>
   <div class="parallax-container">
-    <!-- Background layers -->
-    <div class="layer" data-depth="0.1" data-speed="0.3">
-      <img class="bg" src="images/forest-distant.png" alt="forest distant">
-    </div>
-    <div class="layer" data-depth="0.3" data-speed="0.5">
-      <img class="bg" src="images/forest-mid.png" alt="forest mid">
-    </div>
-    <div class="layer" data-depth="0.6" data-speed="0.7">
-      <img class="bg" src="images/forest-near.png" alt="forest near">
-    </div><!-- Forest foreground -->
-<div class="layer" data-depth="0.9" data-speed="1">
-  <img class="bg" src="images/forest-front.png" alt="forest front">
-</div>
+    <!-- Layers -->
+    <div class="layer sky"><img class="bg" src="forest-sky.png"></div>
+    <div class="layer mountain"><img class="bg" src="forest-mountain.png"></div>
+    <div class="layer forest"><img class="bg" src="de.jpeg"></div>
+    <div class="layer front"><img class="bg" src="zuck.jpeg"></div>
 
-<!-- Small forest elements -->
-<img src="images/bird.png" class="element bird" style="top:20%; left:-100px;">
-<img src="images/deer.png" class="element deer" style="bottom:-100px; left:40%;">
-<img src="images/rabbit.png" class="element rabbit" style="bottom:-120px; right:30%;">
-<img src="de.jpeg" class="element butterfly" style="top:-80px; right:20%;">
-<img src="zuck.jpeg" class="element mushroom" style="bottom:-100px; left:10%;">
+    <!-- Elements -->
+    <img src="images/bird.png" class="element bird" style="top:10%; left:5%;">
+    <img src="images/deer.png" class="element deer" style="bottom:5%; left:25%;">
+    <img src="images/rabbit.png" class="element rabbit" style="bottom:10%; right:30%;">
+    <img src="images/fox.png" class="element fox" style="bottom:15%; left:70%;">
 
-  </div>  <script>
-    const layers = document.querySelectorAll('.layer');
-    const elements = document.querySelectorAll('.element');
+    <!-- Atmosphere -->
+    <div class="stars"></div>
+  </div>
+
+  <script>
+    const bird = document.querySelector('.bird');
+    const deer = document.querySelector('.deer');
+    const rabbit = document.querySelector('.rabbit');
+    const fox = document.querySelector('.fox');
+    const stars = document.querySelector('.stars');
+    const sky = document.querySelector('.sky img');
 
     window.addEventListener('scroll', () => {
-      let scrollY = window.scrollY;
-      let windowH = window.innerHeight;
+      let progress = window.scrollY / (document.body.scrollHeight - window.innerHeight);
 
-      // Parallax untuk background
-      layers.forEach(layer => {
-        const depth = layer.dataset.depth;
-        const speed = layer.dataset.speed || 1;
-        let y = -(scrollY * depth * speed * 0.5);
-        layer.style.transform = `translateY(${y}px)`;
-      });
+      // Scene 1: Sunrise (0 - 0.25)
+      if(progress < 0.25){
+        bird.style.opacity = 1;
+        bird.style.transform = `translate(${progress*400}px, ${progress*50}px`);
+        sky.style.filter = "brightness(1)";
+      }
 
-      // Animasi untuk elemen kecil
-      elements.forEach((el, index) => {
-        if(scrollY > windowH * 0.1) {
-          el.classList.add('show');
+      // Scene 2: Day (0.25 - 0.5)
+      if(progress >= 0.25 && progress < 0.5){
+        deer.style.opacity = 1;
+        deer.style.transform = `translateY(${-(progress-0.25)*300}px)`;
+        rabbit.style.opacity = 1;
+        rabbit.style.transform = `translateX(${(progress-0.25)*400}px)`;
+      }
 
-          // Masuk ke tengah
-          let centerX = (window.innerWidth / 2) - (el.offsetWidth / 2);
-          let centerY = (window.innerHeight / 2) - (el.offsetHeight / 2);
-          let offset = (index + 1) * 50;
+      // Scene 3: Sunset (0.5 - 0.75)
+      if(progress >= 0.5 && progress < 0.75){
+        sky.style.filter = "brightness(0.7) sepia(1) hue-rotate(-20deg) saturate(1.5)";
+        fox.style.opacity = 1;
+        fox.style.transform = `translateY(${-(progress-0.5)*400}px)`;
+        bird.style.transform = `translate(${progress*600}px, -${(progress-0.5)*400}px)`;
+      }
 
-          if(scrollY < windowH * 0.5) {
-            // bergerak ke tengah
-            el.style.transform = `translate(${centerX - el.offsetLeft}px, ${centerY - el.offsetTop}px)`;
-          } else {
-            // Setelah di tengah, naik atau ke samping
-            let dir = index % 3;
-            if(dir === 0) {
-              el.style.transform = `translate(${centerX - el.offsetLeft}px, ${-scrollY * 0.3}px)`;
-            } else if(dir === 1) {
-              el.style.transform = `translate(${scrollY * 0.3}px, ${centerY - el.offsetTop}px)`;
-            } else {
-              el.style.transform = `translate(${-scrollY * 0.3}px, ${centerY - el.offsetTop}px)`;
-            }
-          }
-        }
-      });
+      // Scene 4: Night (0.75 - 1)
+      if(progress >= 0.75){
+        sky.style.filter = "brightness(0.3)";
+        stars.style.opacity = 1;
+        bird.style.opacity = 0;
+        deer.style.opacity = 0;
+        rabbit.style.opacity = 0;
+        fox.style.opacity = 0;
+      }
     });
-  </script></body>
+  </script>
+</body>
 </html>
