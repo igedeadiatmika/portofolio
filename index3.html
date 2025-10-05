@@ -39,35 +39,50 @@
 .content h1{font-size:clamp(1.4rem,3vw,2rem);margin-bottom:.4rem}
 .hint{position:absolute;right:1rem;bottom:1rem;z-index:61;font-size:.8rem;opacity:.7}
 
-/* Creatures */
+/* Creatures - responsive scaling */
 .creature{
-  position:absolute;bottom:0;left:50%;width:60px;height:60px;
+  position:absolute;bottom:0;left:50%;
   background-size:contain;background-repeat:no-repeat;background-position:center;
   transform:translateX(-50%) translateY(0);
   transition:transform 1.2s ease-out;
   z-index:70;pointer-events:none;
 }
-.creature[data-type="bird"]{background-image:url('images/bird.png');}
-.creature[data-type="deer"]{background-image:url('images/deer.png');width:80px;height:80px;}
+
+/* Default sizes (desktop) */
+.creature[data-type="bird"]{background-image:url('images/bird.png');width:60px;height:60px;}
+.creature[data-type="deer"]{background-image:url('images/deer.png');width:120px;height:100px;}
 .creature[data-type="rabbit"]{background-image:url('images/rabbit.png');width:50px;height:50px;}
 
-@media (max-width:720px){.parallax-wrap{height:520px}}
+/* Medium screens */
+@media (max-width:1024px){
+  .creature[data-type="bird"]{width:50px;height:50px;}
+  .creature[data-type="deer"]{width:100px;height:85px;}
+  .creature[data-type="rabbit"]{width:40px;height:40px;}
+}
+
+/* Small screens / mobile */
+@media (max-width:720px){
+  .parallax-wrap{height:520px}
+  .creature[data-type="bird"]{width:40px;height:40px;}
+  .creature[data-type="deer"]{width:80px;height:65px;}
+  .creature[data-type="rabbit"]{width:30px;height:30px;}
+}
 
   </style>
 </head>
 <body>
   <main class="stage">
     <section class="parallax-wrap" id="parallax">
-      <div class="layer" data-role="sky" data-depth="0.06" style="background-image:linear-gradient(180deg,#6fb6d6 0%, rgba(107,164,191,0.06) 40%);"></div>
-      <div class="layer" data-role="distant" data-depth="0.12" style="background-image: url('https://i.pinimg.com/736x/e4/d3/eb/e4d3eba89592bb9e508dfa5ad520c1db.jpg');"></div>
-      <div class="layer" data-role="mid" data-depth="0.26" style="background-image: url('https://img.freepik.com/psd-premium/ilustrasi-singa-cat-air-png-transparan_303714-6507.jpg');"></div>
-      <div class="layer" data-role="near" data-depth="0.45" style="background-image: url('https://png.pngtree.com/png-clipart/20220628/ourmid/pngtree-flock-of-birds-silhouettes-flying-birds-clipart-png-image_5371927.png');"></div>
-      <div class="layer" data-role="fg" data-depth="0.7" style="background-image: url('zuck.jpeg');"></div>
-      <div class="layer" data-role="front" data-depth="0.92" style="background-image: url('de.jpeg');"></div>
+      <div class="layer" data-role="sky" data-depth="0.06" data-direction="vertical" data-speed="0.5" style="background-image:linear-gradient(180deg,#6fb6d6 0%, rgba(107,164,191,0.06) 40%);"></div>
+      <div class="layer" data-role="distant" data-depth="0.12" data-direction="horizontal" data-speed="0.8" style="background-image: url('images/forest-distant.png');"></div>
+      <div class="layer" data-role="mid" data-depth="0.26" data-direction="vertical" data-speed="1.0" style="background-image: url('images/forest-mid.png');"></div>
+      <div class="layer" data-role="near" data-depth="0.45" data-direction="both" data-speed="1.2" style="background-image: url('images/forest-near.png');"></div>
+      <div class="layer" data-role="fg" data-depth="0.7" data-direction="horizontal" data-speed="1.4" style="background-image: url('de.jpeg');"></div>
+      <div class="layer" data-role="front" data-depth="0.92" data-direction="vertical" data-speed="1.6" style="background-image: url('zuck.jpeg');"></div>
       <div class="overlay"></div>
       <div class="content">
         <h1>Hutan Paralaks dengan Makhluk Hidup</h1>
-        <p>Scroll untuk melihat lapisan bergerak dan makhluk hutan berkumpul lalu menyebar.</p>
+        <p>Scroll untuk melihat lapisan bergerak ke atas, samping, atau keduanya dengan kecepatan berbeda, serta makhluk hutan berkumpul lalu menyebar.</p>
       </div>
       <div class="hint">Scroll untuk interaksi makhluk</div><!-- Creatures -->
   <div class="creature" data-type="bird" id="bird"></div>
@@ -86,12 +101,24 @@
         {el: document.getElementById('rabbit'), speed: 2.0}
       ];
 
-      function clamp(v,a,b){return Math.max(a,Math.min(b,v))}
       function updateLayers(){
         layers.forEach(layer => {
           const depth = parseFloat(layer.dataset.depth) || 0.3;
-          const ty = -window.scrollY * depth * 0.12;
-          layer.style.transform = `translate3d(0, ${ty}px, 0)`;
+          const direction = layer.dataset.direction || 'vertical';
+          const speed = parseFloat(layer.dataset.speed) || 1.0;
+          const offset = window.scrollY * depth * 0.12 * speed;
+
+          let tx = 0, ty = 0;
+          if(direction === 'vertical'){
+            ty = -offset;
+          } else if(direction === 'horizontal'){
+            tx = offset;
+          } else if(direction === 'both'){
+            tx = offset * 0.5;
+            ty = -offset;
+          }
+
+          layer.style.transform = `translate3d(${tx}px, ${ty}px, 0)`;
         });
       }
 
@@ -102,10 +129,8 @@
         creatures.forEach((c,i)=>{
           let offset = (scroll/viewportH);
           if(offset < 1){
-            // stage 1: gather to center
             c.el.style.transform = `translate(-50%, ${-offset*50}px)`;
           } else {
-            // stage 2: move away differently
             let dirX = (i%2===0? 1:-1) * offset * 100 * c.speed;
             let dirY = -offset*80*c.speed;
             c.el.style.transform = `translate(${dirX}px, ${dirY}px)`;
