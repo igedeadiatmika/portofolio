@@ -1,0 +1,127 @@
+<!doctype html>
+
+<html lang="id">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Parallax Forest — 3D Scroll Effect + Creatures</title>
+  <style>
+    *{box-sizing:border-box;margin:0;padding:0}
+    html,body{height:100%;background:#071019;color:#fff;font-family:Inter,Segoe UI,system-ui,-apple-system,"Helvetica Neue",Arial}.stage{
+  position:relative;min-height:200vh;perspective:1200px;overflow-x:hidden;
+  display:flex;align-items:center;justify-content:center;padding:6rem 1rem;
+}
+.parallax-wrap{
+  --width:1000px;
+  width:min(var(--width),95vw);height:600px;
+  position:relative;transform-style:preserve-3d;
+  border-radius:18px;overflow:hidden;
+  box-shadow:0 20px 60px rgba(2,6,12,.6), inset 0 2px 12px rgba(255,255,255,.03);
+  background:linear-gradient(180deg,#041120 0%, #0b1d22 60%);
+}
+.layer{position:absolute;inset:0;pointer-events:none;
+  background-repeat:no-repeat;background-position:center bottom;background-size:cover;
+  transform-origin:center center;will-change:transform,opacity;
+}
+.layer[data-role="sky"]{z-index:1;}
+.layer[data-role="distant"]{z-index:2;}
+.layer[data-role="mid"]{z-index:3;}
+.layer[data-role="near"]{z-index:4;}
+.layer[data-role="fg"]{z-index:5;}
+.layer[data-role="front"]{z-index:6;}
+
+.overlay{position:absolute;inset:0;z-index:50;pointer-events:none;
+  background:linear-gradient(180deg, rgba(7,12,16,0.05) 0%, rgba(2,6,8,0.6) 100%);
+}
+.content{position:absolute;left:2.5rem;top:2.5rem;z-index:60;color:#dff6f0;
+  text-shadow:0 6px 30px rgba(0,0,0,.7);max-width:44ch;pointer-events:auto;
+}
+.content h1{font-size:clamp(1.4rem,3vw,2rem);margin-bottom:.4rem}
+.hint{position:absolute;right:1rem;bottom:1rem;z-index:61;font-size:.8rem;opacity:.7}
+
+/* Creatures */
+.creature{
+  position:absolute;bottom:0;left:50%;width:60px;height:60px;
+  background-size:contain;background-repeat:no-repeat;background-position:center;
+  transform:translateX(-50%) translateY(0);
+  transition:transform 1.2s ease-out;
+  z-index:70;pointer-events:none;
+}
+.creature[data-type="bird"]{background-image:url('images/bird.png');}
+.creature[data-type="deer"]{background-image:url('images/deer.png');width:80px;height:80px;}
+.creature[data-type="rabbit"]{background-image:url('images/rabbit.png');width:50px;height:50px;}
+
+@media (max-width:720px){.parallax-wrap{height:520px}}
+
+  </style>
+</head>
+<body>
+  <main class="stage">
+    <section class="parallax-wrap" id="parallax">
+      <div class="layer" data-role="sky" data-depth="0.06" style="background-image:linear-gradient(180deg,#6fb6d6 0%, rgba(107,164,191,0.06) 40%);"></div>
+      <div class="layer" data-role="distant" data-depth="0.12" style="background-image: url('images/forest-distant.png');"></div>
+      <div class="layer" data-role="mid" data-depth="0.26" style="background-image: url('images/forest-mid.png');"></div>
+      <div class="layer" data-role="near" data-depth="0.45" style="background-image: url('images/forest-near.png');"></div>
+      <div class="layer" data-role="fg" data-depth="0.7" style="background-image: url('images/forest-fg.png');"></div>
+      <div class="layer" data-role="front" data-depth="0.92" style="background-image: url('images/forest-front.png');"></div>
+      <div class="overlay"></div>
+      <div class="content">
+        <h1>Hutan Paralaks dengan Makhluk Hidup</h1>
+        <p>Scroll untuk melihat lapisan bergerak dan makhluk hutan berkumpul lalu menyebar.</p>
+      </div>
+      <div class="hint">Scroll untuk interaksi makhluk</div><!-- Creatures -->
+  <div class="creature" data-type="bird" id="bird"></div>
+  <div class="creature" data-type="deer" id="deer"></div>
+  <div class="creature" data-type="rabbit" id="rabbit"></div>
+
+</section>
+
+  </main>  <script>
+    (function(){
+      const wrap = document.getElementById('parallax');
+      const layers = Array.from(wrap.querySelectorAll('.layer'));
+      const creatures = [
+        {el: document.getElementById('bird'), speed: 1.5},
+        {el: document.getElementById('deer'), speed: 1.0},
+        {el: document.getElementById('rabbit'), speed: 2.0}
+      ];
+
+      function clamp(v,a,b){return Math.max(a,Math.min(b,v))}
+      function updateLayers(){
+        layers.forEach(layer => {
+          const depth = parseFloat(layer.dataset.depth) || 0.3;
+          const ty = -window.scrollY * depth * 0.12;
+          layer.style.transform = translate3d(0, ${ty}px, 0);
+        });
+      }
+
+      function updateCreatures(){
+        const scroll = window.scrollY;
+        const viewportH = window.innerHeight;
+
+        creatures.forEach((c,i)=>{
+          let offset = (scroll/viewportH);
+          if(offset < 1){
+            // stage 1: gather to center
+            c.el.style.transform = translate(-50%, ${-offset*50}px);
+          } else {
+            // stage 2: move away differently
+            let dirX = (i%2===0? 1:-1) * offset * 100 * c.speed;
+            let dirY = -offset*80*c.speed;
+            c.el.style.transform = translate(${dirX}px, ${dirY}px);
+          }
+        });
+      }
+
+      function onScroll(){
+        updateLayers();
+        updateCreatures();
+      }
+      window.addEventListener('scroll', onScroll);
+      document.addEventListener('DOMContentLoaded', ()=>{
+        updateLayers();
+        updateCreatures();
+      });
+    })();
+  </script></body>
+</html>
