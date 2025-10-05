@@ -1,114 +1,156 @@
-<!DOCTYPE html>
-<html lang="en">
+<!DOCTYPE html><html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Cinematic Parallax Story</title>
+  <title>Epic Parallax Forest Cinematic</title>
   <style>
     body, html {
-      margin: 0;
-      padding: 0;
-      height: 800vh; /* panjang untuk banyak scene */
-      background: #000;
+      margin: 0; padding: 0;
       overflow-x: hidden;
+      font-family: sans-serif;
+      background: #000;
     }
-
+    .section {
+      height: 100vh;
+      width: 100%;
+      position: relative;
+    }
     .parallax-container {
       position: fixed;
       top: 0; left: 0;
       width: 100%; height: 100%;
       overflow: hidden;
+      pointer-events: none;
     }
-
-    .layer img, .element {
-      position: absolute;
-      will-change: transform, opacity;
-      transition: transform 1s ease, opacity 1s ease;
-    }
-
     .layer img.bg {
-      width: 100%;
-      height: 100%;
+      position: absolute;
+      width: 100%; height: 100%;
       object-fit: cover;
+      will-change: transform;
     }
-
     .element {
+      position: absolute;
       max-width: 120px;
+      opacity: 0;
+      will-change: transform, opacity;
       filter: drop-shadow(0 5px 10px rgba(0,0,0,0.6));
     }
-
     .stars {
       position: absolute;
       width: 100%; height: 100%;
-      background: transparent url("images/stars.png") repeat;
+      background: transparent url('https://www.transparenttextures.com/patterns/stardust.png') repeat;
       opacity: 0;
-      transition: opacity 2s ease;
     }
   </style>
 </head>
-<body>
-  <div class="parallax-container">
-    <!-- Layers -->
-    <div class="layer sky"><img class="bg" src="images/forest-sky.png"></div>
-    <div class="layer mountain"><img class="bg" src="images/forest-mountain.png"></div>
-    <div class="layer forest"><img class="bg" src="images/forest-mid.png"></div>
-    <div class="layer front"><img class="bg" src="images/forest-front.png"></div>
+<body>  <!-- Scroll Sections -->  <div class="section" id="scene1"></div>
+  <div class="section" id="scene2"></div>
+  <div class="section" id="scene3"></div>
+  <div class="section" id="scene4"></div>  <!-- Fixed Parallax World -->  <div class="parallax-container">
+    <div class="layer sky"><img class="bg" src="https://images.unsplash.com/photo-1501785888041-af3ef285b470" alt="sky"></div>
+    <div class="layer mountain"><img class="bg" src="https://images.unsplash.com/photo-1500530855697-b586d89ba3ee" alt="mountain"></div>
+    <div class="layer forest"><img class="bg" src="https://images.unsplash.com/photo-1500534623283-312aade485b7" alt="forest mid"></div>
+    <div class="layer front"><img class="bg" src="https://images.unsplash.com/photo-1441974231531-c6227db76b6e" alt="forest front"></div><!-- Living elements -->
+<img src="https://pngimg.com/uploads/bird/bird_PNG113.png" class="element bird" style="top:20%; left:10%;">
+<img src="https://pngimg.com/uploads/deer/deer_PNG1816.png" class="element deer" style="bottom:5%; left:25%;">
+<img src="https://pngimg.com/uploads/rabbit/rabbit_PNG3780.png" class="element rabbit" style="bottom:8%; right:30%;">
+<img src="https://pngimg.com/uploads/fox/fox_PNG368.png" class="element fox" style="bottom:12%; left:70%;">
 
-    <!-- Elements -->
-    <img src="images/bird.png" class="element bird" style="top:10%; left:5%;">
-    <img src="images/deer.png" class="element deer" style="bottom:5%; left:25%;">
-    <img src="de.jpeg" class="element rabbit" style="bottom:10%; right:30%;">
-    <img src="zuck.jpeg" class="element fox" style="bottom:15%; left:70%;">
+<!-- Atmosphere -->
+<div class="stars"></div>
 
-    <!-- Atmosphere -->
-    <div class="stars"></div>
-  </div>
+  </div>  <!-- GSAP & ScrollTrigger -->  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>  <script>
+    gsap.registerPlugin(ScrollTrigger);
 
+    // Parallax layers
+    gsap.utils.toArray('.layer img').forEach((layer, i) => {
+      gsap.to(layer, {
+        y: (i+1) * -100,
+        ease: 'none',
+        scrollTrigger: {
+          trigger: 'body',
+          start: 'top top',
+          end: 'bottom bottom',
+          scrub: true
+        }
+      });
+    });
 
-  <script>
-    const bird = document.querySelector('.bird');
-    const deer = document.querySelector('.deer');
-    const rabbit = document.querySelector('.rabbit');
-    const fox = document.querySelector('.fox');
-    const stars = document.querySelector('.stars');
-    const sky = document.querySelector('.sky img');
-
-    window.addEventListener('scroll', () => {
-      let progress = window.scrollY / (document.body.scrollHeight - window.innerHeight);
-
-      // Scene 1: Sunrise (0 - 0.25)
-      if(progress < 0.25){
-        bird.style.opacity = 1;
-        bird.style.transform = `translate(${progress*400}px, ${progress*50}px`);
-        sky.style.filter = "brightness(1)";
-      }
-
-      // Scene 2: Day (0.25 - 0.5)
-      if(progress >= 0.25 && progress < 0.5){
-        deer.style.opacity = 1;
-        deer.style.transform = `translateY(${-(progress-0.25)*300}px)`;
-        rabbit.style.opacity = 1;
-        rabbit.style.transform = `translateX(${(progress-0.25)*400}px)`;
-      }
-
-      // Scene 3: Sunset (0.5 - 0.75)
-      if(progress >= 0.5 && progress < 0.75){
-        sky.style.filter = "brightness(0.7) sepia(1) hue-rotate(-20deg) saturate(1.5)";
-        fox.style.opacity = 1;
-        fox.style.transform = `translateY(${-(progress-0.5)*400}px)`;
-        bird.style.transform = `translate(${progress*600}px, -${(progress-0.5)*400}px)`;
-      }
-
-      // Scene 4: Night (0.75 - 1)
-      if(progress >= 0.75){
-        sky.style.filter = "brightness(0.3)";
-        stars.style.opacity = 1;
-        bird.style.opacity = 0;
-        deer.style.opacity = 0;
-        rabbit.style.opacity = 0;
-        fox.style.opacity = 0;
+    // Scene 1: Sunrise
+    gsap.to('.bird', {
+      opacity: 1,
+      x: 300,
+      y: -50,
+      scrollTrigger: {
+        trigger: '#scene1',
+        start: 'top center',
+        end: 'bottom center',
+        scrub: true
       }
     });
-  </script>
-</body>
+
+    // Scene 2: Day
+    gsap.to('.deer', {
+      opacity: 1,
+      y: -100,
+      scrollTrigger: {
+        trigger: '#scene2',
+        start: 'top center',
+        end: 'bottom center',
+        scrub: true
+      }
+    });
+    gsap.to('.rabbit', {
+      opacity: 1,
+      x: 200,
+      scrollTrigger: {
+        trigger: '#scene2',
+        start: 'top center',
+        end: 'bottom center',
+        scrub: true
+      }
+    });
+
+    // Scene 3: Sunset
+    gsap.to('.fox', {
+      opacity: 1,
+      y: -200,
+      scrollTrigger: {
+        trigger: '#scene3',
+        start: 'top center',
+        end: 'bottom center',
+        scrub: true
+      }
+    });
+    gsap.to('.sky img', {
+      filter: 'brightness(0.6) sepia(1) hue-rotate(-20deg) saturate(1.5)',
+      scrollTrigger: {
+        trigger: '#scene3',
+        start: 'top center',
+        end: 'bottom center',
+        scrub: true
+      }
+    });
+
+    // Scene 4: Night
+    gsap.to('.stars', {
+      opacity: 1,
+      scrollTrigger: {
+        trigger: '#scene4',
+        start: 'top center',
+        end: 'bottom center',
+        scrub: true
+      }
+    });
+    gsap.to(['.bird', '.deer', '.rabbit', '.fox'], {
+      opacity: 0,
+      y: -300,
+      scrollTrigger: {
+        trigger: '#scene4',
+        start: 'top center',
+        end: 'bottom center',
+        scrub: true
+      }
+    });
+  </script></body>
 </html>
