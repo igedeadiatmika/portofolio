@@ -4,7 +4,6 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width,initial-scale=1.0">
   <title>IGEDE</title>
-  
   <meta property="og:description" content="ini web portofolio experimen percobaan igede😁" />
   <meta property="og:url" content="https://igedeadiatmika.github.io/portofolio/" />
   <meta property="og:image" content="https://igedeadiatmika.github.io/portofolio/Igede.jpeg" />
@@ -1310,7 +1309,7 @@ const questions = [
 // === DATE CONFIG ===
     const countdownEl = document.getElementById("birthdayCountdown");
     const song = document.getElementById("birthdaySong");
-    const birthday = new Date("2025-10-04T15:00:00+07:00").getTime();
+    const birthday = new Date("2025-10-14T05:00:00+07:00").getTime();
     const endShow = birthday + (5*24*60*60*1000);
 
     // === COUNTDOWN ===
@@ -1322,7 +1321,7 @@ const questions = [
         let h = Math.floor((dist%(1000*60*60*24))/(1000*60*60));
         let m = Math.floor((dist%(1000*60*60))/(1000*60));
         let s = Math.floor((dist%(1000*60))/1000);
-        countdownEl.textContent = `Ultah 4 Okt 2025: ${d}h ${h}j ${m}m ${s}d`;
+        countdownEl.textContent = `Ultah 14 Okt 2025: ${d}h ${h}j ${m}m ${s}d`;
       } else if (now >= birthday && now <= endShow){
         countdownEl.innerHTML = "👑 Selamat ulang tahun ke-15 🎉 Sukses selalu!";
         if(song.paused){ song.play(); song.onended=()=>{song.pause();}; }
@@ -1481,55 +1480,6 @@ const questions = [
 </script>  
 </body>
 </html>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
