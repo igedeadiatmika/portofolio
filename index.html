@@ -671,144 +671,142 @@
 
 
 
-    /* 🌇 SECTION FOKUS SCROLL */
+   /* ===== Global scroll-snap so page will prefer sections (keeps behavior nice) ===== */
   html, body {
-    scroll-behavior: smooth;
-    scroll-snap-type: y mandatory;
-  }
-
-  #sunset-parallax-gallery {
-    scroll-snap-align: start;
-    scroll-snap-stop: always;
-    position: relative;
-    min-height: 100vh;
-    width: 100%;
-    background: linear-gradient(
-      180deg,
-      rgba(255, 100, 0, 0.85),
-      rgba(200, 20, 0, 0.9),
-      rgba(0, 0, 0, 1)
-    );
-    overflow: hidden;
-    z-index: 10;
-  }
-
-  /* 🌫️ Efek kabut lembut */
-  .spg-fog {
-    position: absolute;
-    top: 0;
-    left: -50%;
-    width: 200%;
     height: 100%;
-    background: radial-gradient(
-      circle at 50% 50%,
-      rgba(255, 255, 255, 0.15) 0%,
-      rgba(255, 255, 255, 0.05) 40%,
-      transparent 80%
-    );
-    filter: blur(40px);
-    opacity: 0.5;
-    animation: spg-fog-move 60s linear infinite;
-    z-index: 1;
+    margin: 0;
+    scroll-behavior: smooth;
   }
 
-  .spg-fog1 { animation-duration: 70s; opacity: 0.6; }
-  .spg-fog2 { top: 30%; animation-direction: reverse; animation-duration: 90s; opacity: 0.4; }
-
-  @keyframes spg-fog-move {
-    0% { transform: translateX(0); }
-    50% { transform: translateX(20%); }
-    100% { transform: translateX(0); }
-  }
-
-  .spg-container {
+  /* =========================
+     SPG - Section base
+     ========================= */
+  #sunset-parallax-gallery {
     position: relative;
-    padding: 2rem 1rem;
+    z-index: 9999; /* high so it visually dominates */
+    width: 100%;
+    min-height: 100vh;
+    overflow: hidden;
+    background: linear-gradient(180deg, rgba(255,100,0,0.92), rgba(200,20,0,0.95), #000 100%);
+  }
+
+  /* fog layers */
+  .spg-fog{ position:absolute; top:0; left:-40%; width:180%; height:120%; pointer-events:none; z-index:1;
+    background: radial-gradient(circle at 50% 50%, rgba(255,255,255,0.14) 0%, rgba(255,255,255,0.05) 40%, transparent 80%);
+    filter: blur(36px); opacity:0.5; animation: spg-fog-move 75s linear infinite;
+  }
+  .spg-fog2{ top:25%; animation-direction:reverse; animation-duration:95s; opacity:0.38; }
+  @keyframes spg-fog-move{ 0%{transform:translateX(0)} 50%{transform:translateX(18%)} 100%{transform:translateX(0)} }
+
+  /* ===== The inner scroll area (this will capture scroll while active) ===== */
+  .spg-inner{
+    position: relative;
     z-index: 2;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-  }
-
-  .spg-title {
-    color: white;
-    font-size: 2rem;
-    font-weight: 700;
-    text-align: center;
-    margin-bottom: 2rem;
-    text-shadow: 0 0 10px rgba(0, 0, 0, 0.8);
-  }
-
-  .spg-grid {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 1rem;
     width: 100%;
-    max-width: 1600px;
+    height: 100vh;              /* full viewport so internal scroll fits exactly */
+    overflow-y: auto;          /* internal scroll container */
+    -webkit-overflow-scrolling: touch;
+    padding: 28px 16px 40px;
+    box-sizing: border-box;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
   }
 
-  @media (min-width: 640px) {
-    .spg-grid { grid-template-columns: repeat(3, 1fr); }
+  .spg-header { width:100%; display:flex; justify-content:center; margin-bottom:18px; }
+  .spg-title { color:#fff; font-size:1.9rem; font-weight:700; text-shadow:0 6px 22px rgba(0,0,0,0.6); margin:0; }
+
+  /* ===== Grid (2 columns mobile, up to 6 desktop) ===== */
+  .spg-grid{
+    width:100%;
+    max-width:1400px;
+    display:grid;
+    grid-template-columns: repeat(2, minmax(0,1fr));
+    gap:14px;
+    align-items:start;
+  }
+  @media(min-width:640px){ .spg-grid{ grid-template-columns:repeat(3,1fr); } }
+  @media(min-width:1024px){ .spg-grid{ grid-template-columns:repeat(6,1fr); } }
+
+  .spg-card{
+    position:relative;
+    border-radius:14px;
+    overflow:hidden;
+    border:2px solid rgba(255,150,60,0.9);
+    box-shadow:0 10px 30px rgba(0,0,0,0.5);
+    transform: translateY(80px);
+    opacity:0;
+    transition: transform 900ms cubic-bezier(.2,.9,.2,1), opacity 700ms ease;
+    background: linear-gradient(180deg, rgba(0,0,0,0.02), rgba(0,0,0,0.06));
   }
 
-  @media (min-width: 1024px) {
-    .spg-grid { grid-template-columns: repeat(6, 1fr); }
+  .spg-card.spg-visible{ transform:translateY(0); opacity:1; }
+
+  .spg-image-wrap{ position:relative; height:180px; overflow:hidden; }
+  .spg-parallax-img{ width:100%; height:100%; object-fit:cover; transform: translateY(0) scale(1.02); transition: transform 220ms ease-out; will-change: transform; }
+  .spg-card:hover .spg-parallax-img{ transform: translateY(-6px) scale(1.08); }
+
+  .spg-caption{
+    position:absolute; left:0; right:0; bottom:0;
+    padding:10px 8px;
+    background:linear-gradient(to top, rgba(0,0,0,0.85), rgba(0,0,0,0));
+    color:#fff; text-align:center; font-size:0.86rem;
+  }
+  .spg-caption-title{ color:#ffd8b3; font-weight:700; }
+  .spg-caption-date{ color:#ddd; font-size:0.78rem; margin-top:6px; }
+
+  .spg-footer{ width:100%; display:flex; justify-content:center; margin-top:18px; }
+  .spg-footer-text{ color:#ffd9c8; font-style:italic; font-size:0.9rem; text-shadow:0 6px 14px rgba(0,0,0,0.5) }
+
+  /* ===== Mini collapsed red box (center bottom) ===== */
+  .spg-mini{
+    position: fixed;
+    left: 50%;
+    transform: translateX(-50%) translateY(120%);
+    bottom: 18px;
+    z-index: 99999;
+    width: 72px;
+    height: 72px;
+    border-radius: 10px;
+    background: linear-gradient(180deg,#e33 #c11);
+    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+    display:flex; align-items:center; justify-content:center;
+    opacity:0; pointer-events:none;
+    transition: transform 420ms cubic-bezier(.2,.9,.2,1), opacity 300ms ease;
+  }
+  .spg-mini .spg-mini-inner { position:relative; width:100%; height:100%; display:flex; align-items:center; justify-content:center; }
+  .spg-mini .spg-mini-icon { font-size:20px; color:#fff; pointer-events:none; }
+  .spg-mini .spg-unmute-btn {
+    position:absolute; right:6px; bottom:6px;
+    border:none; background:rgba(255,255,255,0.08); color:#fff; border-radius:6px; padding:6px; font-size:12px;
+    display:flex; align-items:center; justify-content:center; cursor:pointer;
   }
 
-  .spg-card {
-    position: relative;
-    border: 2px solid rgba(255, 150, 50, 0.8);
-    border-radius: 15px;
-    overflow: hidden;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.6);
-    transform: translateY(100px);
-    opacity: 0;
-    transition: transform 1s ease-out, opacity 1s ease-out;
+  /* visible state */
+  .spg-mini.spg-show{
+    transform: translateX(-50%) translateY(0);
+    opacity:1; pointer-events:auto;
   }
 
-  .spg-card.spg-visible {
-    transform: translateY(0);
-    opacity: 1;
-  }
+  /* collapsed full-screen -> mini transition helper */
+  #sunset-parallax-gallery.spg-collapsed { height:auto; min-height:0; }
+  #sunset-parallax-gallery.spg-collapsed .spg-inner { height:140px; max-height:140px; overflow:hidden; }
+  #sunset-parallax-gallery.spg-collapsed .spg-container { pointer-events:none; }
 
-  .spg-image-wrap {
-    overflow: hidden;
-    height: 180px;
-    position: relative;
-  }
+  /* when collapsed we ensure audio controls visible */
+  #sunset-parallax-gallery.spg-audio-blocked .spg-mini .spg-unmute-btn { display:block; }
 
-  .spg-parallax-img {
-    width: 100%;
-    height: 200px;
-    object-fit: cover;
-    transform: translateY(0);
-    transition: transform 0.2s ease-out;
-  }
+  /* Accessibility: focus outline on inner scroll */
+  .spg-inner:focus { outline: 3px solid rgba(255,200,120,0.14); outline-offset:6px; }
 
-  .spg-card:hover .spg-parallax-img {
-    transform: scale(1.1);
-  }
+  /* ensure clickable area on mobile for restore */
+  .spg-mini { touch-action: manipulation; }
 
-  .spg-caption {
-    position: absolute;
-    bottom: 0;
-    width: 100%;
-    background: linear-gradient(to top, rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0));
-    color: white;
-    text-align: center;
-    padding: 0.5rem;
-    font-size: 0.85rem;
-  }
-
-  .spg-caption-title { font-weight: 600; color: #ffcc99; }
-  .spg-caption-date { font-size: 0.75rem; color: #ddd; }
-
-  .spg-footer-text {
-    color: #ffddcc;
-    font-size: 0.8rem;
-    margin-top: 2rem;
-    font-style: italic;
-    text-shadow: 0 0 8px rgba(0, 0, 0, 0.8);
+  /* small adjustments when page width tiny */
+  @media(max-width:420px){
+    .spg-title{ font-size:1.4rem; }
+    .spg-mini{ width:62px; height:62px; }
+    .spg-parallax-img{ height:160px; }
   }
     
 
@@ -888,82 +886,98 @@
 
 
 
+      
 
-      <!-- 🌇 Section Galeri Senja Fokus Scroll -->
-<section id="sunset-parallax-gallery">
+
+   <section id="sunset-parallax-gallery" aria-label="Sunset Parallax Gallery">
+  <!-- moving fog layers -->
   <div class="spg-fog spg-fog1"></div>
   <div class="spg-fog spg-fog2"></div>
-
-  <div class="spg-container">
-    <h1 class="spg-title">🌇 Galeri Senja Parallax</h1>
-
-    <div class="spg-grid">
-      <div class="spg-card">
+  <!-- The internal scroll area that will capture scroll while active -->
+  <div class="spg-inner" tabindex="0">
+    <header class="spg-header">
+      <h1 class="spg-title">🌇 Galeri Senja Parallax</h1>
+    </header>
+    <main class="spg-grid" role="list">
+      <!-- Cards - kamu bisa duplicate / edit src/title/date -->
+      <article class="spg-card" role="listitem">
         <div class="spg-image-wrap">
-          <img src="https://images.unsplash.com/photo-1506744038136-46273834b3fb" alt="Matahari di Pagi Hutan" class="spg-parallax-img"/>
+          <img class="spg-parallax-img" src="https://images.unsplash.com/photo-1506744038136-46273834b3fb" alt="Matahari di Pagi Hutan" />
         </div>
         <div class="spg-caption">
-          <p class="spg-caption-title">Matahari di Pagi Hutan</p>
-          <p class="spg-caption-date">10 Oktober 2025</p>
+          <div class="spg-caption-title">Matahari di Pagi Hutan</div>
+          <div class="spg-caption-date">10 Oktober 2025</div>
         </div>
-      </div>
-
-      <div class="spg-card">
+      </article>
+      <article class="spg-card" role="listitem">
         <div class="spg-image-wrap">
-          <img src="https://images.unsplash.com/photo-1519681393784-d120267933ba" alt="Langit dan Pegunungan" class="spg-parallax-img"/>
+          <img class="spg-parallax-img" src="https://images.unsplash.com/photo-1519681393784-d120267933ba" alt="Langit dan Pegunungan" />
         </div>
         <div class="spg-caption">
-          <p class="spg-caption-title">Langit dan Pegunungan</p>
-          <p class="spg-caption-date">9 Oktober 2025</p>
+          <div class="spg-caption-title">Langit dan Pegunungan</div>
+          <div class="spg-caption-date">9 Oktober 2025</div>
         </div>
-      </div>
-
-      <div class="spg-card">
+      </article>
+      <article class="spg-card" role="listitem">
         <div class="spg-image-wrap">
-          <img src="https://images.unsplash.com/photo-1507525428034-b723cf961d3e" alt="Ombak di Pantai" class="spg-parallax-img"/>
+          <img class="spg-parallax-img" src="https://images.unsplash.com/photo-1507525428034-b723cf961d3e" alt="Ombak di Pantai" />
         </div>
         <div class="spg-caption">
-          <p class="spg-caption-title">Ombak di Pantai</p>
-          <p class="spg-caption-date">8 Oktober 2025</p>
+          <div class="spg-caption-title">Ombak di Pantai</div>
+          <div class="spg-caption-date">8 Oktober 2025</div>
         </div>
-      </div>
-
-      <div class="spg-card">
+      </article>
+      <article class="spg-card" role="listitem">
         <div class="spg-image-wrap">
-          <img src="https://images.unsplash.com/photo-1500534623283-312aade485b7" alt="Jalanan Hujan Kota" class="spg-parallax-img"/>
+          <img class="spg-parallax-img" src="https://images.unsplash.com/photo-1500534623283-312aade485b7" alt="Jalanan Hujan Kota" />
         </div>
         <div class="spg-caption">
-          <p class="spg-caption-title">Jalanan Hujan Kota</p>
-          <p class="spg-caption-date">7 Oktober 2025</p>
+          <div class="spg-caption-title">Jalanan Hujan Kota</div>
+          <div class="spg-caption-date">7 Oktober 2025</div>
         </div>
-      </div>
-
-      <div class="spg-card">
+      </article>
+      <article class="spg-card" role="listitem">
         <div class="spg-image-wrap">
-          <img src="https://images.unsplash.com/photo-1529626455594-4ff0802cfb7e" alt="Senja di Lembah" class="spg-parallax-img"/>
+          <img class="spg-parallax-img" src="https://images.unsplash.com/photo-1529626455594-4ff0802cfb7e" alt="Senja di Lembah" />
         </div>
         <div class="spg-caption">
-          <p class="spg-caption-title">Senja di Lembah</p>
-          <p class="spg-caption-date">6 Oktober 2025</p>
+          <div class="spg-caption-title">Senja di Lembah</div>
+          <div class="spg-caption-date">6 Oktober 2025</div>
         </div>
-      </div>
-
-      <div class="spg-card">
+      </article>
+      <article class="spg-card" role="listitem">
         <div class="spg-image-wrap">
-          <img src="https://images.unsplash.com/photo-1510812431401-41d2bd2722f3" alt="Kabut di Gunung" class="spg-parallax-img"/>
+          <img class="spg-parallax-img" src="https://images.unsplash.com/photo-1510812431401-41d2bd2722f3" alt="Kabut di Gunung" />
         </div>
         <div class="spg-caption">
-          <p class="spg-caption-title">Kabut di Gunung</p>
-          <p class="spg-caption-date">5 Oktober 2025</p>
+          <div class="spg-caption-title">Kabut di Gunung</div>
+          <div class="spg-caption-date">5 Oktober 2025</div>
         </div>
-      </div>
-    </div>
-
-    <p class="spg-footer-text">
-      Scroll perlahan dan rasakan suasana senja 🌅
-    </p>
+      </article>
+    </main>
+    <footer class="spg-footer">
+      <p class="spg-footer-text">Scroll perlahan dan rasakan suasana senja 🌅</p>
+    </footer>
   </div>
+  <!-- collapsed mini control (hidden until collapse) -->
+  <div class="spg-mini" role="button" aria-label="Restore galeri" title="Tap untuk kembali">
+    <div class="spg-mini-inner">
+      <div class="spg-mini-icon">☀️</div>
+      <button class="spg-unmute-btn" aria-label="Unmute ambient" title="Unmute / Mute">🔊</button>
+    </div>
+  </div>
+  <!-- ambient audio element (nature sound) -->
+  <audio id="spg-audio" loop preload="auto">
+    <!-- contoh file efek ombak+angin gratis (ganti jika punya link sendiri) -->
+    <source src="https://cdn.pixabay.com/download/audio/2021/08/08/audio_9a5b4e7dfa.mp3?filename=ocean-waves-ambient-110020.mp3" type="audio/mpeg">
+    Your browser does not support the audio element.
+  </audio>
 </section>
+
+
+
+
+
 
 
       
@@ -1023,19 +1037,12 @@
      <section id="skills">
       <h2 data-aos="zoom-in">Skills</h2>
       <div class="skills-list">
-        <div class="skill" data-aos="fade-in">JavaScript</div>
-        <div class="skill" data-aos="fade-in">TypeScript</div>
-        <div class="skill" data-aos="fade-in">React.js</div>
         <div class="skill" data-aos="fade-in">Inovation</div>
         <div class="skill" data-aos="fade-in">Cooperation</div>
         <div class="skill" data-aos="fade-in">Traveler</div>
         <div class="skill" data-aos="fade-in">Mathematician</div>
-        <div class="skill" data-aos="fade-in">SQL & NoSQL</div>
-        <div class="skill" data-aos="fade-in">Cloud Computing</div>
-        <div class="skill" data-aos="fade-in">UI/UX Design</div>
         <div class="skill" data-aos="fade-in">Business Strategy</div>
         <div class="skill" data-aos="fade-in">Startup Management</div>
-        <div class="skill" data-aos="fade-in">Agile Leadership</div>
         <div class="skill" data-aos="fade-in">Art Lover</div>
         <div class="skill" data-aos="fade-in">Gitarist</div>
         <div class="skill" data-aos="fade-in">Author</div>
@@ -1059,10 +1066,7 @@
                 <div class="testimonial-dots" id="testimonialDots"></div>
             </div>
         </div>
-    </section>
-
-
-
+</section>
   
   <script>
 
@@ -1082,7 +1086,6 @@ function showNav() {
   nav.classList.remove("hidden");
 }
 
-
 window.addEventListener("scroll", () => {
   let scrollTop = window.scrollY || document.documentElement.scrollTop;
 
@@ -1099,14 +1102,12 @@ window.addEventListener("scroll", () => {
 
 
   lastScrollTop = scrollTop <= 0 ? 0 : scrollTop;
-
   
   clearTimeout(hideTimeout);
   hideTimeout = setTimeout(() => {
     hideNav();
   }, 10000); 
 });
-
 
     
   function toggleDJ(el) {
@@ -1137,11 +1138,6 @@ window.addEventListener("scroll", () => {
       setTimeout(() => p.remove(), 600);
     }
   }
-
-
-
-
-
 
 
 
@@ -1334,8 +1330,8 @@ const questions = [
 
     // === BUBBLE CHAT ===
     const messages = [
-      "Happy bday! 🎂", "Semoga sukses 🎉", "Wish u all the best 🌟",
-      "Stay healthy 💪", "Selamat ulang tahun 🎊", "King 15yo 👑"
+      "Happy hbd kawan!", "Semoga sukses 🎉", "SELAMAT KINGSS.. 😭😭😭",
+      "selamat ulangtahun gede, semoga makin gg 🤩🥳", "Selamat ulang tahun adiks...", "Selamat gede semoga panjang umur sehat selalu 😎"
     ];
     const profilePics = [
       "https://i.pravatar.cc/30?img=1","https://i.pravatar.cc/30?img=2",
@@ -1442,28 +1438,264 @@ const questions = [
 
 
 
-    // 🌇 Efek muncul dan parallax lembut
-  document.addEventListener("scroll", () => {
-    const cards = document.querySelectorAll(".spg-card");
-    const triggerBottom = window.innerHeight * 0.9;
+    
 
-    cards.forEach((card, index) => {
-      const rect = card.getBoundingClientRect();
-      const img = card.querySelector(".spg-parallax-img");
+(function(){
+  const SECTION = document.getElementById('sunset-parallax-gallery');
+  const INNER = SECTION.querySelector('.spg-inner');
+  const CARDS = SECTION.querySelectorAll('.spg-card');
+  const MINI = SECTION.querySelector('.spg-mini');
+  const AUDIO = document.getElementById('spg-audio');
+  const UNMUTE_BTN = MINI.querySelector('.spg-unmute-btn');
 
-      if (rect.top < triggerBottom) {
-        setTimeout(() => { card.classList.add("spg-visible"); }, index * 120);
-      }
+  let locked = false;       // true while section traps page scroll
+  let collapsed = false;    // true when collapsed to mini
+  let audioPlaying = false;
 
-      if (img) {
-        const speed = 0.25 + (index % 3) * 0.1;
-        const offset = (rect.top - window.innerHeight / 2) * speed;
-        img.style.transform = `translateY(${offset}px) scale(1.05)`;
+  /* --- UTIL: lock/unlock body scroll --- */
+  function lockBodyScroll(){
+    if(locked) return;
+    document.documentElement.style.overflow = 'hidden';
+    document.body.style.overflow = 'hidden';
+    locked = true;
+  }
+  function unlockBodyScroll(){
+    if(!locked) return;
+    document.documentElement.style.overflow = '';
+    document.body.style.overflow = '';
+    locked = false;
+  }
+
+  /* --- try autoplay ambient audio --- */
+  function tryPlayAudio(){
+    if(!AUDIO) return;
+    AUDIO.volume = 0.6;
+    const p = AUDIO.play();
+    if(p && typeof p.then === 'function'){
+      p.then(()=> {
+        audioPlaying = true;
+        MINI.classList.add('spg-show'); // show mini control ready
+      }).catch(()=> {
+        // autoplay blocked: show unmute button so user can enable
+        audioPlaying = false;
+        SECTION.classList.add('spg-audio-blocked');
+        MINI.classList.add('spg-show');
+      });
+    }
+  }
+
+  /* --- stop audio --- */
+  function pauseAudio(){ if(AUDIO){ AUDIO.pause(); audioPlaying=false; } }
+  function resumeAudio(){ if(AUDIO){ AUDIO.play().catch(()=>{}); audioPlaying=true; } }
+
+  /* --- reveal cards when they enter viewport of inner container --- */
+  function revealCards(){
+    const trigger = INNER.clientHeight * 0.92;
+    CARDS.forEach((card, i) => {
+      const r = card.getBoundingClientRect();
+      // rect relative to viewport; but INNER scroll container may be scrolled
+      // better compute relative to INNER by using elementTop - INNERTop
+      const innerRect = INNER.getBoundingClientRect();
+      const topRel = r.top - innerRect.top;
+      if(topRel < trigger){
+        setTimeout(()=> card.classList.add('spg-visible'), i * 90);
       }
     });
+  }
+
+  /* --- parallax transform for images inside cards (vertical subtle) --- */
+  function applyParallax(){
+    CARDS.forEach((card, i) => {
+      const img = card.querySelector('.spg-parallax-img');
+      if(!img) return;
+      const innerRect = INNER.getBoundingClientRect();
+      const cardRect = card.getBoundingClientRect();
+      const centerOffset = (cardRect.top + cardRect.height/2) - (innerRect.top + innerRect.height/2);
+      const speed = 0.18 + (i % 3) * 0.06;
+      const translateY = centerOffset * speed * -1; // invert so it moves opposite slightly
+      img.style.transform = `translateY(${Math.max(Math.min(translateY, 60), -60)}px) scale(1.04)`;
+    });
+  }
+
+  /* --- check internal scroll position to collapse/restore --- */
+  function checkCollapseState(){
+    const maxScroll = INNER.scrollHeight - INNER.clientHeight;
+    if(INNER.scrollTop >= (maxScroll - 8) && !collapsed){
+      // reached bottom -> collapse
+      collapseToMini();
+    } else if(INNER.scrollTop < (maxScroll - 12) && collapsed){
+      // user scrolled up from bottom -> restore
+      restoreFromMini();
+    }
+  }
+
+  /* --- collapse animation -> mini centered bottom --- */
+  function collapseToMini(){
+    collapsed = true;
+    // allow page body scroll now so user can continue down the page
+    unlockBodyScroll();
+
+    // shrink: apply class to SECTION and show mini
+    SECTION.classList.add('spg-collapsed');
+    // ensure inner scrolled to bottom
+    INNER.scrollTop = INNER.scrollHeight;
+    // show mini
+    MINI.classList.add('spg-show');
+    // pause parallax transforms (optional)
+    // audio remains playing
+  }
+
+  /* --- restore full-screen from mini --- */
+  function restoreFromMini(){
+    collapsed = false;
+    // lock body scroll again so section grabs scroll
+    lockBodyScroll();
+
+    SECTION.classList.remove('spg-collapsed');
+    // hide mini after short delay
+    setTimeout(()=> MINI.classList.remove('spg-show'), 420);
+    // focus inner scroll to bottom so upward gesture will move content
+    INNER.scrollTop = INNER.scrollHeight - 2;
+    // reveal cards again (safety)
+    revealCards();
+  }
+
+  /* --- When user enters section area (IntersectionObserver) -> lock body and start audio --- */
+  const obs = new IntersectionObserver((entries)=> {
+    entries.forEach(entry=>{
+      if(entry.isIntersecting && entry.intersectionRatio > 0.5){
+        // section is dominant in viewport -> trap scroll here
+        lockBodyScroll();
+        // focus inner for keyboard / mobile
+        try{ INNER.focus(); }catch(e){}
+        // try play audio
+        tryPlayAudio();
+      } else {
+        // leaving majority of section -> if not collapsed, ensure body unlocked
+        if(!collapsed) unlockBodyScroll();
+      }
+    });
+  }, { threshold: [0.5] });
+
+  obs.observe(SECTION);
+
+  /* --- hook internal scroll & touch to implement parallax + collapse logic --- */
+  let ticking = false;
+  INNER.addEventListener('scroll', () => {
+    revealCards();
+    if(!ticking){
+      window.requestAnimationFrame(()=> {
+        applyParallax();
+        checkCollapseState();
+        ticking = false;
+      });
+      ticking = true;
+    }
+  }, { passive: true });
+
+  // also on resize - reapply parallax
+  window.addEventListener('resize', ()=> applyParallax(), { passive:true });
+
+  /* --- consume wheel/touchmove on inner while locked (prevent body move) ---
+     We also prevent overscroll bounce from scrolling body when we should trap */
+  function preventBodyScrollWhileLocked(e){
+    if(!locked) return;
+    // only prevent when the event target is outside INNER
+    // but to be safe, we stop propagation for wheel/touch on document while locked
+    e.preventDefault();
+  }
+
+  // On mobile browsers, to prevent default on touchmove, must set passive:false
+  document.addEventListener('wheel', (e)=>{
+    if(locked && !collapsed){
+      // let INNER handle if event inside it
+      const inside = e.composedPath().includes(INNER);
+      if(!inside) e.preventDefault();
+    }
+  }, { passive:false });
+
+  document.addEventListener('touchmove', (e)=>{
+    if(locked && !collapsed){
+      const inside = e.composedPath().includes(INNER);
+      if(!inside) e.preventDefault();
+    }
+  }, { passive:false });
+
+  /* --- mini click/tap restore --- */
+  MINI.addEventListener('click', (ev)=>{
+    ev.stopPropagation();
+    if(collapsed) {
+      // restore and then scroll the page so the section is visible on top
+      restoreFromMini();
+      // ensure the section is in view
+      SECTION.scrollIntoView({behavior:'smooth', block:'center'});
+    } else {
+      // if mini visible but not collapsed, toggle audio mute
+      toggleMute();
+    }
   });
 
+  /* --- unmute button handler --- */
+  function toggleMute(){
+    if(!AUDIO) return;
+    if(AUDIO.muted || AUDIO.volume === 0){
+      AUDIO.muted = false;
+      AUDIO.volume = 0.6;
+      AUDIO.play().catch(()=>{});
+      UNMUTE_BTN.textContent = '🔊';
+    } else {
+      AUDIO.muted = true;
+      UNMUTE_BTN.textContent = '🔈';
+    }
+  }
+  UNMUTE_BTN.addEventListener('click', (ev)=>{
+    ev.stopPropagation();
+    toggleMute();
+  });
 
+  /* --- initialize: reveal what's visible on load and attempt autoplay if section already in view --- */
+  document.addEventListener('DOMContentLoaded', ()=>{
+    revealCards();
+    applyParallax();
+
+    // if page opens and section already mostly visible, lock & play
+    const rect = SECTION.getBoundingClientRect();
+    if(rect.top >= 0 && rect.top < window.innerHeight * 0.6){
+      lockBodyScroll();
+      tryPlayAudio();
+    }
+  });
+
+  /* --- keyboard accessibility: if mini focused and Enter -> restore --- */
+  MINI.addEventListener('keydown', (e)=>{
+    if(e.key === 'Enter' || e.key === ' '){
+      e.preventDefault();
+      MINI.click();
+    }
+  });
+
+  /* --- ensure when collapsed, internal scroll set to bottom and body unlocked --- */
+  // (also set a small handler for wheel gestures over mini to restore if user scrolls up)
+  MINI.addEventListener('wheel', (e)=>{
+    if(collapsed && e.deltaY < 0){
+      // scrolling up while over mini -> restore
+      restoreFromMini();
+    }
+  });
+
+  // For touch devices: swipe up on mini to restore
+  let startY = null;
+  MINI.addEventListener('touchstart', e => { startY = e.touches[0].clientY; }, {passive:true});
+  MINI.addEventListener('touchend', e => {
+    if(startY === null) return;
+    const endY = (e.changedTouches && e.changedTouches[0]) ? e.changedTouches[0].clientY : null;
+    if(endY !== null && startY - endY > 20){ // swipe up
+      if(collapsed) restoreFromMini();
+    }
+    startY = null;
+  }, {passive:true});
+
+})();
 
 
 
@@ -1480,6 +1712,7 @@ const questions = [
 </script>  
 </body>
 </html>
+
 
 
 
