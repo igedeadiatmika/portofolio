@@ -679,7 +679,7 @@
 <div id="modal" class="modal-overlay">
         <div class="modal">
             <div class="modal-header">
-                <h3 id="modalTitle">Pertanyaan 1 dari 6</h3>
+                <h3 id="modalTitle">Pertanyaan yang harus kamu jawab dari I GEDE!!!😁/h3>
                 <button onclick="closeModal()">&times;</button>
             </div>
             <div id="modalBody" class="modal-content">
@@ -1011,7 +1011,7 @@ const questions = [
   { question: 'Tidak masalah! Apakah kamu sudah follow instagramnya iGede?', yesNext: 11, noNext: 12 },
   { question: 'Bagus! Silakan jelajahi portfolio ini lebih lanjut. Setuju?', yesNext: 11, noNext: 12 },
   { question: 'Terima kasih sudah meluangkan waktu. Semoga ini bermanfaat! Oke?', yesNext: 11, noNext: 12 },
-  { question: 'Terakhir, apakah kamu akan menyukai IGede ?', yesNext: null, noNext: null },
+  { question: 'Terakhir nih, apakah kamu menyukai IGede ?', yesNext: null, noNext: null },
   { question: 'Terima kasih atas kejujurannya! Semoga IGede bisa tetap menarik. Setuju?', yesNext: null, noNext: null }
 ];
 
@@ -1019,7 +1019,11 @@ const questions = [
         let answersCount = 0;
 
         function updateModal() {
+
+
             document.getElementById('modalTitle').textContent = `Pertanyaan ${answersCount + 1} dari 6`;
+
+
             document.getElementById('modalQuestion').textContent = questions[currentQuestion].question;
             document.getElementById('progressFill').style.width = `${(answersCount / 6) * 100}%`;
         }
@@ -1044,7 +1048,7 @@ const questions = [
                             <polyline points="20 6 9 17 4 12"></polyline>
                         </svg>
                     </div>
-                    <h3>Terima Kasih!</h3>
+                    <h3>Oke deh, Terima kasih ya😭</h3>
                     <p>Selamat menjelajahi portfolio ini</p>
                 </div>
             `;
