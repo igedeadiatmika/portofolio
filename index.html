@@ -678,7 +678,11 @@
 <div id="modal" class="modal-overlay">
         <div class="modal">
             <div class="modal-header">
-                <h3 id="modalTitle">Pertanyaan yang harus kamu jawab dari I GEDE!!!😁</h3>
+ <h2>
+Pertanyaan yang harus kamu jawab dari I GEDE!!!😁
+</h2>
+                <h1 id="modalTitle"></h1>
+
                 <button onclick="closeModal()">&times;</button>
             </div>
             <div id="modalBody" class="modal-content">
@@ -1020,18 +1024,18 @@ const questions = [
         function updateModal() {
 
 
-            document.getElementById('modalTitle').textContent = `Pertanyaan ${answersCount + 1} dari 12`;
+            document.getElementById('modalTitle').textContent = `Pertanyaan ${answersCount + 1} dari 5`;
 
 
             document.getElementById('modalQuestion').textContent = questions[currentQuestion].question;
-            document.getElementById('progressFill').style.width = `${(answersCount / 12) * 100}%`;
+            document.getElementById('progressFill').style.width = `${(answersCount / 5) * 100}%`;
         }
 
         function answerQuestion(answer) {
             const nextIndex = answer === 'yes' ? questions[currentQuestion].yesNext : questions[currentQuestion].noNext;
             answersCount++;
 
-            if (nextIndex === null || answersCount >= 12) {
+            if (nextIndex === null || answersCount >= 5) {
                 showComplete();
             } else {
                 currentQuestion = nextIndex;
