@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X_UA Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+<style>
+
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+
+    body {
+        background: white;
+        min-height: 100vh;
+        overflow-x: hidden;
+        overflow: hiden;
+        height: 100vh;
+    }
+
+    .percobaanx {
+        position: relative;
+display: flex;
+justify-content: center;
+align-items: center;
+height: 160vh;
+    }
+
+    #textgas {
+        position: absolute;
+        font-size: 30px;
+        color: #333;
+    }
+
+
+    .percobaanx img {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        pointer-events: none;
+        ;
+    }
+
+    .gar {
+        position: relative;
+        height: 200vh;
+        background: rgb(223, 49, 49);
+    }
+</style>
+
+
+</head>
+<body>
+    
+<section class="percobaanx">
+    <h2 id="textgas">i gede adiatmika</h2>
+<img src="https://res.cloudinary.com/dv6dx2xkk/image/upload/v1760189323/WhatsApp_Image_2025-10-11_at_19.23.53__1_-removebg-preview_oomwni.png" id="airterjun">
+     <img src="https://res.cloudinary.com/dv6dx2xkk/image/upload/v1760189326/WhatsApp_Image_2025-10-11_at_19.23.51__3_-removebg-preview_sy57jx.png" id="kastil">
+    <img src="https://res.cloudinary.com/dv6dx2xkk/image/upload/v1760189324/WhatsApp_Image_2025-10-11_at_19.23.51__1_-removebg-preview_zkwoko.png" id="daun">   
+    <img src="https://res.cloudinary.com/dv6dx2xkk/image/upload/v1760189321/WhatsApp_Image_2025-10-11_at_19.23.51__2_-removebg-preview_wu5fac.png" id="daun1">
+    <img src="https://res.cloudinary.com/dv6dx2xkk/image/upload/v1760189322/WhatsApp_Image_2025-10-11_at_19.23.52__2_-removebg-preview_bwspox.png" id="kayu1">
+    <img src="https://res.cloudinary.com/dv6dx2xkk/image/upload/v1760189324/WhatsApp_Image_2025-10-11_at_19.23.53-removebg-preview_kyrora.png" id="kayu">
+    <img src="https://res.cloudinary.com/dv6dx2xkk/image/upload/v1760189321/WhatsApp_Image_2025-10-11_at_19.23.52__1_-removebg-preview_v6tjbv.png" id="orangjauh">
+    <img src="https://res.cloudinary.com/dv6dx2xkk/image/upload/v1760189321/WhatsApp_Image_2025-10-11_at_19.23.52-removebg-preview_zpze5q.png" id="orangdekat">
+    <img src="https://res.cloudinary.com/dv6dx2xkk/image/upload/v1760189321/WhatsApp_Image_2025-10-11_at_19.23.50-removebg-preview_l9splk.png" id="efekair">
+    <img src="https://res.cloudinary.com/dv6dx2xkk/image/upload/v1760189320/WhatsApp_Image_2025-10-11_at_19.24.32-removebg-preview_oxkgzj.png" id="burung">
+
+</section>
+
+
+<div class="gar">
+    
+</div>
+
+    <script>
+let textgas = document.getElementById('textgas');
+let airterjun = document.getElementById('airterjun');
+let kastil = document.getElementById('kastil');
+let daun = document.getElementById('daun');
+let kayu = document.getElementById('kayu');
+let orangjauh = document.getElementById('orangjauh');
+let orangdekat = document.getElementById('orangdekat');
+let burung = document.getElementById('burung');
+let efekair = document.getElementById('efekair');
+
+
+window.addEventListener('scroll', () => {
+    let value = window.scrollY;
+
+    
+    textgas.style.marginTop = value * 2.5 + 'px';
+    kayu.style.top = value * -1.5 + 'px';
+    kayu1.style.top = value * -1.5 + 'px';
+    daun.style.left = value * 1.5 + 'px';
+    daun1.style.left = value * -1.5 + 'px';
+    kastil.style.top = value * 1 + 'px';
+    burung.style.left = value * 1.5 + 'px';
+    orangjauh.style.top = value * -2.5 + 'px';
+    efekair.style.top = value * -0.5 + 'px';
+
+});
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    </script>
+
+
+
+
+</body>
+</html>
