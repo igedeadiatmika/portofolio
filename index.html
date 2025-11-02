@@ -670,7 +670,7 @@
 
 
 
-/* Scroll horizontal */
+/* Scroll area */
   .music-gallery {
     display: flex;
     overflow-x: auto;
@@ -696,11 +696,10 @@
     box-shadow: 0 8px 25px rgba(255,255,255,0.2);
   }
 
-  .track::before {
-    content: "";
-    position: absolute;
-    inset: 0;
-    opacity: 0.3;
+  .track video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
   }
 
   .track-info-mini {
@@ -729,57 +728,47 @@
   .theme-2 { background: linear-gradient(135deg, #6a11cb, #2575fc); }
   .theme-3 { background: linear-gradient(135deg, #00c9ff, #92fe9d); }
 
-  /* Bar player bawah */
-  #playerBar {
+  /* Panel info lagu */
+  #infoPanel {
+    padding: 25px;
+    border-radius: 20px;
+    margin: 20px;
+    display: none;
+    animation: fadeIn 0.6s ease forwards;
+  }
+
+  @keyframes fadeIn {
+    from {opacity: 0; transform: translateY(10px);}
+    to {opacity: 1; transform: translateY(0);}
+  }
+
+  .lyrics-line {
+    font-size: 1rem;
+    margin: 8px 0;
+    opacity: 0.4;
+    transition: opacity 0.3s ease, transform 0.3s ease;
+  }
+
+  .active-line {
+    opacity: 1;
+    transform: scale(1.05);
+    color: #fff;
+  }
+
+  /* Player tetap di bawah */
+  #player {
     position: fixed;
     bottom: 0;
     width: 100%;
     background-color: #1e1e1e;
-    padding: 12px 20px;
-    display: none;
-    justify-content: space-between;
-    align-items: center;
+    padding: 10px;
+    text-align: center;
     border-top: 1px solid #333;
   }
 
-  #player-info {
-    display: flex;
-    flex-direction: column;
-  }
-
-  #player-title {
-    font-weight: bold;
-    font-size: 1rem;
-  }
-
-  #player-year {
-    font-size: 0.8rem;
-    color: #aaa;
-  }
-
-  #progress-container {
-    flex-grow: 1;
-    height: 6px;
-    background-color: #333;
-    margin: 0 15px;
-    border-radius: 3px;
-    overflow: hidden;
-  }
-
-  #progress-bar {
-    width: 0%;
-    height: 100%;
-    background-color: #1db954; /* Spotify green */
-    transition: width 0.2s linear;
-  }
-
-  #player-time {
-    font-size: 0.8rem;
-    color: #aaa;
-  }
-
-  video.hidden {
-    display: none;
+  #player video {
+    width: 280px;
+    border-radius: 10px;
   }
 
 
@@ -889,21 +878,24 @@ Pertanyaan yang harus kamu jawab dari I GEDE!!!😁
 
 <!-- Galeri Musik -->
 <div class="music-gallery" id="musicGallery">
-  <div class="track theme-1" id="track-1" onclick="playSong(1)">
+  <div class="track theme-1" id="track-1" onclick="showSong(1)">
+    <video src="lagu1.mp4" muted></video>
     <div class="track-info-mini">
       <h3>Langit Senja</h3>
       <span>2023</span>
     </div>
   </div>
 
-  <div class="track theme-2" id="track-2" onclick="playSong(2)">
+  <div class="track theme-2" id="track-2" onclick="showSong(2)">
+    <video src="lagu2.mp4" muted></video>
     <div class="track-info-mini">
       <h3>Gelombang Hati</h3>
       <span>2024</span>
     </div>
   </div>
 
-  <div class="track theme-3" id="track-3" onclick="playSong(3)">
+  <div class="track theme-3" id="track-3" onclick="showSong(3)">
+    <video src="lagu3.mp4" muted></video>
     <div class="track-info-mini">
       <h3>Mimpi Kota</h3>
       <span>2025</span>
@@ -911,21 +903,12 @@ Pertanyaan yang harus kamu jawab dari I GEDE!!!😁
   </div>
 </div>
 
-<!-- Audio tersembunyi -->
-<video id="audioPlayer" class="hidden"></video>
+<!-- Panel Lirik -->
+<div id="infoPanel"></div>
 
-<!-- Player Bar -->
-<div id="playerBar">
-  <div id="player-info">
-    <span id="player-title">Judul Lagu</span>
-    <span id="player-year">Tahun</span>
-  </div>
-
-  <div id="progress-container">
-    <div id="progress-bar"></div>
-  </div>
-
-  <span id="player-time">0:00</span>
+<!-- Player -->
+<div id="player">
+  <p>Tidak ada musik yang sedang diputar</p>
 </div>
 
 
@@ -1385,84 +1368,98 @@ const questions = [
 
 
 
+
+
+
 const songs = [
   {
     id: 1,
     title: "Langit Senja",
-    year: "2023",
-    file: "lagu1.mp4"
+    year: 2023,
+    video: "lagu1.mp4",
+    theme: "theme-1",
+    lyrics: [
+      { time: 0, text: "Mentari tenggelam perlahan..." },
+      { time: 5, text: "Langit jingga menyapa perasaan..." },
+      { time: 10, text: "Angin sore berhembus lembut..." },
+      { time: 15, text: "Mengiringi langkah yang sunyi..." },
+    ]
   },
   {
     id: 2,
     title: "Gelombang Hati",
-    year: "2024",
-    file: "lagu2.mp4"
+    year: 2024,
+    video: "lagu2.mp4",
+    theme: "theme-2",
+    lyrics: [
+      { time: 0, text: "Ombak datang silih berganti..." },
+      { time: 6, text: "Seperti rasa yang tak berhenti..." },
+      { time: 12, text: "Hati berlayar tanpa arah..." },
+      { time: 18, text: "Menemukanmu di samudra gelap..." },
+    ]
   },
   {
     id: 3,
     title: "Mimpi Kota",
-    year: "2025",
-    file: "lagu3.mp4"
+    year: 2025,
+    video: "lagu3.mp4",
+    theme: "theme-3",
+    lyrics: [
+      { time: 0, text: "Lampu kota berpendar..." },
+      { time: 4, text: "Langkah kaki berirama..." },
+      { time: 8, text: "Mimpi tumbuh di jalanan..." },
+      { time: 12, text: "Menatap langit tinggi penuh harapan..." },
+    ]
   }
 ];
 
 let currentSong = null;
-let isPlaying = false;
+let lyricInterval;
 
-const player = document.getElementById("audioPlayer");
-const playerBar = document.getElementById("playerBar");
-const playerTitle = document.getElementById("player-title");
-const playerYear = document.getElementById("player-year");
-const progressBar = document.getElementById("progress-bar");
-const playerTime = document.getElementById("player-time");
-
-function playSong(id) {
+function showSong(id) {
   const song = songs.find(s => s.id === id);
-
-  // Jika lagu yang sama sedang main → stop
-  if (currentSong && currentSong.id === id && isPlaying) {
-    stopMusic();
-    return;
-  }
-
   currentSong = song;
-  player.src = song.file;
-  player.play();
-  isPlaying = true;
 
-  playerTitle.textContent = song.title;
-  playerYear.textContent = song.year;
-  playerBar.style.display = "flex";
+  const infoPanel = document.getElementById("infoPanel");
+  const player = document.getElementById("player");
 
-  player.addEventListener("timeupdate", () => {
-    const progress = (player.currentTime / player.duration) * 100;
-    progressBar.style.width = progress + "%";
+  infoPanel.className = song.theme;
+  infoPanel.style.display = "block";
 
-    const minutes = Math.floor(player.currentTime / 60);
-    const seconds = Math.floor(player.currentTime % 60).toString().padStart(2, "0");
-    playerTime.textContent = `${minutes}:${seconds}`;
-  });
+  // tampilkan lirik awal
+  infoPanel.innerHTML = `
+    <h2>${song.title} (${song.year})</h2>
+    <div id="lyrics-${song.id}">
+      ${song.lyrics.map(l => `<div class="lyrics-line" id="line-${song.id}-${l.time}">${l.text}</div>`).join("")}
+    </div>
+  `;
+
+  // tampilkan video player
+  player.innerHTML = `
+    <video id="videoPlayer" controls autoplay>
+      <source src="${song.video}" type="video/mp4">
+    </video>
+    <p>Sekarang memutar: <b>${song.title}</b></p>
+  `;
+
+  const video = document.getElementById("videoPlayer");
+
+  if (lyricInterval) clearInterval(lyricInterval);
+
+  lyricInterval = setInterval(() => {
+    const currentTime = video.currentTime;
+    song.lyrics.forEach((line, i) => {
+      const el = document.getElementById(`line-${song.id}-${line.time}`);
+      if (!el) return;
+      const nextLine = song.lyrics[i + 1];
+      if (currentTime >= line.time && (!nextLine || currentTime < nextLine.time)) {
+        el.classList.add("active-line");
+      } else {
+        el.classList.remove("active-line");
+      }
+    });
+  }, 500);
 }
-
-// Fungsi stop & sembunyikan bar
-function stopMusic() {
-  player.pause();
-  playerBar.style.display = "none";
-  progressBar.style.width = "0%";
-  isPlaying = false;
-  currentSong = null;
-}
-
-// Klik di luar player → stop musik
-document.body.addEventListener("click", (e) => {
-  const playerClicked = e.target.closest("#playerBar") || e.target.closest(".track");
-  if (!playerClicked && isPlaying) {
-    stopMusic();
-  }
-});
-
-
-
 
     
 
@@ -1482,3 +1479,12 @@ document.body.addEventListener("click", (e) => {
 </script>  
 </body>
 </html>
+
+
+
+
+
+
+
+
+
