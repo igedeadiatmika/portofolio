@@ -687,7 +687,7 @@
     }
 
     .music-card {
-      flex: 0 0 300px;
+      flex: 0 0 100px;
       background: rgba(255, 255, 255, 0.1);
       border-radius: 20px;
       overflow: hidden;
@@ -730,7 +730,6 @@
       background: rgba(255, 140, 0, 0.15); 
     }
 
-    /* Bagian konten lagu */
     .details {
       display: none;
       background: rgba(255, 140, 0, 0.15); 
@@ -741,23 +740,19 @@
       box-shadow: 0 0 20px rgba(255, 160, 80, 0.3);
       transition: background 0.5s ease;
     }
-
     .details.active {
       display: block;
       animation: fadeIn 0.5s ease;
     }
-
     .details h2 {
       color: #ffd7a0;
       text-align: center;
       margin-bottom: 10px;
     }
-
     .details p {
       text-align: center;
       color: #fff4e1;
     }
-
     #lyrics {
       text-align: center;
       margin-top: 20px;
@@ -766,7 +761,6 @@
       color: #fff5da;
       font-style: italic;
     }
-
     .details video {
       width: 100%;
       border-radius: 15px;
@@ -778,16 +772,13 @@
       from { opacity: 0; transform: translateY(10px); }
       to { opacity: 1; transform: translateY(0); }
     }
-
     ::-webkit-scrollbar {
       height: 8px;
     }
-
     ::-webkit-scrollbar-thumb {
       background: #ffd7a0;
       border-radius: 10px;
     }
-
     ::-webkit-scrollbar-track {
       background: rgba(255, 255, 255, 0.05);
     }
@@ -1052,13 +1043,6 @@ window.addEventListener("scroll", () => {
   }
 
 
-
-
-
-
-
-
-
 // Testimonials
         const testimonials = [
             {
@@ -1215,16 +1199,13 @@ const questions = [
 
 
 
-    
 
-
-// === DATE CONFIG ===
     const countdownEl = document.getElementById("birthdayCountdown");
     const song = document.getElementById("birthdaySong");
     const birthday = new Date("2025-10-14T05:00:00+07:00").getTime();
     const endShow = birthday + (5*24*60*60*1000);
 
-    // === COUNTDOWN ===
+    
     function updateCountdown(){
       let now = new Date().getTime();
       if(now < birthday){
@@ -1238,13 +1219,12 @@ const questions = [
         countdownEl.innerHTML = "👑 Selamat ulang tahun ke-15 🎉 Sukses selalu!";
         if(song.paused){ song.play(); song.onended=()=>{song.pause();}; }
       } else {
-        countdownEl.textContent = "Countdown tahun depan...";
+        countdownEl.textContent = "16Th";
       }
     }
     setInterval(updateCountdown,1000);
     updateCountdown();
 
-    // === BUBBLE CHAT ===
     const messages = [
       "Happy hbd kawan!", "Semoga sukses 🎉", "SELAMAT KINGSS.. 😭😭😭",
       "selamat ulangtahun gede, semoga makin gg 🤩🥳", "Selamat ulang tahun adiks...", "Selamat gede semoga panjang umur sehat selalu 😎"
@@ -1283,7 +1263,6 @@ const questions = [
     }
     setInterval(spawnBalloonFunc,2500);
 
-   
     document.addEventListener("click",e=>{
       let now=new Date().getTime();
       if(now<birthday||now>endShow) return;
@@ -1347,22 +1326,14 @@ const questions = [
 
 
 
-
-
-
-
-
-
-
-
     const songs = {
-      1: {
+      2: {
         title: "Langit Senja",
         description: "Lagu ini terinspirasi dari suasana sore di tepi pantai — hangat, lembut, dan penuh kenangan.",
         lyrics: "<pre>Langit jingga menyapa lembut...<br>Rindu pun datang perlahan...</pre>",
         video: "https://res.cloudinary.com/demo/video/upload/v1312461204/sample.mp4"
       },
-      2: {
+      1: {
         title: "Langkah Untuk Cita Cita",
         description: "ini saya buat untuk memotivasi saya sendiri dan pendengar, tentang sebuah langkah yang harus di ambil untuk menjadi lebih baik meraih mimpi",
         lyrics: "<pre>Langkahmu lebih berharga<br>Mimpimu di hidup ini</pre>",
@@ -1400,7 +1371,7 @@ const questions = [
         if ('mediaSession' in navigator) {
           navigator.mediaSession.metadata = new MediaMetadata({
             title: song.title,
-            artist: "i Gede", // ganti dengan nama kamu
+            artist: "i Gede", 
             album: "Karya Musik",
             artwork: [
               { src: card.querySelector("img").src, sizes: '512x512', type: 'image/jpeg' }
@@ -1432,6 +1403,7 @@ const questions = [
 </script>  
 </body>
 </html>
+
 
 
 
