@@ -1303,9 +1303,8 @@ const questions = [
     const songs = {
       2: {
         title: "Langit Senja",
-        description: "Lagu ini terinspirasi dari suasana sore di tepi pantai — hangat, lembut, dan penuh kenangan.",
-        lyrics: "<pre>Langit jingga menyapa lembut...<br>Rindu pun datang perlahan...</pre>",
-        video: "https://res.cloudinary.com/dv6dx2xkk/video/upload/v1765207275/WhatsApp_Video_2025-12-08_at_21.38.48_bdvl0r.mp4"
+        description: "Lagu ini terinspirasi dari suasana di sekolah yang berkesan tentang seorang yang memilki harapan"
+        video: "https://res.cloudinary.com/dv6dx2xkk/video/upload/v1765207703/WhatsApp_Video_2025-12-08_at_22.13.41_cn28ml.mp4"
       },
       1: {
         title: "Langkah Untuk Cita Cita",
@@ -1341,7 +1340,7 @@ const questions = [
         details.scrollIntoView({ behavior: "smooth" });
         songVideo.play();
 
-        // Media Session API
+        // API
         if ('mediaSession' in navigator) {
           navigator.mediaSession.metadata = new MediaMetadata({
             title: song.title,
@@ -1377,6 +1376,7 @@ const questions = [
 </script>  
 </body>
 </html>
+
 
 
 
