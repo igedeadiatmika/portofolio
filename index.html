@@ -1397,22 +1397,18 @@ const mainImages = [
   "https://res.cloudinary.com/dn3rj6nmu/image/upload/v1766375053/WhatsApp_Image_2025-12-22_at_10.13.25_1_r4rucq.jpg",
   "https://res.cloudinary.com/dn3rj6nmu/image/upload/v1766376061/WhatsApp_Image_2025-12-22_at_10.13.35_1_pg4xj8.jpg",
   "https://res.cloudinary.com/dn3rj6nmu/image/upload/v1766374699/WhatsApp_Image_2025-12-22_at_10.13.23_1_cao4m4.jpg",
-  "https://res.cloudinary.com/dn3rj6nmu/image/upload/v1766281708/samples/food/spices.jpg",
-  "https://res.cloudinary.com/dn3rj6nmu/image/upload/v1766281707/samples/imagecon-group.jpg"
+ 
 ];
 const slidePools = [
   ["https://res.cloudinary.com/dn3rj6nmu/image/upload/v1766375695/WhatsApp_Image_2025-12-22_at_10.13.30_ao1kyk.jpg", "https://res.cloudinary.com/dn3rj6nmu/image/upload/v1766374422/WhatsApp_Image_2025-12-22_at_10.13.23_n3guaw.jpg", "https://res.cloudinary.com/dn3rj6nmu/image/upload/v1766375555/WhatsApp_Image_2025-12-22_at_10.13.29_iauln2.jpg", "https://res.cloudinary.com/dn3rj6nmu/image/upload/v1766374422/WhatsApp_Image_2025-12-22_at_10.13.23_n3guaw.jpg"],
   ["https://res.cloudinary.com/dn3rj6nmu/image/upload/v1766374919/WhatsApp_Image_2025-12-22_at_10.13.25_gbloby.jpg", "https://res.cloudinary.com/dn3rj6nmu/image/upload/v1766374833/WhatsApp_Image_2025-12-22_at_10.13.24_1_rcd208.jpg", "https://res.cloudinary.com/dn3rj6nmu/image/upload/v1766375412/WhatsApp_Image_2025-12-22_at_10.13.26_1_o9fdry.jpg", "https://res.cloudinary.com/dn3rj6nmu/image/upload/v1766375250/WhatsApp_Image_2025-12-22_at_10.13.26_otakzd.jpg"],
   ["https://res.cloudinary.com/dn3rj6nmu/image/upload/v1766375873/WhatsApp_Image_2025-12-22_at_10.13.35_bgehcg.jpg", "https://res.cloudinary.com/dn3rj6nmu/image/upload/v1766374771/WhatsApp_Image_2025-12-22_at_10.13.24_ehnzik.jpg", "https://res.cloudinary.com/dn3rj6nmu/image/upload/v1766376230/WhatsApp_Image_2025-12-22_at_10.13.36_wipyob.jpg", "https://res.cloudinary.com/dn3rj6nmu/image/upload/v1766376271/WhatsApp_Image_2025-12-22_at_10.13.36_1_yeezah.jpg"],
   ["https://res.cloudinary.com/dn3rj6nmu/image/upload/v1766375569/WhatsApp_Image_2025-12-22_at_10.13.29_1_ddtgnh.jpg", "https://res.cloudinary.com/dn3rj6nmu/image/upload/v1766375555/WhatsApp_Image_2025-12-22_at_10.13.29_iauln2.jpg"],
-  ["img/e1.jpg", "img/e2.jpg", "img/e3.jpg"],
-  ["img/f1.jpg", "img/f2.jpg", "img/f3.jpg"]
+  
 ];
-
 let hoverTimer = null;
 let activeCell = null;
 let slideIntervals = [];
-
 cells.forEach((cell, i) => {
   cell.style.backgroundImage = `url(${mainImages[i]})`;
 });
@@ -1438,7 +1434,6 @@ function stopSlideshows() {
   });
 }
 
-
 cells.forEach((cell, index) => {
   cell.addEventListener("mouseenter", () => {
     hoverTimer = setTimeout(() => {
@@ -1446,7 +1441,6 @@ cells.forEach((cell, index) => {
       cells.forEach(c => c.classList.add("is-dim"));
       cell.classList.remove("is-dim");
       cell.classList.add("is-focus");
-
       startSlideshows(index);
     }, 2000);
   });
@@ -1455,7 +1449,6 @@ cells.forEach((cell, index) => {
     clearTimeout(hoverTimer);
     hoverTimer = null;
     activeCell = null;
-
     cells.forEach(c => {
       c.classList.remove("is-focus", "is-dim");
     });
@@ -1476,6 +1469,7 @@ cells.forEach((cell, index) => {
 </script>  
 </body>
 </html>
+
 
 
 
