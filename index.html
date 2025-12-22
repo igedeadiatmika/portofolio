@@ -660,10 +660,6 @@
       100% { transform:translateY(-120px) scale(1.8); opacity:0; }
     }
 
-
-    
-
-
 .music-gallery {
       display: flex;
       overflow-x: auto;
@@ -854,9 +850,7 @@ Pertanyaan yang harus kamu jawab dari I GEDE!!!😁
    
 
 <h1>Galeri Musik</h1>
-
 <div class="music-gallery" id="musicGallery">
-        
     <div class="music-card" data-id="1">
       <img src="https://res.cloudinary.com/dv6dx2xkk/image/upload/v1762060555/WhatsApp_Image_2025-11-02_at_12.11.27_aphxly.jpg" alt="Lagu 1" />
       <div class="play-icon">▶</div>
@@ -876,14 +870,12 @@ Pertanyaan yang harus kamu jawab dari I GEDE!!!😁
       </div>
   </div>      
 
-    
   <div class="details" id="details">
     <h2 id="songTitle"></h2>
     <p id="songDescription"></p>
     <div id="lyrics"></div>
     <video id="songVideo" controls></video>
   </div>
-
 
  <div id="timeline">
                 <div class="timeline-item" data-aos="zoom-in">
@@ -907,7 +899,6 @@ Pertanyaan yang harus kamu jawab dari I GEDE!!!😁
                     </div>
                 </div>
     
-
     <section id="projects">
       <h2 data-aos="zoom-in">Projects</h2>
       <div class="projects-list">
@@ -916,7 +907,6 @@ Pertanyaan yang harus kamu jawab dari I GEDE!!!😁
           <div class="project-desc">
             platform GEVSIDE Enviewmen ini saya buat untuk mengembangkan teknologi yang dapat berdampak pada pelestarian alam
           </div>
-        
           <a class="project-link" href=" https://igedeadiatmika.github.io/GEVSIDE-ENVIEWMEN/" target="_blank">View Project</a>
         </div>
       </div>
@@ -937,8 +927,6 @@ Pertanyaan yang harus kamu jawab dari I GEDE!!!😁
         <div class="skill" data-aos="fade-in">Multi-Talented</div>
       </div>
     </section>
-  
-
 <section style="background: var(--glas-bg); color: white;">
         <div class="container" style="max-width: 80rem;">
             <div class="section-header center">
@@ -952,16 +940,12 @@ Pertanyaan yang harus kamu jawab dari I GEDE!!!😁
             </div>
         </div>
 </section>
-  
   <script>
 
     let lastScrollTop = 0;
 let hideTimeout;
 
-
 const nav = document.querySelector(".bottom-nav");
-
-
 function hideNav() {
   nav.classList.add("hidden");
 }
@@ -973,7 +957,6 @@ function showNav() {
 window.addEventListener("scroll", () => {
   let scrollTop = window.scrollY || document.documentElement.scrollTop;
 
-
   if (scrollTop > lastScrollTop) {
     clearTimeout(scrollDownTimeout);
     scrollDownTimeout = setTimeout(() => {
@@ -984,15 +967,12 @@ window.addEventListener("scroll", () => {
     showNav();
   }
 
-
-  lastScrollTop = scrollTop <= 0 ? 0 : scrollTop;
-  
+  lastScrollTop = scrollTop <= 0 ? 0 : scrollTop; 
   clearTimeout(hideTimeout);
   hideTimeout = setTimeout(() => {
     hideNav();
   }, 10000); 
 });
-
     
   function toggleDJ(el) {
     el.classList.toggle('active');
@@ -1023,8 +1003,6 @@ window.addEventListener("scroll", () => {
     }
   }
 
-
-// Testimonials
         const testimonials = [
             {
                 name: 'Steve',
@@ -1090,7 +1068,6 @@ window.addEventListener("scroll", () => {
                 </div>
             `;
             testimonialTrack.appendChild(slide);
-
             const dot = document.createElement('div');
             dot.className = 'dot' + (index === 0 ? ' active' : '');
             dot.onclick = () => goToTestimonial(index);
@@ -1110,9 +1087,6 @@ window.addEventListener("scroll", () => {
             goToTestimonial(currentTestimonial);
         }, 5000);
 
-
-
-    // Modal Logic
 const questions = [
   { question: 'Apakah kamu kenal IGede?', yesNext: 1, noNext: 2 },
   { question: 'Apakah dia baik?', yesNext: 3, noNext: 4 },
@@ -1131,13 +1105,9 @@ const questions = [
 
  let currentQuestion = 0;
         let answersCount = 0;
-
         function updateModal() {
 
-
             document.getElementById('modalTitle').textContent = `Pertanyaan ${answersCount + 1} dari 5`;
-
-
             document.getElementById('modalQuestion').textContent = questions[currentQuestion].question;
             document.getElementById('progressFill').style.width = `${(answersCount / 5) * 100}%`;
         }
@@ -1145,7 +1115,6 @@ const questions = [
         function answerQuestion(answer) {
             const nextIndex = answer === 'yes' ? questions[currentQuestion].yesNext : questions[currentQuestion].noNext;
             answersCount++;
-
             if (nextIndex === null || answersCount >= 5) {
                 showComplete();
             } else {
@@ -1177,13 +1146,10 @@ const questions = [
         updateModal();
 
 
-
-
     const countdownEl = document.getElementById("birthdayCountdown");
     const song = document.getElementById("birthdaySong");
     const birthday = new Date("2025-10-14T05:00:00+07:00").getTime();
     const endShow = birthday + (5*24*60*60*1000);
-    
     function updateCountdown(){
       let now = new Date().getTime();
       if(now < birthday){
@@ -1301,9 +1267,6 @@ const questions = [
     window.onresize=()=>{canvas.width=innerWidth; canvas.height=innerHeight;};
 
 
-
-
-
     const songs = {
       2: {
         title: "Langit Senja",
@@ -1343,7 +1306,6 @@ const questions = [
         details.classList.add("active");
         details.scrollIntoView({ behavior: "smooth" });
         songVideo.play();
-
         // API
         if ('mediaSession' in navigator) {
           navigator.mediaSession.metadata = new MediaMetadata({
@@ -1380,6 +1342,7 @@ const questions = [
 </script>  
 </body>
 </html>
+
 
 
 
