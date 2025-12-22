@@ -57,13 +57,20 @@
 @media (max-width: 768px) {
   .hero-title {
     font-size: 0.6rem;
-}
+  }
+    #ig-gallery {
+    transform: scale(0.85);
+  }
+
 }
 
 @media (max-width: 480px) {
   .hero-title {
     font-size: 0.3rem;
-}
+  }
+    #ig-gallery {
+    transform: scale(0.7);
+  }
 }
     .hero-subtitle {
       font-size: 1.3rem;
@@ -242,6 +249,7 @@
       .hero-title { font-size: 2rem; }
       .projects-list { grid-template-columns: 1fr; }
       nav button.tes, nav button.tes a { margin: 0 0.5rem; }
+      #birthdayCountdown { font-size:10px; padding:6px 10px; }
     }
     .dj-wrapper {
   position: relative;
@@ -406,6 +414,11 @@
             gap: 0.5rem;
             margin-top: 1.5rem;
         }
+
+    .katamereka {
+      background: var(--glas-bg);
+      color: white;
+    }
         .dot {
             width: 0.5rem;
             height: 0.5rem;
@@ -592,7 +605,6 @@
     margin-top: 0.3rem;
     font-size: 1rem;
 }
-
    
     #birthdayCountdown {
       position: fixed; top:10px; left:10px;
@@ -600,9 +612,7 @@
       padding: 8px 12px; border-radius:12px;
       font-size: 12px; z-index:9999;
     }
-    @media(max-width:600px){
-      #birthdayCountdown { font-size:10px; padding:6px 10px; }
-    }
+    
     .chatBubble {
       position: fixed;
       bottom:-100px;
@@ -769,7 +779,6 @@
 
 
 
-
 main#ig-rootg {
   width: 100vw;
   height: 100vh;
@@ -781,7 +790,6 @@ main#ig-rootg {
 #ig-gallery {
   width: 92vw;
   height: 88vh;
-
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   grid-template-rows: repeat(2, 1fr);
@@ -853,7 +861,7 @@ Pertanyaan yang harus kamu jawab dari I GEDE!!!😁
   
   <header>
     <div class="hero-title">I GEDE ADIATMIKA</div>
-    <div class="hero-subtitle">Programmer • Developer • Junior Entrepreneur • Junior analisist • Traveler</div>
+    <div class="hero-subtitle">Programmer • Developer • Junior analisist • Traveler</div>
 
     <div class="hero-desc">
       
@@ -898,9 +906,6 @@ Pertanyaan yang harus kamu jawab dari I GEDE!!!😁
       <div class="ig-cell" id="ig-cell-6" data-speed="800"></div>
     </section>
   </main>
-
-
-
       
 <h1>Galeri Musik</h1>
 <div class="music-gallery" id="musicGallery">
@@ -969,7 +974,6 @@ Pertanyaan yang harus kamu jawab dari I GEDE!!!😁
       <h2 data-aos="zoom-in">Skills</h2>
       <div class="skills-list">
         <div class="skill" data-aos="fade-in">Inovation</div>
-        <div class="skill" data-aos="fade-in">Cooperation</div>
         <div class="skill" data-aos="fade-in">Traveler</div>
         <div class="skill" data-aos="fade-in">Mathematician</div>
         <div class="skill" data-aos="fade-in">Business Strategy</div>
@@ -980,7 +984,7 @@ Pertanyaan yang harus kamu jawab dari I GEDE!!!😁
         <div class="skill" data-aos="fade-in">Multi-Talented</div>
       </div>
     </section>
-<section style="background: var(--glas-bg); color: white;">
+<section class="katamereka"> 
         <div class="container" style="max-width: 80rem;">
             <div class="section-header center">
                 <h2 style="color: white;">What People Say</h2>
@@ -1472,6 +1476,7 @@ cells.forEach((cell, index) => {
 </script>  
 </body>
 </html>
+
 
 
 
