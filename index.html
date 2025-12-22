@@ -769,6 +769,47 @@
 
 
 
+
+main#ig-rootg {
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+#ig-gallery {
+  width: 92vw;
+  height: 88vh;
+
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: repeat(2, 1fr);
+  gap: 14px;
+}
+
+.ig-cell {
+  position: relative;
+  background-size: cover;
+  background-position: center;
+  border-radius: 14px;
+  transition:
+    filter 0.6s ease,
+    transform 0.6s ease;
+}
+
+.ig-cell.is-focus {
+  filter: brightness(1);
+  transform: scale(1.05);
+  z-index: 10;
+}
+
+.ig-cell.is-dim {
+  filter: brightness(0.45) blur(3px);
+}
+
+
+
     
     canvas { position:fixed; top:0; left:0; width:100%; height:100%; pointer-events:none; }
   </style>
@@ -799,20 +840,17 @@ Pertanyaan yang harus kamu jawab dari I GEDE!!!😁
         </div>
     </div>
 
-
-  
 <div id="birthdayCountdown">Loading...</div>
   <div id="closeBtn">✖</div>
   <canvas id="fireworks"></canvas>
   <audio id="birthdaySong" src="https://open.spotify.com/track/6VgyRGeR4cw6yNGazjGFhu?si=KLjIEvxnR2aEwwk6_5g3mQ"></audio>
-
   
 <div class="dj-wrapper" onclick="toggleDJ(this)">
   <img src="https://res.cloudinary.com/dv6dx2xkk/image/upload/v1762066362/WhatsApp_Image_2025-11-02_at_13.40.04_2_xuh5aq.jpg" alt="Profil" class="dj-photo">
   <div class="dj-border"></div>
   <div class="dj-particles"></div>
 </div>
-
+  
   <header>
     <div class="hero-title">I GEDE ADIATMIKA</div>
     <div class="hero-subtitle">Programmer • Developer • Junior Entrepreneur • Junior analisist • Traveler</div>
@@ -849,6 +887,21 @@ Pertanyaan yang harus kamu jawab dari I GEDE!!!😁
     </section>
    
 
+
+<main id="ig-rootg">
+    <section id="ig-gallery">
+      <div class="ig-cell" id="ig-cell-1" data-speed="700"></div>
+      <div class="ig-cell" id="ig-cell-2" data-speed="1200"></div>
+      <div class="ig-cell" id="ig-cell-3" data-speed="900"></div>
+      <div class="ig-cell" id="ig-cell-4" data-speed="500"></div>
+      <div class="ig-cell" id="ig-cell-5" data-speed="1500"></div>
+      <div class="ig-cell" id="ig-cell-6" data-speed="800"></div>
+    </section>
+  </main>
+
+
+
+      
 <h1>Galeri Musik</h1>
 <div class="music-gallery" id="musicGallery">
     <div class="music-card" data-id="1">
@@ -1337,17 +1390,17 @@ const questions = [
     const cells = document.querySelectorAll(".ig-cell");
 const mainImages = [
   "https://res.cloudinary.com/dn3rj6nmu/image/upload/v1766373580/WhatsApp_Image_2025-12-22_at_10.13.37_tqpevs.jpg",
-  "https://res.cloudinary.com/dn3rj6nmu/image/upload/v1766281706/samples/people/bicycle.jpg",
-  "https://res.cloudinary.com/dn3rj6nmu/image/upload/v1766281705/samples/animals/three-dogs.jpg",
-  "https://res.cloudinary.com/dn3rj6nmu/image/upload/v1766281704/samples/bike.jpg",
+  "https://res.cloudinary.com/dn3rj6nmu/image/upload/v1766375053/WhatsApp_Image_2025-12-22_at_10.13.25_1_r4rucq.jpg",
+  "https://res.cloudinary.com/dn3rj6nmu/image/upload/v1766376061/WhatsApp_Image_2025-12-22_at_10.13.35_1_pg4xj8.jpg",
+  "https://res.cloudinary.com/dn3rj6nmu/image/upload/v1766374699/WhatsApp_Image_2025-12-22_at_10.13.23_1_cao4m4.jpg",
   "https://res.cloudinary.com/dn3rj6nmu/image/upload/v1766281708/samples/food/spices.jpg",
   "https://res.cloudinary.com/dn3rj6nmu/image/upload/v1766281707/samples/imagecon-group.jpg"
 ];
 const slidePools = [
-  ["https://res.cloudinary.com/dn3rj6nmu/image/upload/v1766281718/samples/coffee.jpg", "https://res.cloudinary.com/dn3rj6nmu/image/upload/v1766281717/samples/man-on-a-street.jpg", "https://res.cloudinary.com/dn3rj6nmu/image/upload/v1766281715/samples/breakfast.jpg"],
-  ["https://res.cloudinary.com/dn3rj6nmu/image/upload/v1766281717/samples/man-portrait.jpg", "https://res.cloudinary.com/dn3rj6nmu/image/upload/v1766281719/samples/woman-on-a-football-field.jpg", "https://res.cloudinary.com/dn3rj6nmu/image/upload/v1766281722/cld-sample.jpg"],
-  ["https://res.cloudinary.com/dn3rj6nmu/image/upload/v1766281723/cld-sample-2.jpg", "https://res.cloudinary.com/dn3rj6nmu/image/upload/v1766281721/samples/paper.png", "https://res.cloudinary.com/dn3rj6nmu/image/upload/v1766281722/samples/waves.png"],
-  ["https://res.cloudinary.com/dn3rj6nmu/image/upload/v1766281708/samples/food/spices.jpg", "https://res.cloudinary.com/dn3rj6nmu/image/upload/v1766281707/samples/imagecon-group.jpg", "https://res.cloudinary.com/dn3rj6nmu/image/upload/v1766281707/samples/ecommerce/accessories-bag.jpg"],
+  ["https://res.cloudinary.com/dn3rj6nmu/image/upload/v1766375695/WhatsApp_Image_2025-12-22_at_10.13.30_ao1kyk.jpg", "https://res.cloudinary.com/dn3rj6nmu/image/upload/v1766374422/WhatsApp_Image_2025-12-22_at_10.13.23_n3guaw.jpg", "https://res.cloudinary.com/dn3rj6nmu/image/upload/v1766375555/WhatsApp_Image_2025-12-22_at_10.13.29_iauln2.jpg", "https://res.cloudinary.com/dn3rj6nmu/image/upload/v1766374422/WhatsApp_Image_2025-12-22_at_10.13.23_n3guaw.jpg"],
+  ["https://res.cloudinary.com/dn3rj6nmu/image/upload/v1766374919/WhatsApp_Image_2025-12-22_at_10.13.25_gbloby.jpg", "https://res.cloudinary.com/dn3rj6nmu/image/upload/v1766374833/WhatsApp_Image_2025-12-22_at_10.13.24_1_rcd208.jpg", "https://res.cloudinary.com/dn3rj6nmu/image/upload/v1766375412/WhatsApp_Image_2025-12-22_at_10.13.26_1_o9fdry.jpg", "https://res.cloudinary.com/dn3rj6nmu/image/upload/v1766375250/WhatsApp_Image_2025-12-22_at_10.13.26_otakzd.jpg"],
+  ["https://res.cloudinary.com/dn3rj6nmu/image/upload/v1766375873/WhatsApp_Image_2025-12-22_at_10.13.35_bgehcg.jpg", "https://res.cloudinary.com/dn3rj6nmu/image/upload/v1766374771/WhatsApp_Image_2025-12-22_at_10.13.24_ehnzik.jpg", "https://res.cloudinary.com/dn3rj6nmu/image/upload/v1766376230/WhatsApp_Image_2025-12-22_at_10.13.36_wipyob.jpg", "https://res.cloudinary.com/dn3rj6nmu/image/upload/v1766376271/WhatsApp_Image_2025-12-22_at_10.13.36_1_yeezah.jpg"],
+  ["https://res.cloudinary.com/dn3rj6nmu/image/upload/v1766375569/WhatsApp_Image_2025-12-22_at_10.13.29_1_ddtgnh.jpg", "https://res.cloudinary.com/dn3rj6nmu/image/upload/v1766375555/WhatsApp_Image_2025-12-22_at_10.13.29_iauln2.jpg"],
   ["img/e1.jpg", "img/e2.jpg", "img/e3.jpg"],
   ["img/f1.jpg", "img/f2.jpg", "img/f3.jpg"]
 ];
@@ -1419,6 +1472,7 @@ cells.forEach((cell, index) => {
 </script>  
 </body>
 </html>
+
 
 
 
