@@ -1329,7 +1329,84 @@ const questions = [
         }
       });
     });
- 
+
+
+
+
+
+    const cells = document.querySelectorAll(".ig-cell");
+const mainImages = [
+  "https://res.cloudinary.com/dn3rj6nmu/image/upload/v1766373580/WhatsApp_Image_2025-12-22_at_10.13.37_tqpevs.jpg",
+  "https://res.cloudinary.com/dn3rj6nmu/image/upload/v1766281706/samples/people/bicycle.jpg",
+  "https://res.cloudinary.com/dn3rj6nmu/image/upload/v1766281705/samples/animals/three-dogs.jpg",
+  "https://res.cloudinary.com/dn3rj6nmu/image/upload/v1766281704/samples/bike.jpg",
+  "https://res.cloudinary.com/dn3rj6nmu/image/upload/v1766281708/samples/food/spices.jpg",
+  "https://res.cloudinary.com/dn3rj6nmu/image/upload/v1766281707/samples/imagecon-group.jpg"
+];
+const slidePools = [
+  ["https://res.cloudinary.com/dn3rj6nmu/image/upload/v1766281718/samples/coffee.jpg", "https://res.cloudinary.com/dn3rj6nmu/image/upload/v1766281717/samples/man-on-a-street.jpg", "https://res.cloudinary.com/dn3rj6nmu/image/upload/v1766281715/samples/breakfast.jpg"],
+  ["https://res.cloudinary.com/dn3rj6nmu/image/upload/v1766281717/samples/man-portrait.jpg", "https://res.cloudinary.com/dn3rj6nmu/image/upload/v1766281719/samples/woman-on-a-football-field.jpg", "https://res.cloudinary.com/dn3rj6nmu/image/upload/v1766281722/cld-sample.jpg"],
+  ["https://res.cloudinary.com/dn3rj6nmu/image/upload/v1766281723/cld-sample-2.jpg", "https://res.cloudinary.com/dn3rj6nmu/image/upload/v1766281721/samples/paper.png", "https://res.cloudinary.com/dn3rj6nmu/image/upload/v1766281722/samples/waves.png"],
+  ["https://res.cloudinary.com/dn3rj6nmu/image/upload/v1766281708/samples/food/spices.jpg", "https://res.cloudinary.com/dn3rj6nmu/image/upload/v1766281707/samples/imagecon-group.jpg", "https://res.cloudinary.com/dn3rj6nmu/image/upload/v1766281707/samples/ecommerce/accessories-bag.jpg"],
+  ["img/e1.jpg", "img/e2.jpg", "img/e3.jpg"],
+  ["img/f1.jpg", "img/f2.jpg", "img/f3.jpg"]
+];
+
+let hoverTimer = null;
+let activeCell = null;
+let slideIntervals = [];
+
+cells.forEach((cell, i) => {
+  cell.style.backgroundImage = `url(${mainImages[i]})`;
+});
+
+function startSlideshows(focusIndex) {
+  stopSlideshows();
+  cells.forEach((cell, i) => {
+    if (i === focusIndex) return;
+    let index = 0;
+    const speed = 600 + i * 200;
+    slideIntervals[i] = setInterval(() => {
+      index = (index + 1) % slidePools[i].length;
+      cell.style.backgroundImage = `url(${slidePools[i][index]})`;
+    }, speed);
+  });
+}
+
+function stopSlideshows() {
+  slideIntervals.forEach(clearInterval);
+  slideIntervals = [];
+  cells.forEach((cell, i) => {
+    cell.style.backgroundImage = `url(${mainImages[i]})`;
+  });
+}
+
+
+cells.forEach((cell, index) => {
+  cell.addEventListener("mouseenter", () => {
+    hoverTimer = setTimeout(() => {
+      activeCell = index;
+      cells.forEach(c => c.classList.add("is-dim"));
+      cell.classList.remove("is-dim");
+      cell.classList.add("is-focus");
+
+      startSlideshows(index);
+    }, 2000);
+  });
+
+  cell.addEventListener("mouseleave", () => {
+    clearTimeout(hoverTimer);
+    hoverTimer = null;
+    activeCell = null;
+
+    cells.forEach(c => {
+      c.classList.remove("is-focus", "is-dim");
+    });
+
+    stopSlideshows();
+  });
+});
+
 </script>
 
 <script src="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.js"></script>
@@ -1342,6 +1419,7 @@ const questions = [
 </script>  
 </body>
 </html>
+
 
 
 
