@@ -58,13 +58,11 @@
   .hero-title {
     font-size: 0.6rem;
   }
-
-  #ig-gallery {
+   #ig-gallery {
     transform: scale(1);
-   
-   
+    gap: 1px;
+    
   }
-
 }
 
 @media (max-width: 480px) {
@@ -74,14 +72,14 @@
 
   #ig-gallery {
     transform: scale(1);
-    
-   
+    gap: 1px;
+    display: grid;
   }
-
   .ig-cell{
     height: 90px;
-  }  
+  }
 }
+    
     .hero-subtitle {
       font-size: 1.3rem;
       color: var(--accent);
@@ -787,22 +785,25 @@
     }
 
 
-#ig-rootg {
+
+    
+main-#ig-rootg {
   width: 100vw;
   height: 100vh;
   display: flex;
   align-items: center;
   justify-content: center;
 }
-    
+
 #ig-gallery {
-  width: 90vh;
-  height: 88vh;
-  display: flex;
+  width: 100vw;
+  min-height: 80vh;
+  display: grid;
   grid-template-columns: repeat(3, 1fr);
   grid-template-rows: repeat(2, 1fr);
   gap: 14px;
 }
+
 .ig-cell {
   position: relative;
   background-size: cover;
@@ -811,17 +812,22 @@
   transition:
     filter 0.6s ease,
     transform 0.6s ease;
+    aspect-ratio: 3 / 4;
+    overflow-y: auto;
 }
+
 .ig-cell.is-focus {
-  filter: brightness(2);
+  filter: brightness(1);
   transform: scale(1.05);
   z-index: 10;
 }
+
 .ig-cell.is-dim {
   filter: brightness(0.45) blur(3px);
 }
 
 
+    
 
 #chat {
     margin-top: 3rem;
@@ -989,7 +995,7 @@ Pertanyaan yang harus kamu jawab dari I GEDE!!!😁
       </div>
     </section>
 
-<div id="ig-rootg">
+<main id="ig-rootg">
     <section id="ig-gallery">
       <div class="ig-cell" id="ig-cell-1" data-speed="700"></div>
       <div class="ig-cell" id="ig-cell-2" data-speed="800"></div>
@@ -998,7 +1004,7 @@ Pertanyaan yang harus kamu jawab dari I GEDE!!!😁
       <div class="ig-cell" id="ig-cell-5" data-speed="1500"></div>
       <div class="ig-cell" id="ig-cell-6" data-speed="800"></div>
     </section>
-  </div>
+  </main>
       
 <h1>Galeri Musik</h1>
 <div class="music-gallery" id="musicGallery">
@@ -2788,6 +2794,7 @@ async function getAIResponse(userText) {
 </script>  
 </body>
 </html>
+
 
 
 
