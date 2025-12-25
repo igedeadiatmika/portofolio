@@ -785,7 +785,6 @@
       margin-top: 25px;
       box-shadow: 0 0 15px rgba(255, 160, 80, 0.4);
     }
-
     @keyframes fadeIn {
       from { opacity: 0; transform: translateY(10px); }
       to { opacity: 1; transform: translateY(0); }
@@ -802,7 +801,6 @@
     }
 
 
-
     .tooltip-zone {
   padding: 40px 60px;
   border-radius: 18px;
@@ -811,7 +809,6 @@
   box-shadow: 0 0 30px rgba(0, 255, 255, 0.15);
   cursor: pointer;
 }
-
 .neo-tooltip {
   position: fixed;
   padding: 10px 14px;
@@ -829,7 +826,6 @@
     0 0 25px rgba(0,255,255,0.3);
   z-index: 9999;
 }
-
 .neo-tooltip.active {
   opacity: 1;
   transform: scale(1);
@@ -844,7 +840,6 @@ main-#ig-rootg {
   align-items: center;
   justify-content: center;
 }
-
 #ig-gallery {
   width: 100vw;
   min-height: 80vh;
@@ -853,7 +848,6 @@ main-#ig-rootg {
   grid-template-rows: repeat(2, 1fr);
   gap: 14px;
 }
-
 .ig-cell {
   position: relative;
   background-size: cover;
@@ -865,17 +859,14 @@ main-#ig-rootg {
     aspect-ratio: 3 / 4;
     overflow-y: auto;
 }
-
 .ig-cell.is-focus {
   filter: brightness(1);
   transform: scale(1.05);
   z-index: 10;
 }
-
 .ig-cell.is-dim {
   filter: brightness(0.45) blur(3px);
 }
-
 
     
 
@@ -1039,7 +1030,6 @@ Pertanyaan yang harus kamu jawab dari I GEDE!!!😁
     <div class="hero-title">I GEDE ADIATMIKA</div>
     <div class="hero-subtitle">Programmer • Developer • Junior analisist • Traveler</div>
     <div class="hero-desc">
-
     </div>
 
     <nav class="bottom-nav">
@@ -1050,8 +1040,6 @@ Pertanyaan yang harus kamu jawab dari I GEDE!!!😁
     </nav>
   </header>
 
-
-  
     <section id="about" class="tooltip-zone" data-tooltip="ini cara ku untuk berjuang">
       <h2 data-aos="zoom-in-up">Tentang igedd</h2>
       <div class="about-content" data-aos="zoom-in">
@@ -1070,14 +1058,14 @@ Pertanyaan yang harus kamu jawab dari I GEDE!!!😁
     </section>
     </section>
 
-<main id="ig-rootg">
+<main id="ig-rootg" class="tooltip-zone" data-tooltip="inilah beberapa dokumentasi kegiatanku">
     <section id="ig-gallery">
-      <div class="ig-cell" id="ig-cell-1" data-speed="700"></div>
-      <div class="ig-cell" id="ig-cell-2" data-speed="800"></div>
-      <div class="ig-cell" id="ig-cell-3" data-speed="900"></div>
-      <div class="ig-cell" id="ig-cell-4" data-speed="500"></div>
-      <div class="ig-cell" id="ig-cell-5" data-speed="1500"></div>
-      <div class="ig-cell" id="ig-cell-6" data-speed="800"></div>
+      <div class="ig-cell tooltip-zone"  data-tooltip="di kelas X7" id="ig-cell-1" data-speed="700"></div>
+      <div class="ig-cell tooltip-zone"  data-tooltip="di beberapa kegiatan" id="ig-cell-2" data-speed="800"></div>
+      <div class="ig-cell tooltip-zone"  data-tooltip="kegiatan kepemudaan hindu" id="ig-cell-3" data-speed="900"></div>
+      <div class="ig-cell tooltip-zone"  data-tooltip="bersama dalam acara di sekolah" id="ig-cell-4" data-speed="500"></div>
+      <div class="ig-cell tooltip-zone"  data-tooltip="beberapa dokumentasi kegiatanku" id="ig-cell-5" data-speed="1500"></div>
+      <div class="ig-cell tooltip-zone"  data-tooltip="beberapa dokumentasi kegiatanku" id="ig-cell-6" data-speed="800"></div>
     </section>
   </main>
 
@@ -2947,6 +2935,7 @@ async function getAIResponse(userText) {
 </script>  
 </body>
 </html>
+
 
 
 
