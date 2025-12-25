@@ -803,6 +803,39 @@
 
 
 
+    .tooltip-zone {
+  padding: 40px 60px;
+  border-radius: 18px;
+  background: linear-gradient(135deg, #0f172a, #020617);
+  border: 1px solid rgba(0, 255, 255, 0.35);
+  box-shadow: 0 0 30px rgba(0, 255, 255, 0.15);
+  cursor: pointer;
+}
+
+.neo-tooltip {
+  position: fixed;
+  padding: 10px 14px;
+  font-size: 13px;
+  border-radius: 10px;
+  background: rgba(0, 255, 255, 0.15);
+  backdrop-filter: blur(10px);
+  color: #8ffcff;
+  pointer-events: none;
+  opacity: 0;
+  transform: scale(0.8);
+  transition: opacity 0.15s ease, transform 0.15s ease;
+  box-shadow:
+    0 0 10px rgba(0,255,255,0.6),
+    0 0 25px rgba(0,255,255,0.3);
+  z-index: 9999;
+}
+
+.neo-tooltip.active {
+  opacity: 1;
+  transform: scale(1);
+}
+
+
     
 main-#ig-rootg {
   width: 100vw;
@@ -2914,6 +2947,7 @@ async function getAIResponse(userText) {
 </script>  
 </body>
 </html>
+
 
 
 
