@@ -63,6 +63,13 @@
     gap: 1px;
     
   }
+
+   #chatInput input, #aiChatInput input, #searchBar input {
+        width: 100%;
+}
+    #chatInput button, #aiChatInput button, #searchBar button {
+        width: 100%;
+    }
 }
 
 @media (max-width: 480px) {
@@ -78,6 +85,16 @@
   .ig-cell{
     height: 90px;
   }
+
+  .about-content {
+      font-size: 5px;
+      line-height: 1;
+      
+    }
+
+  .deep-learning-page {
+        padding: 0.2rem;
+    }
 }
     
     .hero-subtitle {
@@ -920,6 +937,28 @@ main-#ig-rootg {
     box-shadow: 0 0 20px #a100ff88;
 }
 
+    .delete-chat,
+.delete-ai-chat {
+    background: linear-gradient(90deg, #ff005c 0%, #a100ff 100%);
+    color: #fff;
+    border: none;
+    border-radius: 6px;
+    padding: 0.3rem 1rem;
+    font-size: 0.95rem;
+    font-weight: bold;
+    margin-top: 0.7rem;
+    margin-bottom: 0.2rem;
+    cursor: pointer;
+    box-shadow: 0 0 8px #ff005c44;
+    transition: background 0.2s, box-shadow 0.2s;
+}
+
+.delete-chat:hover,
+.delete-ai-chat:hover {
+    background: linear-gradient(90deg, #00c3ff 0%, #ff005c 100%);
+    box-shadow: 0 0 16px #00c3ff88;
+}
+
 
 
 
@@ -977,8 +1016,10 @@ Pertanyaan yang harus kamu jawab dari I GEDE!!!😁
       <a href="#skills" class="tes">skills</a>
     </nav>
   </header>
-  <main>
-    <section id="about">
+
+
+  
+    <section id="about" class="tooltip-zone" data-tooltip="ini cara ku untuk berjuang">
       <h2 data-aos="zoom-in-up">Tentang igedd</h2>
       <div class="about-content" data-aos="zoom-in">
         Saya adalah seorang pelajar yang sedang mengembangkan pengetahuan saya di bidang pemrograman, pengembangan, dan bisnis. 
@@ -994,6 +1035,7 @@ Pertanyaan yang harus kamu jawab dari I GEDE!!!😁
         </div>
       </div>
     </section>
+    </section>
 
 <main id="ig-rootg">
     <section id="ig-gallery">
@@ -1005,7 +1047,8 @@ Pertanyaan yang harus kamu jawab dari I GEDE!!!😁
       <div class="ig-cell" id="ig-cell-6" data-speed="800"></div>
     </section>
   </main>
-      
+
+  <section id="about" class="tooltip-zone" data-tooltip="inilah project yang telah ku buat">
 <h1>Galeri Musik</h1>
 <div class="music-gallery" id="musicGallery">
     <div class="music-card" data-id="1">
@@ -1067,7 +1110,9 @@ Pertanyaan yang harus kamu jawab dari I GEDE!!!😁
         </div>
       </div>
     </section>
+  </section>
 
+  <section id="about" class="tooltip-zone" data-tooltip="kini aku telah mampu untuk menguasai skill ini">
      <section id="skills">
       <h2 data-aos="zoom-in">Skills</h2>
       <div class="skills-list">
@@ -1081,8 +1126,9 @@ Pertanyaan yang harus kamu jawab dari I GEDE!!!😁
         <div class="skill" data-aos="fade-in">Multi-Talented</div>
       </div>
     </section>
+  </section>
 
-
+<main class="deep-learning-page">
 <section id="chat">         
                 <button id="chatSend"></button>
             <hr>
@@ -1094,8 +1140,9 @@ Pertanyaan yang harus kamu jawab dari I GEDE!!!😁
                 <button id="aiChatSend">Kirim ke AI</button>
             </div>
         </section>
+</main>
 
-   
+   <section id="about" class="tooltip-zone" data-tooltip="terimakasih👍">
 <section class="katamereka"> 
         <div class="container" style="max-width: 80rem;">
             <div class="section-header center">
@@ -2781,6 +2828,79 @@ async function getAIResponse(userText) {
         renderAIChat();
     });
 
+
+
+
+
+
+    (() => {
+  const tooltip = document.createElement("div");
+  tooltip.className = "neo-tooltip";
+  document.body.appendChild(tooltip);
+  let lastX = 0, lastY = 0;
+  let lastTime = Date.now();
+  const hoverSound = new Audio("https://assets.mixkit.co/sfx/preview/mixkit-interface-hint-notification-911.mp3");
+  hoverSound.volume = 0.15;
+  document.querySelectorAll("[data-tooltip]").forEach(el => {
+
+    let touchTimer = null;
+    const showTooltip = (text) => {
+      tooltip.textContent = text;
+      tooltip.classList.add("active");
+      hoverSound.currentTime = 0;
+      hoverSound.play();
+    };
+
+    const hideTooltip = () => {
+      tooltip.classList.remove("active");
+    };
+    const moveTooltip = (x, y) => {
+      const now = Date.now();
+      const speed = Math.min(
+        Math.hypot(x - lastX, y - lastY) / (now - lastTime),
+        3
+      );
+
+      tooltip.style.left = x + 15 + "px";
+      tooltip.style.top = y + 15 + "px";
+      tooltip.style.boxShadow = `
+        0 0 ${10 + speed * 15}px rgba(0,255,255,0.8),
+        0 0 ${25 + speed * 20}px rgba(0,255,255,0.4)
+      `;
+      lastX = x;
+      lastY = y;
+      lastTime = now;
+    };
+  
+    el.addEventListener("mouseenter", () => {
+      showTooltip(el.dataset.tooltip);
+    });
+    el.addEventListener("mouseleave", hideTooltip);
+    el.addEventListener("mousemove", (e) => {
+      moveTooltip(e.clientX, e.clientY);
+    });
+
+   
+    el.addEventListener("touchstart", (e) => {
+      touchTimer = setTimeout(() => {
+        const touch = e.touches[0];
+        showTooltip(el.dataset.tooltip);
+        moveTooltip(touch.clientX, touch.clientY);
+      }, 300);
+    });
+
+    el.addEventListener("touchmove", (e) => {
+      const touch = e.touches[0];
+      moveTooltip(touch.clientX, touch.clientY);
+    });
+
+    el.addEventListener("touchend", () => {
+      clearTimeout(touchTimer);
+      hideTooltip();
+    });
+
+  });
+})();
     
 </script>
 
@@ -2794,6 +2914,7 @@ async function getAIResponse(userText) {
 </script>  
 </body>
 </html>
+
 
 
 
