@@ -93,12 +93,16 @@
 
   .about-content {
       font-size: 5px;
-      line-height: 1;
-      
+      line-height: 1; 
     }
 
   .deep-learning-page {
         padding: 0.2rem;
+    }
+  #gyro-profile {
+      width: 80px;
+  height: 80px;
+  margin-top: 33px;
     }
 }
     
@@ -281,105 +285,81 @@
       nav button.tes, nav button.tes a { margin: 0 0.5rem; }
       #birthdayCountdown { font-size:10px; padding:6px 10px; }
     }
-    .dj-wrapper {
-  position: relative;
-  margin: auto;
+
+
+
+
+
+#gyro-profile {
+    position: relative;
+    margin: auto;
   width: 200px;
   height: 200px;
   margin-top: 35px;
-  cursor: pointer;
-  transition: transform 0.4s ease;
+    border-radius: 50%;
+    transform-style: preserve-3d;
+    transition: transform 0.08s linear;
+    cursor: pointer;
 }
-
-.dj-photo {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  border-radius: 50%;
-  z-index: 2;
-  position: relative;
-  box-shadow: 0 0 20px #0ff;
-}
-
-.dj-border {
-  position: absolute;
-  top: 0;
+#gyro-profile::before {
+    content: "";
+    position: absolute;
+    inset: -22px;
+    border-radius: 50%;
+    background:
+        radial-gradient(
+            circle at var(--x, 50%) var(--y, 50%),
+           rgba(0, 255, 255, 1),
+            rgba(0, 180, 255, 0.8),
+            rgba(0, 80, 255, 0.3),
+            transparent 70%
+        );
+    filter: blur(18px);
+    opacity: 0.95;
+    z-index: 1;
+    mix-blend-mode: screen;
+    top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  border-radius: 50%;
-  z-index: 1;
-  background: transparent;
-  box-shadow: 0 0 20px #00f2ff, 0 0 40px #0ff;
-  animation: idlePulse 3s infinite ease-in-out;
-  transition: all 0.4s ease;
-}
-.dj-wrapper.active {
-  transform: scale(1.15);
-}
-.dj-wrapper.active .dj-border {
-  animation: fireSpin 1s linear infinite, burningColors 2s infinite alternate;
-  box-shadow: 0 0 40px #ff00cc, 0 0 80px #ff5500, 0 0 140px #ff2200;
 }
 
-.dj-particles {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  pointer-events: none;
-  z-index: 0;
+#gyro-profile::after {
+    content: "";
+    position: absolute;
+    inset: -35px;
+    border-radius: 50%;
+    background:
+        radial-gradient(
+            circle at calc(var(--x, 50%) + 10%) calc(var(--y, 50%) - 10%),
+            rgba(0, 255, 255, 0.6),
+            transparent 65%
+        );
+    filter: blur(35px);
+    opacity: 0.8;
+    z-index: 0;
+}
+#profile-core {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    overflow: hidden;
+    background: #000;
+    z-index: 2;
+}
+#profile-core img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transform: scale(1.07);
+    transition: transform 0.1s ease-out;
+    border-radius: 50%;
+    position: relative;
 }
 
-.dj-wrapper.active .dj-particles::before {
-  content: '';
-  position: absolute;
-  width: 4px;
-  height: 4px;
-  background: radial-gradient(circle, #ff00ff, transparent);
-  border-radius: 50%;
-  animation: spark 0.6s ease-out forwards;
-  transform: translate(-50%, -50%);
-}
-/* Sparks */
-@keyframes idlePulse {
-  0%, 100% {
-    box-shadow: 0 0 20px #00f2ff, 0 0 40px #0ff;
-  }
-  50% {
-    box-shadow: 0 0 40px #00f2ff, 0 0 60px #0ff;
-  }
-}
 
-@keyframes fireSpin {
-  0% {
-    transform: rotate(0deg) scale(1.1);
-  }
-  100% {
-    transform: rotate(360deg) scale(1.1);
-  }
-}
-
-@keyframes burningColors {
-  0% {
-    box-shadow: 0 0 40px #ff00cc, 0 0 80px #ff3300;
-  }
-  50% {
-    box-shadow: 0 0 60px #ff5500, 0 0 120px #ff2200;
-  }
-  100% {
-    box-shadow: 0 0 40px #ff00cc, 0 0 80px #ff3300;
-  }
-}
-@keyframes spark {
-  0% {
-    opacity: 1;
-    transform: translate(-50%, -50%) scale(1);
-  }
-  100% {
-    opacity: 0;
-    transform: translate(-50%, -50%) scale(2);
-  }
-}
+    
 
         .testimonials-container {
             position: relative;
@@ -1108,10 +1088,11 @@ Pertanyaan yang harus kamu jawab dari I GEDE!!!😁
   <div id="closeBtn"></div>
   <canvas id="fireworks"></canvas>
   <audio id="birthdaySong" src="https://open.spotify.com/track/6VgyRGeR4cw6yNGazjGFhu?si=KLjIEvxnR2aEwwk6_5g3mQ"></audio>
-<div class="dj-wrapper" onclick="toggleDJ(this)">
-  <img src="https://res.cloudinary.com/dv6dx2xkk/image/upload/v1762066362/WhatsApp_Image_2025-11-02_at_13.40.04_2_xuh5aq.jpg" alt="Profil" class="dj-photo">
-  <div class="dj-border"></div>
-  <div class="dj-particles"></div>
+  
+<div id="gyro-profile">
+    <div id="profile-core">
+        <img src="https://res.cloudinary.com/dv6dx2xkk/image/upload/v1762066362/WhatsApp_Image_2025-11-02_at_13.40.04_2_xuh5aq.jpg" alt="profile">
+    </div>
 </div>
   
   <header>
@@ -1312,33 +1293,7 @@ window.addEventListener("scroll", () => {
   }, 10000); 
 });
     
-  function toggleDJ(el) {
-    el.classList.toggle('active');
-    if (el.classList.contains('active')) {
-      generateParticles(el.querySelector('.dj-particles'));
-    }
-  }
-
-  function generateParticles(container) {
-    for (let i = 0; i < 12; i++) {
-      const p = document.createElement('div');
-      p.style.position = 'absolute';
-      p.style.width = '5px';
-      p.style.height = '5px';
-      p.style.borderRadius = '50%';
-      p.style.background = 'radial-gradient(circle, #ff00ff, transparent)';
-      const angle = Math.random() * 2 * Math.PI;
-      const radius = 70 + Math.random() * 40;
-      const x = Math.cos(angle) * radius;
-      const y = Math.sin(angle) * radius;
-      p.style.left = `calc(50% + ${x}px)`;
-      p.style.top = `calc(50% + ${y}px)`;
-      p.style.opacity = '1';
-      p.style.transition = 'opacity 0.6s ease-out';
-      container.appendChild(p);
-      setTimeout(() => p.remove(), 600);
-    }
-  }
+ 
         const testimonials = [
             {
                 name: 'Steve',
@@ -1528,7 +1483,6 @@ const questions = [
       setTimeout(()=>bubble.remove(),14000);
     }
     setInterval(spawnBubble,3000);
-
     function spawnBalloonFunc(){
       let now=new Date().getTime();
       if(now<birthday||now>endShow) return;
@@ -3123,6 +3077,43 @@ document.getElementById("userInput").addEventListener("keydown", e => {
 });
 
 
+
+
+    
+
+    const profile = document.getElementById("gyro-profile");
+const img = document.querySelector("#profile-core img");
+document.addEventListener("mousemove", (e) => {
+    const x = (e.clientX / window.innerWidth - 0.5) * 30;
+    const y = (e.clientY / window.innerHeight - 0.5) * 30;
+    applyMotion(x, y);
+});
+
+if (window.DeviceOrientationEvent) {
+    window.addEventListener("deviceorientation", (e) => {
+        const x = e.gamma || 0;
+        const y = e.beta || 0;
+
+        applyMotion(x, y);
+    });
+}
+
+function applyMotion(x, y) {
+    const limitedX = Math.max(-20, Math.min(20, x));
+    const limitedY = Math.max(-20, Math.min(20, y));
+    profile.style.transform = `
+        rotateY(${limitedX}deg)
+        rotateX(${-limitedY}deg)
+    `;
+    profile.style.setProperty("--x", `${50 + limitedX * 1.5}%`);
+    profile.style.setProperty("--y", `${50 + limitedY * 1.5}%`);
+    img.style.transform = `
+        translate(${-limitedX * 0.8}px, ${-limitedY * 0.8}px)
+        scale(1.08)
+    `;
+}
+
+
 </script>
 
 <script src="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.js"></script>
@@ -3135,6 +3126,7 @@ document.getElementById("userInput").addEventListener("keydown", e => {
 </script>  
 </body>
 </html>
+
 
 
 
