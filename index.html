@@ -1000,7 +1000,7 @@ main-#ig-rootg {
   width: var(--ai-size);
   height: var(--ai-size);
   border-radius: 50%;
-  background: radial-gradient(circle at top, #00f6ff, #002b40);
+  background: radial-gradient(circle at top, 135deg, #0f0c29, #302b63, #24243e);
   color: white;
   font-weight: 700;
   font-family: 'Segoe UI', sans-serif;
@@ -1251,10 +1251,10 @@ Pertanyaan yang harus kamu jawab dari I GEDE!!!😁
         </section>
 </main>
 
-   <div id="dai-btn">d'AI</div>
+   <div id="dai-btn">🔎</div>
 <div id="dai-window">
   <div id="dai-header">
-    <span>d'AI Assistant</span>
+    <span>d'AI </span>
     <span id="dai-close" style="cursor:pointer;">✕</span>
   </div>
   <div id="dai-messages"></div>
@@ -1278,15 +1278,10 @@ Pertanyaan yang harus kamu jawab dari I GEDE!!!😁
             </div>
         </div>
 </section>
-  <script>
-
-
-    
+  <script>    
     
 let chatMessages = JSON.parse(localStorage.getItem('chatMessages') || '[]');
 let aiChatMessages = JSON.parse(localStorage.getItem('aiChatMessages') || '[]');
-
-
     
     let lastScrollTop = 0;
 let hideTimeout;
@@ -1295,14 +1290,12 @@ const nav = document.querySelector(".bottom-nav");
 function hideNav() {
   nav.classList.add("hidden");
 }
-
 function showNav() {
   nav.classList.remove("hidden");
 }
 
 window.addEventListener("scroll", () => {
   let scrollTop = window.scrollY || document.documentElement.scrollTop;
-
   if (scrollTop > lastScrollTop) {
     clearTimeout(scrollDownTimeout);
     scrollDownTimeout = setTimeout(() => {
@@ -1321,7 +1314,6 @@ window.addEventListener("scroll", () => {
     
   function toggleDJ(el) {
     el.classList.toggle('active');
-
     if (el.classList.contains('active')) {
       generateParticles(el.querySelector('.dj-particles'));
     }
@@ -1388,7 +1380,6 @@ window.addEventListener("scroll", () => {
         let currentTestimonial = 0;
         const testimonialTrack = document.getElementById('testimonialTrack');
         const testimonialDots = document.getElementById('testimonialDots');
-
         testimonials.forEach((test, index) => {
             const slide = document.createElement('div');
             slide.className = 'testimonial-slide';
@@ -3030,11 +3021,8 @@ async function getAIResponse(userText) {
 
 
 
-    /* ================= CONFIG ================= */
-const API_KEY = "AIzaSyAH2kL2n3Y-C2gVtNQwPFE9wCfbjjtJc-g"; // <-- WAJIB GANTI
+const API_KEY = "AIzaSyAH2kL2n3Y-C2gVtNQwPFE9wCfbjjtJc-g"; 
 const API_URL = "https://https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent" + API_KEY;
-
-/* ================= DRAG LOGIC ================= */
 const btn = document.getElementById("dai-btn");
 let dragging = false, offsetX = 0, offsetY = 0;
 
@@ -3043,13 +3031,11 @@ btn.addEventListener("mousedown", e => {
   offsetX = e.clientX - btn.offsetLeft;
   offsetY = e.clientY - btn.offsetTop;
 });
-
 document.addEventListener("mousemove", e => {
   if (!dragging) return;
   btn.style.left = e.clientX - offsetX + "px";
   btn.style.top = e.clientY - offsetY + "px";
 });
-
 document.addEventListener("mouseup", () => dragging = false);
 
 /* TOUCH */
@@ -3059,44 +3045,36 @@ btn.addEventListener("touchstart", e => {
   offsetX = t.clientX - btn.offsetLeft;
   offsetY = t.clientY - btn.offsetTop;
 });
-
+    
 document.addEventListener("touchmove", e => {
   if (!dragging) return;
   const t = e.touches[0];
   btn.style.left = t.clientX - offsetX + "px";
   btn.style.top = t.clientY - offsetY + "px";
 });
-
 document.addEventListener("touchend", () => dragging = false);
-
-/* ================= OPEN / CLOSE ================= */
 btn.onclick = () => {
   document.getElementById("dai-window").style.display = "flex";
 };
-
 document.getElementById("dai-close").onclick = () => {
   document.getElementById("dai-window").style.display = "none";
 };
 
-/* ================= DEVICE ORIENTATION ================= */
+/* ============ giroskop analitik ================= */
 if (window.DeviceOrientationEvent) {
   window.addEventListener("deviceorientation", e => {
-    const x = e.gamma / 10;
-    const y = e.beta / 10;
+    const x = e.gamma / 15;
+    const y = e.beta / 15;
     btn.style.transform = `translate(${x}px, ${y}px)`;
   });
 }
-
-/* ================= CHAT LOGIC ================= */
-
+    
 async function sendMessage() {
   const input = document.getElementById("userInput");
   const text = input.value.trim();
   if (!text) return;
-
   addMessage(text, "user");
   input.value = "";
-
   try {
     const response = await fetch(API_URL, {
       method: "POST",
@@ -3114,32 +3092,23 @@ async function sendMessage() {
     });
 
     const data = await response.json();
-    console.log("API RESPONSE:", data); // ⬅️ PENTING
-
+    console.log("API RESPONSE:", data);
     if (!response.ok) {
       addMessage("❌ Error API: " + (data.error?.message || "Unknown error"), "ai");
       return;
     }
-
     const reply =
       data.candidates?.[0]?.content?.parts?.[0]?.text;
-
     if (!reply) {
       addMessage("⚠️ AI tidak mengembalikan teks.", "ai");
       return;
     }
-
     addMessage(reply, "ai");
-
   } catch (err) {
     console.error(err);
-    addMessage("❌ Gagal terhubung ke server.", "ai");
+    addMessage("❌ Gagal terhubung ke server. Sedang di lakukan pengembangan terhadap sistem keamanan internal", "ai");
   }
 }
-
-
-
-
     
 function addMessage(text, sender) {
   const div = document.createElement("div");
@@ -3148,7 +3117,6 @@ function addMessage(text, sender) {
   document.getElementById("dai-messages").appendChild(div);
   div.scrollIntoView({ behavior: "smooth" });
 }
-
 document.getElementById("sendBtn").onclick = sendMessage;
 document.getElementById("userInput").addEventListener("keydown", e => {
   if (e.key === "Enter") sendMessage();
@@ -3167,6 +3135,7 @@ document.getElementById("userInput").addEventListener("keydown", e => {
 </script>  
 </body>
 </html>
+
 
 
 
