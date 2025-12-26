@@ -3080,53 +3080,68 @@ document.getElementById("userInput").addEventListener("keydown", e => {
 
     
 
-   const profile = document.getElementById("gyro-profile");
+  const profile = document.getElementById("gyro-profile");
 const img = document.querySelector("#profile-core img");
 
-// nilai target & current untuk smoothing
-let targetX = 0, targetY = 0;
-let currentX = 0, currentY = 0;
-
-// sensitivitas (atur di sini)
+// ===== CONFIG =====
 const MAX_ROTATION = 18;
-const SMOOTHNESS = 0.08;
+const SPRING_FORCE = 0.04;   // kekuatan kembali ke tengah
+const DAMPING = 0.88;        // redaman (semakin kecil = makin berat)
+const INPUT_FORCE = 0.15;    // sensitivitas gyro
 
-// ===== GYROSCOPE MOBILE =====
+// ===== STATE =====
+let targetX = 0, targetY = 0;
+let posX = 0, posY = 0;
+let velX = 0, velY = 0;
+
+// ===== GYROSCOPE =====
 if (window.DeviceOrientationEvent) {
     window.addEventListener("deviceorientation", (e) => {
-        if (e.beta === null || e.gamma === null) return;
+        if (e.gamma === null || e.beta === null) return;
 
-        // beta: depan-belakang | gamma: kiri-kanan
         targetX = Math.max(-MAX_ROTATION, Math.min(MAX_ROTATION, e.gamma));
         targetY = Math.max(-MAX_ROTATION, Math.min(MAX_ROTATION, e.beta));
-    }, true);
+    });
 }
 
-// ===== DESKTOP FALLBACK =====
+// ===== DESKTOP MOUSE =====
 document.addEventListener("mousemove", (e) => {
     const x = (e.clientX / window.innerWidth - 0.5) * MAX_ROTATION * 2;
     const y = (e.clientY / window.innerHeight - 0.5) * MAX_ROTATION * 2;
-
     targetX = x;
     targetY = y;
 });
 
-// ===== SMOOTH ANIMATION LOOP =====
+// ===== MAIN LOOP =====
 function animate() {
-    // smoothing (lerp)
-    currentX += (targetX - currentX) * SMOOTHNESS;
-    currentY += (targetY - currentY) * SMOOTHNESS;
 
+    // gaya dari input
+    let forceX = (targetX - posX) * INPUT_FORCE;
+    let forceY = (targetY - posY) * INPUT_FORCE;
+
+    // gaya kembali ke tengah (floating effect)
+    forceX += -posX * SPRING_FORCE;
+    forceY += -posY * SPRING_FORCE;
+
+    // integrasi kecepatan
+    velX = (velX + forceX) * DAMPING;
+    velY = (velY + forceY) * DAMPING;
+
+    // posisi akhir
+    posX += velX;
+    posY += velY;
+
+    // apply transform
     profile.style.transform = `
-        rotateY(${currentX}deg)
-        rotateX(${-currentY}deg)
+        rotateY(${posX}deg)
+        rotateX(${-posY}deg)
     `;
 
-    profile.style.setProperty("--x", `${50 + currentX * 1.4}%`);
-    profile.style.setProperty("--y", `${50 + currentY * 1.4}%`);
+    profile.style.setProperty("--x", `${50 + posX * 1.5}%`);
+    profile.style.setProperty("--y", `${50 + posY * 1.5}%`);
 
     img.style.transform = `
-        translate(${-currentX * 0.7}px, ${-currentY * 0.7}px)
+        translate(${-posX * 0.8}px, ${-posY * 0.8}px)
         scale(1.08)
     `;
 
@@ -3134,7 +3149,6 @@ function animate() {
 }
 
 animate();
-
 
 </script>
 
@@ -3148,6 +3162,7 @@ animate();
 </script>  
 </body>
 </html>
+
 
 
 
