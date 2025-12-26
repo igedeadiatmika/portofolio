@@ -3033,118 +3033,6 @@ async function getAIResponse(userText) {
 
     
 
-const btn = document.getElementById("dai-btn");
-let isDragging = false, offsetX, offsetY;
-
-btn.addEventListener("mousedown", e => {
-  isDragging = true;
-  offsetX = e.clientX - btn.offsetLeft;
-  offsetY = e.clientY - btn.offsetTop;
-});
-
-document.addEventListener("mousemove", e => {
-  if (!isDragging) return;
-  btn.style.left = e.clientX - offsetX + "px";
-  btn.style.top = e.clientY - offsetY + "px";
-});
-
-document.addEventListener("mouseup", () => isDragging = false);
-
-// TOUCH
-btn.addEventListener("touchstart", e => {
-  isDragging = true;
-  const t = e.touches[0];
-  offsetX = t.clientX - btn.offsetLeft;
-  offsetY = t.clientY - btn.offsetTop;
-});
-
-document.addEventListener("touchmove", e => {
-  if (!isDragging) return;
-  const t = e.touches[0];
-  btn.style.left = t.clientX - offsetX + "px";
-  btn.style.top = t.clientY - offsetY + "px";
-});
-
-document.addEventListener("touchend", () => isDragging = false);
-
-/* OPEN / CLOSE */
-btn.onclick = () => {
-  document.getElementById("dai-window").style.display = "flex";
-};
-
-document.getElementById("dai-close").onclick = () => {
-  document.getElementById("dai-window").style.display = "none";
-};
-
-/* GYROSCOPE EFFECT */
-if (window.DeviceOrientationEvent) {
-  window.addEventListener("deviceorientation", e => {
-    const x = e.gamma / 10;
-    const y = e.beta / 10;
-    btn.style.transform = `translate(${x}px, ${y}px)`;
-  });
-}
-
-
-/* ================= CONFIG ================= */
-const API_KEY = "AIzaSyAH2kL2n3Y-C2gVtNQwPFE9wCfbjjtJc-g"; 
-
-const btn = document.getElementById("dai-btn");
-const win = document.getElementById("dai-window");
-const close = document.getElementById("dai-close");
-
-btn.onclick = () => win.style.display = "flex";
-close.onclick = () => win.style.display = "none";
-
-/* Drag */
-let drag = false, ox, oy;
-btn.onmousedown = e => { drag = true; ox = e.offsetX; oy = e.offsetY; };
-document.onmousemove = e => {
-  if (!drag) return;
-  btn.style.left = e.clientX - ox + "px";
-  btn.style.top = e.clientY - oy + "px";
-};
-document.onmouseup = () => drag = false;
-
-/* Messaging */
-async function send() {
-  const input = document.getElementById("userInput");
-  const msg = input.value.trim();
-  if (!msg) return;
-  add(msg, "user");
-  input.value = "";
-
-  const res = await fetch(
-    `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${API_KEY}`,
-    {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        contents: [
-          { parts: [{ text: msg }] }
-        ]
-      })
-    }
-  );
-
-  const data = await res.json();
-  const reply = data?.candidates?.[0]?.content?.parts?.[0]?.text || "Tidak ada respon.";
-  add(reply, "ai");
-}
-
-function add(text, role) {
-  const div = document.createElement("div");
-  div.className = role === "user" ? "msg-user" : "msg-ai";
-  div.textContent = text;
-  document.getElementById("dai-messages").appendChild(div);
-  div.scrollIntoView({ behavior: "smooth" });
-}
-
-document.getElementById("sendBtn").onclick = send;
-document.getElementById("userInput").addEventListener("keydown", e => {
-  if (e.key === "Enter") send();
-});
-
 
 
 
@@ -3161,6 +3049,7 @@ document.getElementById("userInput").addEventListener("keydown", e => {
 </script>  
 </body>
 </html>
+
 
 
 
