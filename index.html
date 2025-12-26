@@ -3031,7 +3031,103 @@ async function getAIResponse(userText) {
 
 
 
+    const API_KEY = "AIzaSyAH2kL2n3Y-C2gVtNQwPFE9wCfbjjtJc-g";
+
+const SYSTEM_PROMPT = `
+kamu bisa bertanya sesuatu disini
+`;
+
+/* ================= DRAG & TOUCH ================= */
+const btn = document.getElementById("dai-btn");
+let drag = false, ox, oy;
+
+btn.addEventListener("mousedown", e => {
+  drag = true;
+  ox = e.clientX - btn.offsetLeft;
+  oy = e.clientY - btn.offsetTop;
+});
+
+document.addEventListener("mousemove", e => {
+  if (!drag) return;
+  btn.style.left = e.clientX - ox + "px";
+  btn.style.top = e.clientY - oy + "px";
+});
+
+document.addEventListener("mouseup", () => drag = false);
+
+// Touch
+btn.addEventListener("touchstart", e => {
+  drag = true;
+  const t = e.touches[0];
+  ox = t.clientX - btn.offsetLeft;
+  oy = t.clientY - btn.offsetTop;
+});
+
+document.addEventListener("touchmove", e => {
+  if (!drag) return;
+  const t = e.touches[0];
+  btn.style.left = t.clientX - ox + "px";
+  btn.style.top = t.clientY - oy + "px";
+});
+
+document.addEventListener("touchend", () => drag = false);
+
+/* OPEN / CLOSE */
+btn.onclick = () => document.getElementById("dai-window").style.display = "flex";
+document.getElementById("dai-close").onclick = () => {
+  document.getElementById("dai-window").style.display = "none";
+};
+
+/* GYROSCOPE EFFECT */
+if (window.DeviceOrientationEvent) {
+  window.addEventListener("deviceorientation", e => {
+    const x = e.gamma / 12;
+    const y = e.beta / 12;
+    btn.style.transform = `translate(${x}px, ${y}px)`;
+  });
+}
     
+function addMessage(text, who) {
+  const div = document.createElement("div");
+  div.className = who === "user" ? "msg-user" : "msg-ai";
+  div.textContent = text;
+  document.getElementById("dai-messages").appendChild(div);
+  div.scrollIntoView({ behavior: "smooth" });
+}
+
+async function sendMessage() {
+  const input = document.getElementById("userInput");
+  const msg = input.value.trim();
+  if (!msg) return;
+
+  addMessage(msg, "user");
+  input.value = "";
+  const body = {
+    contents: [
+      { role: "user", parts: [{ text: SYSTEM_PROMPT + "\n\nUser: " + msg }] }
+    ]
+  };
+
+  const res = await fetch(
+    "https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent?key=" + API_KEY,
+    {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(body)
+    }
+  );
+
+  const data = await res.json();
+  const reply =
+    data?.candidates?.[0]?.content?.parts?.[0]?.text ||
+    "Maaf, AI tidak merespons.";
+  addMessage(reply, "ai");
+}
+
+document.getElementById("sendBtn").onclick = sendMessage;
+document.getElementById("userInput").addEventListener("keydown", e => {
+  if (e.key === "Enter") sendMessage();
+});
 
 
 
@@ -3049,6 +3145,7 @@ async function getAIResponse(userText) {
 </script>  
 </body>
 </html>
+
 
 
 
