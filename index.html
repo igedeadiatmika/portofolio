@@ -1130,20 +1130,6 @@ Pertanyaan yang harus kamu jawab dari I GEDE!!!😁
 
 
   
-  <div id="dai-btn">d'AI</div>
-<div id="dai-window">
-  <div id="dai-header">
-    <span>d'AI Assistant</span>
-    <span id="dai-close" style="cursor:pointer;">✕</span>
-  </div>
-  <div id="dai-messages"></div>
-  <div id="dai-input">
-    <input type="text" id="userInput" placeholder="Tanya apa saja..." />
-    <button id="sendBtn">➤</button>
-  </div>
-</div>
-
-  
     <section id="about" class="tooltip-zone" data-tooltip="ini cara ku untuk berjuang">
       <h2 data-aos="zoom-in-up">Tentang igedd</h2>
       <div class="about-content" data-aos="zoom-in">
@@ -1265,6 +1251,19 @@ Pertanyaan yang harus kamu jawab dari I GEDE!!!😁
         </section>
 </main>
 
+   <div id="dai-btn">d'AI</div>
+<div id="dai-window">
+  <div id="dai-header">
+    <span>d'AI Assistant</span>
+    <span id="dai-close" style="cursor:pointer;">✕</span>
+  </div>
+  <div id="dai-messages"></div>
+  <div id="dai-input">
+    <input type="text" id="userInput" placeholder="Tanya apa saja..." />
+    <button id="sendBtn">➤</button>
+  </div>
+</div>
+
    <section id="about" class="tooltip-zone" data-tooltip="terimakasih👍">
 <section class="katamereka"> 
         <div class="container" style="max-width: 80rem;">
@@ -1280,19 +1279,6 @@ Pertanyaan yang harus kamu jawab dari I GEDE!!!😁
         </div>
 </section>
   <script>
-
-import { GoogleGenAI } from "@google/genai";
-const ai = new GoogleGenAI({});
-async function main() {
-  const response = await ai.models.generateContent({
-    model: "gemini-2.5-flash",
-    contents: "de AI",
-  });
-  console.log(response.text);
-}
-
-main();
-
 
 
     
@@ -3134,6 +3120,7 @@ document.getElementById("userInput").addEventListener("keydown", e => {
 </script>  
 </body>
 </html>
+
 
 
 
