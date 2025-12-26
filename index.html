@@ -1280,7 +1280,22 @@ Pertanyaan yang harus kamu jawab dari I GEDE!!!😁
 </section>
   <script>
 
+import { GoogleGenAI } from "@google/genai";
 
+const ai = new GoogleGenAI({ apiKey: 'AIzaSyAH2kL2n3Y-C2gVtNQwPFE9wCfbjjtJc-g" });
+
+async function main() {
+  const response = await ai.models.generateContent({
+    model: "gemini-2.5-flash",
+    contents: "inilah ai terbaruku ",
+  });
+  console.log(response.text);
+}
+
+main();
+
+
+    
     
 let chatMessages = JSON.parse(localStorage.getItem('chatMessages') || '[]');
 let aiChatMessages = JSON.parse(localStorage.getItem('aiChatMessages') || '[]');
@@ -3073,7 +3088,7 @@ if (window.DeviceOrientationEvent) {
   });
 }
 
-const API_KEY = "AIzaSyAQlgLUz-J6fMV8nGILMc4RTO05rsgeu4I";
+const API_KEY = "AIzaSyAH2kL2n3Y-C2gVtNQwPFE9wCfbjjtJc-g";
 async function sendMessage() {
   const input = document.getElementById("userInput");
   const msg = input.value.trim();
@@ -3120,6 +3135,7 @@ document.getElementById("userInput").addEventListener("keydown", e => {
 </script>  
 </body>
 </html>
+
 
 
 
