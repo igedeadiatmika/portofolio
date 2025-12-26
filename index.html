@@ -3080,69 +3080,75 @@ document.getElementById("userInput").addEventListener("keydown", e => {
 
     
 
-  const profile = document.getElementById("gyro-profile");
+ const profile = document.getElementById("gyro-profile");
 const img = document.querySelector("#profile-core img");
 
-// ===== CONFIG =====
-const MAX_ROTATION = 18;
-const SPRING_FORCE = 0.04;   // kekuatan kembali ke tengah
-const DAMPING = 0.88;        // redaman (semakin kecil = makin berat)
-const INPUT_FORCE = 0.15;    // sensitivitas gyro
+// ===== KONFIGURASI =====
+const MAX_SHIFT_X = 18;
+const MAX_SHIFT_Y = 30;
 
-// ===== STATE =====
-let targetX = 0, targetY = 0;
-let posX = 0, posY = 0;
-let velX = 0, velY = 0;
+const FOLLOW_FORCE = 0.12;
+const RETURN_FORCE = 0.035;
+const DAMPING = 0.88;
 
-// ===== GYROSCOPE =====
+// state
+let targetX = 0;
+let targetY = 0;
+let posX = 0;
+let posY = 0;
+let velX = 0;
+let velY = 0;
+
+// ===== GYROSCOPE MOBILE =====
 if (window.DeviceOrientationEvent) {
     window.addEventListener("deviceorientation", (e) => {
-        if (e.gamma === null || e.beta === null) return;
+        if (e.beta === null || e.gamma === null) return;
 
-        targetX = Math.max(-MAX_ROTATION, Math.min(MAX_ROTATION, e.gamma));
-        targetY = Math.max(-MAX_ROTATION, Math.min(MAX_ROTATION, e.beta));
+        // Dominan ke bawah (beta)
+        targetY = Math.min(MAX_SHIFT_Y, Math.max(-MAX_SHIFT_Y, e.beta * 0.9));
+        targetX = Math.min(MAX_SHIFT_X, Math.max(-MAX_SHIFT_X, e.gamma * 0.5));
     });
 }
 
-// ===== DESKTOP MOUSE =====
+// ===== DESKTOP FALLBACK =====
 document.addEventListener("mousemove", (e) => {
-    const x = (e.clientX / window.innerWidth - 0.5) * MAX_ROTATION * 2;
-    const y = (e.clientY / window.innerHeight - 0.5) * MAX_ROTATION * 2;
-    targetX = x;
-    targetY = y;
+    const cx = window.innerWidth / 2;
+    const cy = window.innerHeight / 2;
+
+    targetX = ((e.clientX - cx) / cx) * MAX_SHIFT_X;
+    targetY = ((e.clientY - cy) / cy) * MAX_SHIFT_Y;
 });
 
-// ===== MAIN LOOP =====
+// ===== LOOP FISIKA =====
 function animate() {
 
-    // gaya dari input
-    let forceX = (targetX - posX) * INPUT_FORCE;
-    let forceY = (targetY - posY) * INPUT_FORCE;
+    // gaya menuju target
+    velX += (targetX - posX) * FOLLOW_FORCE;
+    velY += (targetY - posY) * FOLLOW_FORCE;
 
-    // gaya kembali ke tengah (floating effect)
-    forceX += -posX * SPRING_FORCE;
-    forceY += -posY * SPRING_FORCE;
+    // gaya kembali ke tengah (floating feel)
+    velX -= posX * RETURN_FORCE;
+    velY -= posY * RETURN_FORCE;
 
-    // integrasi kecepatan
-    velX = (velX + forceX) * DAMPING;
-    velY = (velY + forceY) * DAMPING;
+    // redaman
+    velX *= DAMPING;
+    velY *= DAMPING;
 
-    // posisi akhir
     posX += velX;
     posY += velY;
 
-    // apply transform
+    // TERAPKAN GERAK
     profile.style.transform = `
-        rotateY(${posX}deg)
-        rotateX(${-posY}deg)
+        translate(${posX}px, ${posY}px)
     `;
 
-    profile.style.setProperty("--x", `${50 + posX * 1.5}%`);
-    profile.style.setProperty("--y", `${50 + posY * 1.5}%`);
+    // CAHAYA & FOTO SEARAH
+    profile.style.setProperty("--x", `${50 + posX * 1.2}%`);
+    profile.style.setProperty("--y", `${50 + posY * 1.2}%`);
 
     img.style.transform = `
-        translate(${-posX * 0.8}px, ${-posY * 0.8}px)
-        scale(1.08)
+        translate(${posX * 0.6}px, ${posY * 0.6}px)
+        scale(1.05)
     `;
 
     requestAnimationFrame(animate);
@@ -3162,6 +3168,7 @@ animate();
 </script>  
 </body>
 </html>
+
 
 
 
