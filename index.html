@@ -2974,7 +2974,6 @@ async function getAIResponse(userText) {
 
 
 
-
 const API_KEY = "AIzaSyAH2kL2n3Y-C2gVtNQwPFE9wCfbjjtJc-g"; 
 const API_URL = "https://https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent" + API_KEY;
 const btn = document.getElementById("dai-btn");
@@ -3081,37 +3080,60 @@ document.getElementById("userInput").addEventListener("keydown", e => {
 
     
 
-    const profile = document.getElementById("gyro-profile");
+   const profile = document.getElementById("gyro-profile");
 const img = document.querySelector("#profile-core img");
-document.addEventListener("mousemove", (e) => {
-    const x = (e.clientX / window.innerWidth - 0.5) * 30;
-    const y = (e.clientY / window.innerHeight - 0.5) * 30;
-    applyMotion(x, y);
-});
 
+// nilai target & current untuk smoothing
+let targetX = 0, targetY = 0;
+let currentX = 0, currentY = 0;
+
+// sensitivitas (atur di sini)
+const MAX_ROTATION = 18;
+const SMOOTHNESS = 0.08;
+
+// ===== GYROSCOPE MOBILE =====
 if (window.DeviceOrientationEvent) {
     window.addEventListener("deviceorientation", (e) => {
-        const x = e.gamma || 0;
-        const y = e.beta || 0;
+        if (e.beta === null || e.gamma === null) return;
 
-        applyMotion(x, y);
-    });
+        // beta: depan-belakang | gamma: kiri-kanan
+        targetX = Math.max(-MAX_ROTATION, Math.min(MAX_ROTATION, e.gamma));
+        targetY = Math.max(-MAX_ROTATION, Math.min(MAX_ROTATION, e.beta));
+    }, true);
 }
 
-function applyMotion(x, y) {
-    const limitedX = Math.max(-20, Math.min(20, x));
-    const limitedY = Math.max(-20, Math.min(20, y));
+// ===== DESKTOP FALLBACK =====
+document.addEventListener("mousemove", (e) => {
+    const x = (e.clientX / window.innerWidth - 0.5) * MAX_ROTATION * 2;
+    const y = (e.clientY / window.innerHeight - 0.5) * MAX_ROTATION * 2;
+
+    targetX = x;
+    targetY = y;
+});
+
+// ===== SMOOTH ANIMATION LOOP =====
+function animate() {
+    // smoothing (lerp)
+    currentX += (targetX - currentX) * SMOOTHNESS;
+    currentY += (targetY - currentY) * SMOOTHNESS;
+
     profile.style.transform = `
-        rotateY(${limitedX}deg)
-        rotateX(${-limitedY}deg)
+        rotateY(${currentX}deg)
+        rotateX(${-currentY}deg)
     `;
-    profile.style.setProperty("--x", `${50 + limitedX * 1.5}%`);
-    profile.style.setProperty("--y", `${50 + limitedY * 1.5}%`);
+
+    profile.style.setProperty("--x", `${50 + currentX * 1.4}%`);
+    profile.style.setProperty("--y", `${50 + currentY * 1.4}%`);
+
     img.style.transform = `
-        translate(${-limitedX * 0.8}px, ${-limitedY * 0.8}px)
+        translate(${-currentX * 0.7}px, ${-currentY * 0.7}px)
         scale(1.08)
     `;
+
+    requestAnimationFrame(animate);
 }
+
+animate();
 
 
 </script>
@@ -3126,6 +3148,7 @@ function applyMotion(x, y) {
 </script>  
 </body>
 </html>
+
 
 
 
