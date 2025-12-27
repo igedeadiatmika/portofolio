@@ -3,19 +3,20 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Advanced Motion Research System</title>
+
+<title>Advanced Sensor Research Platform</title>
 
 <style>
 body {
     margin: 0;
-    font-family: system-ui, sans-serif;
-    background: #0d1117;
+    background: #0b0f14;
     color: #e6e6e6;
+    font-family: system-ui;
 }
 
 header {
     padding: 14px;
-    background: #0b1220;
+    border-bottom: 1px solid #222;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -23,81 +24,51 @@ header {
 
 button {
     background: #238636;
+    color: white;
     border: none;
     padding: 8px 14px;
-    color: white;
     border-radius: 6px;
     cursor: pointer;
 }
 
-.container {
+.grid {
     display: grid;
     grid-template-columns: repeat(auto-fit,minmax(260px,1fr));
-    gap: 14px;
-    padding: 16px;
+    gap: 12px;
+    padding: 12px;
 }
 
 .card {
-    background: #161b22;
+    background: #151b23;
     border-radius: 12px;
-    padding: 14px;
+    padding: 12px;
     position: relative;
 }
 
 .card h3 {
+    margin: 0 0 6px 0;
     font-size: 14px;
     color: #58a6ff;
 }
 
 .value {
     font-size: 22px;
-}
-
-.zoom {
-    position: absolute;
-    right: 10px;
-    top: 10px;
-    cursor: pointer;
+    font-weight: 600;
 }
 
 canvas {
     width: 100%;
-    height: 150px;
-    background: #0b0f14;
+    height: 160px;
     border-radius: 8px;
+    background: #090c10;
 }
 
-/* MODAL */
-#modal {
-    display: none;
-    position: fixed;
-    inset: 0;
-    background: rgba(0,0,0,0.8);
-    z-index: 99;
-}
-
-#modalContent {
-    width: 90%;
-    height: 90%;
-    background: #0e1117;
-    margin: auto;
-    margin-top: 3%;
-    border-radius: 12px;
-    display: flex;
-    flex-direction: column;
-}
-
-#modalTop {
-    flex: 1;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-#modalBottom {
-    padding: 12px;
-    font-size: 14px;
-    border-top: 1px solid #333;
+.expand {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    cursor: pointer;
+    opacity: 0.6;
 }
 </style>
 </head>
@@ -105,62 +76,67 @@ canvas {
 <body>
 
 <header>
-    <div>🔬 Motion Research Dashboard</div>
+    <div>Advanced Research Sensor System</div>
     <div>
-        <button onclick="startSession()">Start</button>
-        <button onclick="stopSession()">Stop</button>
-        <button onclick="connectUSB()">USB</button>
+        <button onclick="connectUSB()">USB Sensor</button>
+        <button onclick="startCamera()">Camera</button>
     </div>
 </header>
 
-<div class="container">
+<div class="grid">
 
 <div class="card">
-<h3>Distance (m)</h3>
-<div class="value" id="dist">0</div>
-<span class="zoom" onclick="openModal('distance')">🔍</span>
+<h3>Altitude</h3>
+<div class="value" id="alt">0</div>
 </div>
 
 <div class="card">
-<h3>Speed (m/s)</h3>
-<div class="value" id="speed">0</div>
-<span class="zoom" onclick="openModal('speed')">🔍</span>
+<h3>Temperature</h3>
+<div class="value" id="temp">N/A</div>
+</div>
+
+<div class="card">
+<h3>Humidity</h3>
+<div class="value" id="hum">N/A</div>
 </div>
 
 <div class="card">
 <h3>Acceleration</h3>
 <div class="value" id="acc">0</div>
-<span class="zoom" onclick="openModal('acc')">🔍</span>
+<canvas id="accGraph"></canvas>
 </div>
 
 <div class="card">
-<h3>Heatmap GPS</h3>
+<h3>Distance (m)</h3>
+<div class="value" id="dist">0</div>
+</div>
+
+<div class="card">
+<h3>Motion Type (AI)</h3>
+<div class="value" id="motion">Idle</div>
+</div>
+
+<div class="card">
+<h3>Camera</h3>
+<video id="cam" autoplay muted playsinline style="width:100%;border-radius:8px;"></video>
+</div>
+
+<div class="card">
+<h3>Heatmap (GPS)</h3>
 <canvas id="map"></canvas>
-<span class="zoom" onclick="openModal('map')">🔍</span>
 </div>
 
 </div>
 
-<!-- MODAL -->
-<div id="modal" onclick="this.style.display='none'">
-    <div id="modalContent" onclick="event.stopPropagation()">
-        <div id="modalTop">
-            <video id="cam" autoplay muted playsinline></video>
-        </div>
-        <div id="modalBottom" id="modalInfo"></div>
-    </div>
-</div>
 
-<script>
-// ================= STATE =================
-let running = false;
+    <script>
+/* ===================== GLOBAL ===================== */
 let lastLat = null, lastLon = null;
-let totalDist = 0;
-let speed = 0;
-let path = [];
-let mode = "run"; // run | motor
+let totalDistance = 0;
+let accelHistory = [];
+let useExternal = false;
 
-// ================= KALMAN FILTER =================
+/* ===================== KALMAN FILTER ===================== */
 class Kalman {
     constructor(R=0.01, Q=3) {
         this.R = R;
@@ -171,6 +147,7 @@ class Kalman {
         this.cov = NaN;
         this.x = NaN;
     }
+
     filter(z) {
         if (isNaN(this.x)) {
             this.x = z;
@@ -178,97 +155,85 @@ class Kalman {
         } else {
             const predX = this.A * this.x;
             const predCov = this.A * this.cov * this.A + this.Q;
-            const K = predCov / (predCov + this.R);
-            this.x = predX + K * (z - predX);
-            this.cov = predCov - K * predCov;
+            const K = predCov * this.C / (this.C * predCov * this.C + this.R);
+            this.x = predX + K * (z - this.C * predX);
+            this.cov = predCov - K * this.C * predCov;
         }
         return this.x;
     }
 }
 
-const kalmanSpeed = new Kalman();
 const kalmanAcc = new Kalman();
 
-// ================= GEO =================
+/* ===================== GPS & DISTANCE ===================== */
 function haversine(lat1, lon1, lat2, lon2) {
     const R = 6371000;
     const dLat = (lat2-lat1)*Math.PI/180;
     const dLon = (lon2-lon1)*Math.PI/180;
-    return 2 * R * Math.asin(Math.sqrt(
-        Math.sin(dLat/2)**2 +
-        Math.cos(lat1*Math.PI/180)*Math.cos(lat2*Math.PI/180)*Math.sin(dLon/2)**2
-    ));
+    const a =
+      Math.sin(dLat/2)**2 +
+      Math.cos(lat1*Math.PI/180)*Math.cos(lat2*Math.PI/180)*
+      Math.sin(dLon/2)**2;
+    return 2 * R * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
 }
 
 navigator.geolocation.watchPosition(pos=>{
-    if(!running) return;
-
-    const {latitude, longitude, speed:s} = pos.coords;
+    const {latitude, longitude, altitude} = pos.coords;
 
     if(lastLat !== null){
-        const d = haversine(lastLat, lastLon, latitude, longitude);
-        totalDist += d;
-        speed = kalmanSpeed.filter(s || 0);
-        path.push({lat: latitude, lon: longitude});
-        drawHeatmap();
+        totalDistance += haversine(lastLat, lastLon, latitude, longitude);
     }
 
     lastLat = latitude;
     lastLon = longitude;
 
-    document.getElementById("dist").textContent = totalDist.toFixed(1);
-    document.getElementById("speed").textContent = speed.toFixed(2);
+    document.getElementById("alt").textContent = altitude?.toFixed(1) ?? "N/A";
+    document.getElementById("dist").textContent = totalDistance.toFixed(1);
 });
 
-// ================= ACCEL =================
+        /* ===================== MOTION ===================== */
 window.addEventListener("devicemotion", e=>{
-    if(!running) return;
-    const a = e.accelerationIncludingGravity;
-    if(!a) return;
+    if(!e.accelerationIncludingGravity) return;
 
+    const a = e.accelerationIncludingGravity;
     const mag = Math.sqrt(a.x*a.x + a.y*a.y + a.z*a.z);
-    const smooth = kalmanAcc.filter(mag);
-    document.getElementById("acc").textContent = smooth.toFixed(2);
+    const filtered = kalmanAcc.filter(mag);
+
+    document.getElementById("acc").textContent = filtered.toFixed(2);
+    accelHistory.push(filtered);
+    if(accelHistory.length > 50) accelHistory.shift();
+
+    // AI SIMPLE CLASSIFIER
+    let state = "Idle";
+    if(filtered > 12) state = "Running";
+    else if(filtered > 3) state = "Walking";
+    document.getElementById("motion").textContent = state;
+
+    drawGraph();
 });
 
-// ================= HEATMAP =================
-const map = document.getElementById("map");
-const mctx = map.getContext("2d");
+/* ===================== GRAPH ===================== */
+function drawGraph(){
+    const c = document.getElementById("accGraph");
+    const ctx = c.getContext("2d");
+    c.width = c.clientWidth;
+    c.height = c.clientHeight;
+    ctx.clearRect(0,0,c.width,c.height);
+    ctx.beginPath();
+    ctx.strokeStyle = "#58a6ff";
 
-function drawHeatmap(){
-    mctx.clearRect(0,0,map.width,map.height);
-    path.forEach(p=>{
-        const x = (p.lon + 180) * (map.width / 360);
-        const y = (90 - p.lat) * (map.height / 180);
-        mctx.fillStyle = "rgba(255,0,0,0.2)";
-        mctx.beginPath();
-        mctx.arc(x,y,6,0,Math.PI*2);
-        mctx.fill();
+    accelHistory.forEach((v,i)=>{
+        const x = (i/50)*c.width;
+        const y = c.height - v*6;
+        i===0 ? ctx.moveTo(x,y) : ctx.lineTo(x,y);
     });
+    ctx.stroke();
 }
 
-// ================= SESSION =================
-function startSession(){
-    running = true;
-    totalDist = 0;
-    path = [];
-}
-
-function stopSession(){
-    running = false;
-    localStorage.setItem("sessionData", JSON.stringify({path,totalDist}));
-}
-
-// ================= MODAL =================
-async function openModal(type){
-    document.getElementById("modal").style.display = "block";
-
-    const cam = document.getElementById("cam");
-    const stream = await navigator.mediaDevices.getUserMedia({video:true});
-    cam.srcObject = stream;
-
-    document.getElementById("modalBottom").innerText =
-        `Mode: ${mode}\nTotal Distance: ${totalDist.toFixed(2)} m`;
+/* ===================== CAMERA ===================== */
+async function startCamera(){
+    const stream = await navigator.mediaDevices.getUserMedia({video:{facingMode:"user"}});
+    document.getElementById("cam").srcObject = stream;
 }
 </script>
 
