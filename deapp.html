@@ -3,68 +3,101 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<title>Realtime Environmental Sensor Monitor</title>
+<title>Advanced Motion Research System</title>
 
 <style>
-:root {
-    --bg: #0f1115;
-    --card: #171a21;
-    --text: #e8e8e8;
-    --accent: #4fd1c5;
-}
-
 body {
     margin: 0;
-    font-family: "Segoe UI", system-ui, sans-serif;
-    background: var(--bg);
-    color: var(--text);
+    font-family: system-ui, sans-serif;
+    background: #0d1117;
+    color: #e6e6e6;
 }
 
 header {
-    padding: 20px;
-    text-align: center;
-    border-bottom: 1px solid #222;
+    padding: 14px;
+    background: #0b1220;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
 
-h1 {
-    font-size: 1.4rem;
-    font-weight: 500;
+button {
+    background: #238636;
+    border: none;
+    padding: 8px 14px;
+    color: white;
+    border-radius: 6px;
+    cursor: pointer;
 }
 
 .container {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-    gap: 16px;
-    padding: 20px;
+    grid-template-columns: repeat(auto-fit,minmax(260px,1fr));
+    gap: 14px;
+    padding: 16px;
 }
 
 .card {
-    background: var(--card);
+    background: #161b22;
     border-radius: 12px;
-    padding: 16px;
-    box-shadow: 0 0 15px rgba(0,0,0,0.4);
+    padding: 14px;
+    position: relative;
 }
 
-.card h2 {
-    font-size: 0.95rem;
-    margin-bottom: 10px;
-    color: var(--accent);
+.card h3 {
+    font-size: 14px;
+    color: #58a6ff;
 }
 
 .value {
-    font-size: 1.8rem;
-    font-weight: 600;
+    font-size: 22px;
 }
 
-.unit {
-    font-size: 0.9rem;
-    opacity: 0.7;
+.zoom {
+    position: absolute;
+    right: 10px;
+    top: 10px;
+    cursor: pointer;
 }
 
-.status {
-    font-size: 0.8rem;
-    opacity: 0.6;
+canvas {
+    width: 100%;
+    height: 150px;
+    background: #0b0f14;
+    border-radius: 8px;
+}
+
+/* MODAL */
+#modal {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.8);
+    z-index: 99;
+}
+
+#modalContent {
+    width: 90%;
+    height: 90%;
+    background: #0e1117;
+    margin: auto;
+    margin-top: 3%;
+    border-radius: 12px;
+    display: flex;
+    flex-direction: column;
+}
+
+#modalTop {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#modalBottom {
+    padding: 12px;
+    font-size: 14px;
+    border-top: 1px solid #333;
 }
 </style>
 </head>
@@ -72,143 +105,172 @@ h1 {
 <body>
 
 <header>
-    <h1>Realtime Environmental & Motion Sensor Monitor</h1>
+    <div>🔬 Motion Research Dashboard</div>
+    <div>
+        <button onclick="startSession()">Start</button>
+        <button onclick="stopSession()">Stop</button>
+        <button onclick="connectUSB()">USB</button>
+    </div>
 </header>
 
 <div class="container">
 
-    <div class="card">
-        <h2>Ketinggian</h2>
-        <div class="value" id="altitude">–</div>
-        <div class="unit">meter dpl</div>
-    </div>
+<div class="card">
+<h3>Distance (m)</h3>
+<div class="value" id="dist">0</div>
+<span class="zoom" onclick="openModal('distance')">🔍</span>
+</div>
 
-    <div class="card">
-        <h2>Kecepatan</h2>
-        <div class="value" id="speed">–</div>
-        <div class="unit">m/s</div>
-    </div>
+<div class="card">
+<h3>Speed (m/s)</h3>
+<div class="value" id="speed">0</div>
+<span class="zoom" onclick="openModal('speed')">🔍</span>
+</div>
 
-    <div class="card">
-        <h2>Percepatan</h2>
-        <div class="value" id="accel">–</div>
-        <div class="unit">m/s²</div>
-    </div>
+<div class="card">
+<h3>Acceleration</h3>
+<div class="value" id="acc">0</div>
+<span class="zoom" onclick="openModal('acc')">🔍</span>
+</div>
 
-    <div class="card">
-        <h2>Kemiringan</h2>
-        <div class="value" id="tilt">–</div>
-        <div class="unit">derajat</div>
-    </div>
-
-    <div class="card">
-        <h2>Suhu Perangkat</h2>
-        <div class="value" id="temp">N/A</div>
-        <div class="unit">browser tidak mendukung</div>
-    </div>
-
-    <div class="card">
-        <h2>Kelembapan Udara</h2>
-        <div class="value" id="humidity">N/A</div>
-        <div class="unit">sensor eksternal diperlukan</div>
-    </div>
-
-    <div class="card">
-        <h2>Medan Elektromagnetik</h2>
-        <div class="value" id="em">N/A</div>
-        <div class="unit">tidak tersedia</div>
-    </div>
-
-    <div class="card">
-        <h2>Kebisingan</h2>
-        <div class="value" id="noise">–</div>
-        <div class="unit">dB (estimasi)</div>
-    </div>
+<div class="card">
+<h3>Heatmap GPS</h3>
+<canvas id="map"></canvas>
+<span class="zoom" onclick="openModal('map')">🔍</span>
+</div>
 
 </div>
 
+<!-- MODAL -->
+<div id="modal" onclick="this.style.display='none'">
+    <div id="modalContent" onclick="event.stopPropagation()">
+        <div id="modalTop">
+            <video id="cam" autoplay muted playsinline></video>
+        </div>
+        <div id="modalBottom" id="modalInfo"></div>
+    </div>
+</div>
+
 <script>
-// ================= GEOLOCATION =================
-if ("geolocation" in navigator) {
-    navigator.geolocation.watchPosition(pos => {
-        const alt = pos.coords.altitude;
-        const speed = pos.coords.speed;
+// ================= STATE =================
+let running = false;
+let lastLat = null, lastLon = null;
+let totalDist = 0;
+let speed = 0;
+let path = [];
+let mode = "run"; // run | motor
 
-        document.getElementById("altitude").textContent =
-            alt !== null ? alt.toFixed(2) : "Tidak tersedia";
-
-        document.getElementById("speed").textContent =
-            speed !== null ? speed.toFixed(2) : "0";
-    }, err => {
-        console.warn(err.message);
-    }, {
-        enableHighAccuracy: true,
-        maximumAge: 1000
-    });
-}
-
-// ================= MOTION SENSOR =================
-if (window.DeviceMotionEvent) {
-    window.addEventListener("devicemotion", e => {
-        const a = e.accelerationIncludingGravity;
-        if (!a) return;
-
-        const magnitude = Math.sqrt(
-            a.x * a.x +
-            a.y * a.y +
-            a.z * a.z
-        );
-
-        document.getElementById("accel").textContent =
-            magnitude.toFixed(2);
-    });
-}
-
-// ================= ORIENTATION =================
-if (window.DeviceOrientationEvent) {
-    window.addEventListener("deviceorientation", e => {
-        if (e.beta !== null) {
-            document.getElementById("tilt").textContent =
-                e.beta.toFixed(1);
+// ================= KALMAN FILTER =================
+class Kalman {
+    constructor(R=0.01, Q=3) {
+        this.R = R;
+        this.Q = Q;
+        this.A = 1;
+        this.B = 0;
+        this.C = 1;
+        this.cov = NaN;
+        this.x = NaN;
+    }
+    filter(z) {
+        if (isNaN(this.x)) {
+            this.x = z;
+            this.cov = 1;
+        } else {
+            const predX = this.A * this.x;
+            const predCov = this.A * this.cov * this.A + this.Q;
+            const K = predCov / (predCov + this.R);
+            this.x = predX + K * (z - predX);
+            this.cov = predCov - K * predCov;
         }
-    });
-}
-
-// ================= NOISE LEVEL =================
-async function initMic() {
-    try {
-        const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-        const audioCtx = new AudioContext();
-        const analyser = audioCtx.createAnalyser();
-        const mic = audioCtx.createMediaStreamSource(stream);
-        mic.connect(analyser);
-
-        const data = new Uint8Array(analyser.fftSize);
-
-        function updateNoise() {
-            analyser.getByteTimeDomainData(data);
-            let sum = 0;
-            for (let i = 0; i < data.length; i++) {
-                let v = (data[i] - 128) / 128;
-                sum += v * v;
-            }
-            let rms = Math.sqrt(sum / data.length);
-            let db = 20 * Math.log10(rms);
-            document.getElementById("noise").textContent =
-                isFinite(db) ? db.toFixed(1) : "0";
-            requestAnimationFrame(updateNoise);
-        }
-
-        updateNoise();
-
-    } catch (e) {
-        console.warn("Mic access denied");
+        return this.x;
     }
 }
 
-initMic();
+const kalmanSpeed = new Kalman();
+const kalmanAcc = new Kalman();
+
+// ================= GEO =================
+function haversine(lat1, lon1, lat2, lon2) {
+    const R = 6371000;
+    const dLat = (lat2-lat1)*Math.PI/180;
+    const dLon = (lon2-lon1)*Math.PI/180;
+    return 2 * R * Math.asin(Math.sqrt(
+        Math.sin(dLat/2)**2 +
+        Math.cos(lat1*Math.PI/180)*Math.cos(lat2*Math.PI/180)*Math.sin(dLon/2)**2
+    ));
+}
+
+navigator.geolocation.watchPosition(pos=>{
+    if(!running) return;
+
+    const {latitude, longitude, speed:s} = pos.coords;
+
+    if(lastLat !== null){
+        const d = haversine(lastLat, lastLon, latitude, longitude);
+        totalDist += d;
+        speed = kalmanSpeed.filter(s || 0);
+        path.push({lat: latitude, lon: longitude});
+        drawHeatmap();
+    }
+
+    lastLat = latitude;
+    lastLon = longitude;
+
+    document.getElementById("dist").textContent = totalDist.toFixed(1);
+    document.getElementById("speed").textContent = speed.toFixed(2);
+});
+
+// ================= ACCEL =================
+window.addEventListener("devicemotion", e=>{
+    if(!running) return;
+    const a = e.accelerationIncludingGravity;
+    if(!a) return;
+
+    const mag = Math.sqrt(a.x*a.x + a.y*a.y + a.z*a.z);
+    const smooth = kalmanAcc.filter(mag);
+    document.getElementById("acc").textContent = smooth.toFixed(2);
+});
+
+// ================= HEATMAP =================
+const map = document.getElementById("map");
+const mctx = map.getContext("2d");
+
+function drawHeatmap(){
+    mctx.clearRect(0,0,map.width,map.height);
+    path.forEach(p=>{
+        const x = (p.lon + 180) * (map.width / 360);
+        const y = (90 - p.lat) * (map.height / 180);
+        mctx.fillStyle = "rgba(255,0,0,0.2)";
+        mctx.beginPath();
+        mctx.arc(x,y,6,0,Math.PI*2);
+        mctx.fill();
+    });
+}
+
+// ================= SESSION =================
+function startSession(){
+    running = true;
+    totalDist = 0;
+    path = [];
+}
+
+function stopSession(){
+    running = false;
+    localStorage.setItem("sessionData", JSON.stringify({path,totalDist}));
+}
+
+// ================= MODAL =================
+async function openModal(type){
+    document.getElementById("modal").style.display = "block";
+
+    const cam = document.getElementById("cam");
+    const stream = await navigator.mediaDevices.getUserMedia({video:true});
+    cam.srcObject = stream;
+
+    document.getElementById("modalBottom").innerText =
+        `Mode: ${mode}\nTotal Distance: ${totalDist.toFixed(2)} m`;
+}
 </script>
 
 </body>
 </html>
-
