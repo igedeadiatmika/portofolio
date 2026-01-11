@@ -32,7 +32,6 @@
   --dark: #0b0f1a;
   --glass: rgba(20, 30, 60, 0.75);
 }
-    
     * { box-sizing: border-box; }
     body {
       margin: 0;
@@ -210,45 +209,9 @@
       background: var(--primary);
       color: #181c25;
     }
-    .projects-list {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-      gap: 1.5rem;
-      margin-top: 1.2rem;
-    }
-    .project-card {
-      background: #141823;
-      border-radius: 14px;
-      box-shadow: 0 2px 16px 0 rgba(0,255,255,0.06);
-      padding: 1.5rem 1.2rem;
-      border-left: 4px solid var(--primary);
-      transition: border-color 0.2s;
-      position: relative;
-    }
-    .project-card:hover {
-      border-color: var(--accent);
-    }
-    .project-title {
-      font-family: 'Orbitron', sans-serif;
-      color: var(--primary);
-      font-size: 1.15rem;
-      margin-bottom: 0.5rem;
-    }
-    .project-desc {
-      color: #b0b0b0;
-      font-size: 0.98rem;
-      margin-bottom: 0.7rem;
-    }
-    .project-link {
-      color: var(--accent);
-      text-decoration: none;
-      font-weight: 700;
-      font-size: 0.98rem;
-      transition: color 0.2s;
-    }
-    .project-link:hover {
-      color: var(--primary);
-    }
+    
+   
+    
     .contact-content {
       font-size: 1.08rem;
       color: #b0b0b0;
@@ -347,7 +310,6 @@
     border-radius: 50%;
     position: relative;
 }    
-
         .testimonials-container {
             position: relative;
         }
@@ -791,7 +753,6 @@
   opacity: 1;
   transform: scale(1);
 }
-
     
 main-#ig-rootg {
   width: 100vw;
@@ -940,9 +901,6 @@ main-#ig-rootg {
     background: linear-gradient(90deg, #00c3ff 0%, #ff005c 100%);
     box-shadow: 0 0 16px #00c3ff88;
 }
-
-
-
     
 #dai-btn {
   position: fixed;
@@ -1156,18 +1114,7 @@ Pertanyaan yang harus kamu jawab dari I GEDE!!!😁
                     </div>
                 </div>
     
-    <section id="projects">
-      <h2 data-aos="zoom-in">Projects</h2>
-      <div class="projects-list">
-        <div class="project-card" data-aos="flip-right">
-          <div class="project-title">Startup of GEVSIDE ENVIEWMEN Platform</div>
-          <div class="project-desc">
-            platform GEVSIDE Enviewmen ini saya buat untuk mengembangkan teknologi yang dapat berdampak pada pelestarian alam
-          </div>
-          <a class="project-link" href=" " target="_blank">View Project</a>
-        </div>
-      </div>
-    </section>
+   
   </section>
 
      <section id="skills" class="tooltip-zone" data-tooltip="kini aku telah mampu untuk menguasai skill ini">
@@ -1365,8 +1312,7 @@ const questions = [
             } else {
                 currentQuestion = nextIndex;
                 updateModal();
-            }
-        }
+            }}
 
         function showComplete() {
             document.getElementById('modalBody').innerHTML = `
@@ -1447,7 +1393,6 @@ const questions = [
       setTimeout(()=>b.remove(),18000);
     }
     setInterval(spawnBalloonFunc,2500);
-
     document.addEventListener("click",e=>{
       let now=new Date().getTime();
       if(now<birthday||now>endShow) return;
@@ -2837,8 +2782,6 @@ async function getAIResponse(userText) {
     });
 
 
-
-
     (() => {
   const tooltip = document.createElement("div");
   tooltip.className = "neo-tooltip";
@@ -3001,7 +2944,6 @@ document.getElementById("userInput").addEventListener("keydown", e => {
 });
 
     
-
  const profile = document.getElementById("gyro-profile");
 const img = document.querySelector("#profile-core img");
 const MAX_SHIFT_X = 18;
@@ -3065,6 +3007,7 @@ animate();
 </script>  
 </body>
 </html>
+
 
 
 
